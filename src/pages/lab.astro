@@ -1,42 +1,12 @@
 ---
 import Base from '../layouts/Base.astro';
-import ProjectsSidebar from '../components/ProjectsSidebar.astro';
-import ProfilesSidebar from '../components/ProfilesSidebar.astro';
-import { labProjects, labOnlyProjects } from '../data/projects-expanded';
-
-// Map expanded projects to sidebar format
-const projects = labProjects.map(p => ({
-  id: p.id,
-  name: p.name,
-  icon: p.icon,
-  href: `/lab#${p.id}`,
-  description: p.lab.subtitle,
-  tags: p.lab.tags,
-  serviceSuite: p.serviceSuite,
-  category: p.stage.category,
-  year: p.stage.year,
-  role: p.stage.role,
-  outcome: p.stage.outcome,
-  leadVertical: p.serviceSuite[0] || 'Design',
-  hasLabel: p.id === 'nove',
-}));
-
-const conceptIds = labOnlyProjects.map(p => p.id);
-
-// Social profiles - right sidebar
-const profiles = [
-  { name: 'Cosmos', icon: '/assets/socials/cosmos.svg', href: 'https://www.cosmos.so/renaise' },
-  { name: 'Figma', icon: '/assets/socials/figma.svg', href: 'https://www.figma.com/@renaise' },
-  { name: 'X', icon: '/assets/socials/x.svg', href: 'https://x.com/renaise' },
-  { name: 'Read.cv', icon: '/assets/socials/readcv.svg', href: 'https://read.cv/renaise' },
-  { name: 'LinkedIn', icon: '/assets/socials/linkedin.svg', href: 'https://www.linkedin.com/in/renaise-kim-408641123/' },
-];
+import { labProjects } from '../data/projects-expanded';
 ---
 
 <Base title="Lab of Renaise">
-  <div class="relative min-h-screen bg-[#101010] overflow-hidden">
+  <div class="h-screen w-screen overflow-hidden flex flex-col" style="background: linear-gradient(180deg, #E3E3E3 0%, #9B9B9B 100%);">
 
-    <!-- Dot grid background - 32px, centered -->
+    <!-- Dot grid background -->
     <div class="dot-grid fixed inset-0 z-0 pointer-events-none" aria-hidden="true">
       <svg width="100%" height="100%">
         <pattern id="dots-lab" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
@@ -46,393 +16,91 @@ const profiles = [
       </svg>
     </div>
 
-    <!-- RENAISE Watermark -->
-    <div class="fixed bottom-0 left-1/2 z-[1] pointer-events-none select-none" style="transform: translateX(calc(-50% - 21px));">
-      <img
-        src="/assets/renaise-watermark.png"
-        alt=""
-        class="watermark w-[1526px] max-w-[95vw] h-auto"
-      />
-    </div>
-
-    <!-- Top Header -->
-    <header class="fixed top-0 left-0 right-0 z-20 flex items-center justify-between px-6 py-4">
-      <!-- Top Left: Ellipse logo -->
-      <div class="w-10 h-10 flex items-center justify-center">
-        <img src="/assets/renaise_ellipse.png" alt="" class="w-10 h-10 object-contain opacity-70" />
-      </div>
-
-      <!-- Right: Nav buttons -->
-      <nav class="nav-bar flex items-center gap-2">
-        <a href="/#about" class="nav-tab flashlight-tab px-5 py-2.5">
-          <span class="tab-bg"></span>
-          <span class="tab-glow"></span>
-          <span class="tab-content">ABOUT</span>
-        </a>
-        <a href="/lab" class="nav-tab flashlight-tab nav-tab-active px-5 py-2.5">
-          <span class="tab-bg"></span>
-          <span class="tab-glow"></span>
-          <span class="tab-content">LAB</span>
-        </a>
-        <a href="/stage" class="nav-tab flashlight-tab px-5 py-2.5">
-          <span class="tab-bg"></span>
-          <span class="tab-glow"></span>
-          <span class="tab-content">STAGE</span>
-        </a>
-        <a href="mailto:hello@renaise.com" class="nav-tab flashlight-tab px-5 py-2.5">
-          <span class="tab-bg"></span>
-          <span class="tab-glow"></span>
-          <span class="tab-content">CONTACT</span>
-        </a>
+    <!-- Top Navigation -->
+    <header class="relative z-10 flex items-center justify-between px-6 py-4 shrink-0">
+      <a href="/" class="nav-pill">
+        <span>← Stage</span>
+      </a>
+      <nav class="flex items-center gap-2">
+        <a href="/lab" class="nav-pill nav-pill-active">Lab</a>
+        <a href="mailto:hello@renaise.com" class="nav-pill">Contact</a>
       </nav>
     </header>
 
-    <!-- Projects Sidebar - Left -->
-    <ProjectsSidebar projects={projects} />
-
-    <!-- Profiles Sidebar - Right -->
-    <ProfilesSidebar profiles={profiles} />
-
-    <!-- Center Content: Case Studies -->
-    <main class="relative z-10 min-h-screen pt-24 pb-32 px-32">
-      <div class="max-w-3xl mx-auto space-y-6">
-        <!-- Page Header -->
-        <div class="text-center mb-12">
-          <h1 class="text-[11px] uppercase tracking-widest text-white/40 mb-2">Process + Research</h1>
-          <p class="text-[14px] text-white/60 max-w-md mx-auto">Case studies exploring the thinking behind the work.</p>
-        </div>
-
-        {labProjects.map((p) => (
-          <article
-            id={p.id}
-            class="lab-card group p-6 md:p-8 rounded-xl border border-white/[0.08] bg-white/[0.02] hover:bg-white/[0.04] hover:border-white/12 transition-all duration-200"
-            data-project={p.id}
+    <!-- Grid - fixed size squares, centered -->
+    <div class="relative z-10 flex-1 flex items-center justify-center">
+      <div class="grid grid-cols-3 gap-0">
+        {labProjects.slice(0, 9).map((p, i) => (
+          <a
+            href={`/lab/${p.id}`}
+            class="lab-cell relative w-[240px] h-[240px] border border-black/10 flex flex-col p-5 hover:bg-white/20 transition-colors"
           >
-            <!-- Header Row -->
-            <div class="flex items-start justify-between gap-4 mb-6">
-              <div class="flex items-center gap-4">
-                <div class="w-10 h-10 rounded-lg bg-black/40 flex items-center justify-center overflow-hidden shrink-0">
-                  <img src={p.icon} alt={p.name} class="w-full h-full object-contain p-1.5 opacity-80" />
-                </div>
-                <div>
-                  <div class="flex items-center gap-2">
-                    <span class="text-[11px] uppercase tracking-widest text-white/40">{p.name}</span>
-                    {conceptIds.includes(p.id) && (
-                      <span class="px-1.5 py-0.5 text-[9px] uppercase tracking-wider text-amber-400/70 border border-amber-400/30 rounded">
-                        Concept
-                      </span>
-                    )}
-                  </div>
-                  <h2 class="text-[18px] md:text-[20px] text-white/90 font-medium leading-tight group-hover:text-white transition-colors">
-                    {p.lab.title}
-                  </h2>
-                </div>
-              </div>
-              <div class="flex flex-wrap gap-1.5 justify-end">
-                {p.lab.tags.slice(0, 4).map((tag) => (
-                  <span class="px-2 py-0.5 text-[9px] uppercase tracking-wider text-white/40 border border-white/10 rounded">
-                    {tag}
-                  </span>
-                ))}
-              </div>
+            <!-- Top row: Number + Year -->
+            <div class="flex items-start justify-between mb-auto">
+              <span class="w-6 h-6 flex items-center justify-center text-[11px] text-black/50 border border-black/20 rounded">
+                {i + 1}
+              </span>
+              <span class="text-[11px] text-black/40 tracking-wide">
+                {p.stage.year}
+              </span>
             </div>
 
-            <!-- Subtitle -->
-            <p class="text-[14px] text-white/60 mb-6 max-w-2xl">
-              {p.lab.subtitle}
-            </p>
+            <!-- Center: Title -->
+            <h2 class="text-[14px] md:text-[16px] text-black/80 font-light uppercase tracking-wide text-center leading-tight my-auto px-2">
+              {p.lab.title}
+            </h2>
 
-            <!-- Expandable Content -->
-            <div class="lab-content hidden" data-content={p.id}>
-              <!-- Context -->
-              <div class="mb-6">
-                <h3 class="text-[10px] uppercase tracking-widest text-white/40 mb-2">Context</h3>
-                <p class="text-[13px] text-white/70 leading-relaxed">{p.lab.context}</p>
-              </div>
-
-              <!-- Challenge -->
-              <div class="mb-6">
-                <h3 class="text-[10px] uppercase tracking-widest text-white/40 mb-2">Challenge</h3>
-                <p class="text-[13px] text-white/70 leading-relaxed">{p.lab.challenge}</p>
-              </div>
-
-              <!-- Hypothesis -->
-              <div class="mb-6 p-4 rounded-lg bg-white/[0.03] border border-white/[0.06]">
-                <h3 class="text-[10px] uppercase tracking-widest text-white/40 mb-2">Hypothesis</h3>
-                <p class="text-[14px] text-white/80 leading-relaxed italic">{p.lab.hypothesis}</p>
-              </div>
-
-              <!-- Approach -->
-              <div class="mb-6">
-                <h3 class="text-[10px] uppercase tracking-widest text-white/40 mb-3">Approach</h3>
-                <ol class="space-y-2">
-                  {p.lab.approach.map((step, i) => (
-                    <li class="flex gap-3 text-[13px] text-white/70">
-                      <span class="text-white/30 shrink-0">{i + 1}.</span>
-                      <span>{step}</span>
-                    </li>
-                  ))}
-                </ol>
-              </div>
-
-              <!-- Key Decisions -->
-              <div class="mb-6">
-                <h3 class="text-[10px] uppercase tracking-widest text-white/40 mb-3">Key Decisions</h3>
-                <div class="space-y-4">
-                  {p.lab.keyDecisions.map((kd) => (
-                    <div class="pl-4 border-l-2 border-white/10">
-                      <p class="text-[13px] text-white/80 font-medium mb-1">{kd.decision}</p>
-                      <p class="text-[12px] text-white/50">{kd.rationale}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <!-- Insight -->
-              <div class="mb-6 p-4 rounded-lg bg-emerald-500/5 border border-emerald-500/10">
-                <h3 class="text-[10px] uppercase tracking-widest text-emerald-400/60 mb-2">Insight</h3>
-                <p class="text-[14px] text-white/80 leading-relaxed">{p.lab.insight}</p>
-              </div>
-
-              <!-- Implications -->
-              <div class="mb-4">
-                <h3 class="text-[10px] uppercase tracking-widest text-white/40 mb-2">Implications</h3>
-                <p class="text-[13px] text-white/60 leading-relaxed">{p.lab.implications}</p>
-              </div>
-
-              <!-- Link to STAGE if shipped -->
-              {!conceptIds.includes(p.id) && (
-                <div class="pt-4 border-t border-white/[0.06]">
-                  <a
-                    href={`/stage#${p.id}`}
-                    class="inline-flex items-center gap-2 text-[12px] uppercase tracking-wider text-white/50 hover:text-white/80 transition-colors"
-                  >
-                    View shipped work
-                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                  </a>
-                </div>
-              )}
+            <!-- Bottom: Service tags -->
+            <div class="flex items-center justify-center gap-2 mt-auto flex-wrap">
+              {p.serviceSuite.map((service, idx) => (
+                <span class="flex items-center gap-2 text-[9px] uppercase tracking-widest text-black/40">
+                  {idx > 0 && <span class="w-1 h-1 rounded-full bg-black/40"></span>}
+                  {service}
+                </span>
+              ))}
             </div>
-
-            <!-- Expand Toggle -->
-            <button
-              type="button"
-              class="lab-toggle mt-4 flex items-center gap-2 text-[11px] uppercase tracking-wider text-white/40 hover:text-white/70 transition-colors"
-              data-toggle={p.id}
-            >
-              <span class="toggle-text">Read case study</span>
-              <svg class="toggle-icon w-4 h-4 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
-            </button>
-          </article>
+          </a>
         ))}
       </div>
-    </main>
-
-    <!-- Footer: Year -->
-    <div class="fixed bottom-6 right-6 z-20 text-2xl text-white/40" style="font-family: 'ABC Diatype Mono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;">2026</div>
+    </div>
 
   </div>
 </Base>
 
 <style>
   .dot-grid {
-    color: rgba(255, 255, 255, 0.18);
-    opacity: 1;
+    color: rgba(0, 0, 0, 0.08);
   }
 
-  .watermark {
-    opacity: 0.12;
-  }
-
-  /* Sidebar styles */
-  .profiles-sidebar,
-  .projects-sidebar {
-    background:
-      linear-gradient(0deg, rgba(94, 94, 94, 0.06) 0%, rgba(94, 94, 94, 0.06) 100%),
-      linear-gradient(0deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.04) 100%);
-    -webkit-backdrop-filter: blur(20px);
-    backdrop-filter: blur(20px);
-  }
-
-  /* Nav */
-  .nav-bar {
-    font-family: 'Helvetica Now Display', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-weight: 400;
-  }
-
-  .nav-tab {
-    font-size: 13px;
+  /* Nav pills */
+  .nav-pill {
+    padding: 10px 20px;
+    font-size: 12px;
     letter-spacing: 0.05em;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.9);
-    border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: rgba(0, 0, 0, 0.6);
+    background: rgba(255, 255, 255, 0.5);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    transition: color 0.2s;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 100px;
+    transition: all 0.2s ease;
   }
 
-  .nav-tab:hover {
-    color: #fff;
+  .nav-pill:hover {
+    background: rgba(255, 255, 255, 0.8);
+    color: rgba(0, 0, 0, 0.8);
   }
 
-  .nav-tab-active {
-    border-color: rgba(255, 255, 255, 0.3);
-    background: rgba(255, 255, 255, 0.08);
+  .nav-pill-active {
+    background: rgba(0, 0, 0, 0.8);
+    color: rgba(255, 255, 255, 0.9);
+    border-color: transparent;
   }
 
-  .nav-tab-active .tab-bg {
-    background: rgba(255, 255, 255, 0.08);
+  .nav-pill-active:hover {
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
   }
 
-  /* Flashlight tabs */
-  .flashlight-tab {
-    --mouse-x: 50%;
-    --mouse-y: 50%;
-    --glow-opacity: 0;
-    position: relative;
-    overflow: hidden;
-    isolation: isolate;
-  }
-
-  .tab-bg {
-    position: absolute;
-    inset: 0;
-    background: rgba(255, 255, 255, 0.04);
-    border-radius: inherit;
-    z-index: 0;
-    transition: background 0.2s ease;
-  }
-
-  .flashlight-tab:hover .tab-bg {
-    background: rgba(255, 255, 255, 0.08);
-  }
-
-  .tab-glow {
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: radial-gradient(
-      120px circle at var(--mouse-x) var(--mouse-y),
-      rgba(255, 255, 255, 0.15) 0%,
-      rgba(255, 255, 255, 0.05) 40%,
-      transparent 70%
-    );
-    opacity: var(--glow-opacity);
-    transition: opacity 0.3s ease;
-    z-index: 1;
-    pointer-events: none;
-  }
-
-  .tab-content {
-    position: relative;
-    z-index: 2;
-  }
-
-  /* Lab card expand */
-  .lab-card.expanded .lab-content {
-    display: block;
-    animation: fadeIn 0.3s ease;
-  }
-
-  .lab-card.expanded .toggle-icon {
-    transform: rotate(180deg);
-  }
-
-  .lab-card.expanded .toggle-text {
-    opacity: 0.5;
-  }
-
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(-8px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  /* Dock styles */
-  .dock-item {
-    transition: transform 0.15s cubic-bezier(0.25, 0.1, 0.25, 1), background-color 0.2s, box-shadow 0.2s;
-    transform-origin: center bottom;
-    will-change: transform;
-  }
-
-  .dock-item:hover {
-    transform: scale(1.6) translateY(-12px);
-    z-index: 10;
-  }
-
-  .dock-item:hover + .dock-item,
-  .dock-item:has(+ .dock-item:hover) {
-    transform: scale(1.35) translateY(-6px);
-    z-index: 5;
-  }
-
-  .dock-item:hover + .dock-item + .dock-item,
-  .dock-item:has(+ .dock-item + .dock-item:hover) {
-    transform: scale(1.15) translateY(-2px);
-    z-index: 4;
-  }
-
-  .projects-dock-scroll,
-  .profiles-dock-scroll {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-
-  .projects-dock-scroll::-webkit-scrollbar,
-  .profiles-dock-scroll::-webkit-scrollbar {
-    display: none;
-  }
 </style>
-
-<script>
-  // Flashlight tabs effect
-  document.querySelectorAll('.flashlight-tab').forEach(tab => {
-    tab.addEventListener('mousemove', (e) => {
-      const rect = tab.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      tab.style.setProperty('--mouse-x', `${x}px`);
-      tab.style.setProperty('--mouse-y', `${y}px`);
-      tab.style.setProperty('--glow-opacity', '1');
-    });
-    tab.addEventListener('mouseleave', () => {
-      tab.style.setProperty('--glow-opacity', '0');
-    });
-  });
-
-  // Expand/collapse case studies
-  document.querySelectorAll('.lab-toggle').forEach(button => {
-    button.addEventListener('click', () => {
-      const projectId = button.getAttribute('data-toggle');
-      const card = document.querySelector(`[data-project="${projectId}"]`);
-      const toggleText = button.querySelector('.toggle-text');
-
-      if (card) {
-        const isExpanded = card.classList.toggle('expanded');
-        if (toggleText) {
-          toggleText.textContent = isExpanded ? 'Collapse' : 'Read case study';
-        }
-      }
-    });
-  });
-
-  // Auto-expand if URL hash matches project id
-  const hash = window.location.hash.slice(1);
-  if (hash) {
-    const card = document.querySelector(`[data-project="${hash}"]`);
-    if (card) {
-      card.classList.add('expanded');
-      const toggleText = card.querySelector('.toggle-text');
-      if (toggleText) toggleText.textContent = 'Collapse';
-      setTimeout(() => {
-        card.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 100);
-    }
-  }
-</script>

@@ -2,10 +2,20 @@
 import Base from '../layouts/Base.astro';
 import ProjectsSidebar from '../components/ProjectsSidebar.astro';
 import ProfilesSidebar from '../components/ProfilesSidebar.astro';
-import { projectsExpanded } from '../data/projects-expanded';
+import { projectsExpanded, labProjects } from '../data/projects-expanded';
 
-// Only show these 6 projects
-const allowedProjects = ['soot', 'aputure', 'flora', 'osmosis', 'lighthouse', 'biota'];
+// Carousel order: lighthouse → flora → soot → biota → aputure → osmosis
+const allowedProjects = ['lighthouse', 'flora', 'soot', 'biota', 'aputure', 'osmosis'];
+
+// Hero assets for each project (videos and images)
+const heroAssets: Record<string, { url: string; type: 'video' | 'image' }> = {
+  lighthouse: { url: 'https://renaise.codexfoundry.com/lighthouse_brand.png', type: 'image' },
+  flora: { url: 'https://renaise.codexfoundry.com/flora_still.gif', type: 'image' },
+  soot: { url: 'https://renaise.codexfoundry.com/platform_soot.mp4', type: 'video' },
+  biota: { url: 'https://renaise.codexfoundry.com/biota_cover.mp4', type: 'video' },
+  aputure: { url: 'https://renaise.codexfoundry.com/Aputure_Site.mp4', type: 'video' },
+  osmosis: { url: 'https://renaise.codexfoundry.com/OsmosisHeader_3.mp4', type: 'video' },
+};
 
 // Map expanded projects to sidebar format (filtered)
 const projects = projectsExpanded
@@ -44,9 +54,9 @@ const navItems = [
 ---
 
 <Base title="RENAISE (A)">
-  <div class="relative min-h-screen bg-[#101010] overflow-hidden">
+  <div id="page-container" class="relative min-h-screen bg-[#101010] overflow-hidden" style="transition: background 0.3s ease;">
 
-    <!-- Dot grid background -->
+    <!-- Dot grid background (32px visual grid) -->
     <div class="dot-grid fixed inset-0 z-0 pointer-events-none" aria-hidden="true">
       <svg width="100%" height="100%">
         <pattern id="dots" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
@@ -56,6 +66,60 @@ const navItems = [
       </svg>
     </div>
 
+    <!-- Hero Background - project asset (grid-aligned) -->
+    <div class="hero-bg fixed inset-0 z-[2] pointer-events-none">
+      <div id="hero-media" class="hero-media absolute overflow-hidden rounded-sm">
+        <!-- Video element (hidden by default, shown for video assets) -->
+        <video id="hero-video" class="absolute inset-0 w-full h-full object-cover hidden" autoplay muted loop playsinline></video>
+        <!-- Image element (shown for image assets) -->
+        <img id="hero-image" class="absolute inset-0 w-full h-full object-cover" src="https://renaise.codexfoundry.com/lighthouse_brand.png" alt="" />
+      </div>
+    </div>
+
+    <!-- Hero assets data for JS + preload -->
+    <script is:inline define:vars={{ heroAssets }}>
+      window.heroAssets = heroAssets;
+
+      // Preload all hero assets
+      Object.values(heroAssets).forEach(asset => {
+        if (asset.type === 'video') {
+          const link = document.createElement('link');
+          link.rel = 'preload';
+          link.as = 'video';
+          link.href = asset.url;
+          document.head.appendChild(link);
+
+          // Also create a hidden video element to buffer
+          const video = document.createElement('video');
+          video.preload = 'auto';
+          video.muted = true;
+          video.src = asset.url;
+          video.load();
+        } else {
+          const img = new Image();
+          img.src = asset.url;
+        }
+      });
+    </script>
+
+    <!-- Grid-aligned frame (snaps to 32px dot grid) -->
+    <div class="fixed inset-0 z-[3] pointer-events-none">
+      <div id="grid-frame" class="absolute" style="width: 896px; height: 544px;">
+        <!-- Top line -->
+        <div class="absolute top-0 left-0 right-0 h-px bg-white/20"></div>
+        <!-- Bottom line -->
+        <div class="absolute bottom-0 left-0 right-0 h-px bg-white/20"></div>
+        <!-- Left line -->
+        <div class="absolute top-0 bottom-0 left-0 w-px bg-white/20"></div>
+        <!-- Right line -->
+        <div class="absolute top-0 bottom-0 right-0 w-px bg-white/20"></div>
+        <!-- Corner dots (larger, on grid intersections) -->
+        <div class="absolute -top-[3px] -left-[3px] w-[7px] h-[7px] rounded-full bg-white/50"></div>
+        <div class="absolute -top-[3px] -right-[3px] w-[7px] h-[7px] rounded-full bg-white/50"></div>
+        <div class="absolute -bottom-[3px] -left-[3px] w-[7px] h-[7px] rounded-full bg-white/50"></div>
+        <div class="absolute -bottom-[3px] -right-[3px] w-[7px] h-[7px] rounded-full bg-white/50"></div>
+      </div>
+    </div>
 
     <!-- RENAISE Watermark - Figma: 1526px width, centered with -21px offset -->
     <div class="fixed bottom-0 left-1/2 z-[1] pointer-events-none select-none" style="transform: translateX(calc(-50% - 21px));">
@@ -66,98 +130,123 @@ const navItems = [
       />
     </div>
 
-    <!-- Top Left: LAB + STAGE buttons -->
-    <div class="fixed top-4 left-4 z-20 flex items-center gap-1 nav-bar h-[43px] rounded-[10px] bg-white/[0.02]">
-      <a href="/lab" class="nav-tab flashlight-tab px-5 py-2.5">
+    <!-- Top Left: LAB + STAGE toggle - Figma: 196×55, 2% white, 12px radius -->
+    <div class="fixed top-4 left-4 z-20 flex items-center justify-center gap-1 nav-bar w-[196px] h-[55px] rounded-[12px] bg-white/[0.02]">
+      <button id="lab-tab" class="nav-tab flashlight-tab px-5 py-2.5" data-view="lab">
         <span class="tab-bg"></span>
         <span class="tab-glow"></span>
         <span class="tab-content">LAB</span>
-      </a>
-      <a href="/stage" class="nav-tab flashlight-tab nav-tab-active px-5 py-2.5">
+      </button>
+      <button id="stage-tab" class="nav-tab flashlight-tab nav-tab-active px-5 py-2.5" data-view="stage">
         <span class="tab-bg"></span>
         <span class="tab-glow"></span>
         <span class="tab-content">STAGE</span>
-      </a>
+      </button>
     </div>
 
-    <!-- Top Center-Right: Bio text -->
-    <div class="bio-section fixed top-4 right-[80px] z-20 max-w-[500px]">
+    <!-- Top Center: Bio text -->
+    <div class="bio-section fixed top-4 left-1/2 -translate-x-1/2 z-20">
       <p class="bio-text">RENAISE IS A VISUAL PRODUCER + PROTOTYPER WITH 8 YEARS OF EXPERIENCE DESIGNING IDENTITIES AND INTUITIVE PRODUCTS FOR BRANDS IN CONSUMER TECH AND MEDIA. STUDIO PARTNER AT <a href="https://studioartifice.com" target="_blank" rel="noopener noreferrer" class="artifice-link"><span class="italic">STUDIO ARTIFICE</span></a><br /><img src="/assets/artifice-a.png" alt="" class="artifice-mark" /> + CO-DIRECTOR AT <a href="https://artificenyc.com" target="_blank" rel="noopener noreferrer" class="artifice-link"><span class="italic">ARTIFICE NYC</span> <img src="/assets/artifice-mark.png" alt="" class="artifice-mark" /></a></p>
     </div>
 
-    <!-- Top Right: 3D Sphere -->
-    <div class="fixed top-4 right-4 z-20 w-[50px] h-[50px]">
-      <img src="/assets/renaise_ellipse.png" alt="" class="w-full h-full object-contain opacity-60 hover:opacity-80 transition-opacity" />
+    <!-- ═══════════════════════════════════════════════════════════════════════════ -->
+    <!-- STAGE VIEW -->
+    <!-- ═══════════════════════════════════════════════════════════════════════════ -->
+    <div id="stage-view" class="stage-view relative z-10">
+      <!-- Projects Sidebar - Left -->
+      <ProjectsSidebar projects={projects} />
+
+      <!-- Profiles Sidebar - Right -->
+      <ProfilesSidebar profiles={profiles} />
+
+      <!-- Center Content Area - receives mouse events -->
+      <main id="center-stage" class="relative z-20 min-h-screen flex flex-col items-center justify-center">
+
+        <!-- Single Platform - Rotating Project Icon -->
+        <div id="project-platform" class="relative z-20 w-56 h-56 flex items-center justify-center transition-all duration-500">
+          <img id="preview-icon" src="/assets/projects/biota.png" alt="" class="w-36 h-36 object-contain transition-all duration-300 opacity-75" />
+        </div>
+
+      </main>
     </div>
 
-    <!-- Projects Sidebar - Left -->
-    <ProjectsSidebar projects={projects} />
-
-    <!-- Profiles Sidebar - Right -->
-    <ProfilesSidebar profiles={profiles} />
-
-    <!-- Center Content Area -->
-    <main class="relative z-10 min-h-screen flex flex-col items-center justify-center px-[140px]">
-
-      <!-- Large Preview Frame with corner markers -->
-      <div id="project-platform" class="preview-frame-wrapper relative w-full max-w-[900px] aspect-[16/10]">
-        <!-- Corner dots -->
-        <div class="corner-dot corner-tl"></div>
-        <div class="corner-dot corner-tr"></div>
-        <div class="corner-dot corner-bl"></div>
-        <div class="corner-dot corner-br"></div>
-        <!-- Frame border lines -->
-        <div class="frame-line frame-top"></div>
-        <div class="frame-line frame-bottom"></div>
-        <div class="frame-line frame-left"></div>
-        <div class="frame-line frame-right"></div>
-
-        <!-- Content: Project Icon centered -->
-        <div class="w-full h-full flex items-center justify-center">
-          <div class="icon-container w-48 h-48 rounded-[32px] bg-black/90 border border-white/10 flex items-center justify-center transition-all duration-500">
-            <img id="preview-icon" src="/assets/projects/soot.png" alt="" class="w-32 h-32 object-contain transition-all duration-300" />
-          </div>
-        </div>
+    <!-- ═══════════════════════════════════════════════════════════════════════════ -->
+    <!-- LAB VIEW -->
+    <!-- ═══════════════════════════════════════════════════════════════════════════ -->
+    <div id="lab-view" class="lab-view hidden absolute inset-0 z-10 flex items-center justify-center">
+      <!-- Lab dot grid (black dots) -->
+      <div class="lab-dot-grid absolute inset-0 z-0 pointer-events-none" aria-hidden="true">
+        <svg width="100%" height="100%">
+          <pattern id="dots-lab-view" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+            <circle cx="16" cy="16" r="1" fill="rgba(0,0,0,0.2)" />
+          </pattern>
+          <rect width="100%" height="100%" fill="url(#dots-lab-view)" />
+        </svg>
       </div>
+      <!-- Fixed-size square grid, centered -->
+      <div class="relative z-10 grid grid-cols-3 gap-0">
+        {labProjects.slice(0, 9).map((p, i) => (
+          <a
+            href={`/lab/${p.id}`}
+            class="lab-cell relative w-[240px] h-[240px] border border-black/10 flex flex-col p-5 hover:bg-white/20 transition-colors"
+          >
+            <!-- Top row: Number + Year -->
+            <div class="flex items-start justify-between mb-auto">
+              <span class="w-6 h-6 flex items-center justify-center text-[11px] text-black/50 border border-black/20 rounded">
+                {i + 1}
+              </span>
+              <span class="text-[11px] text-black/40 tracking-wide">
+                {p.stage.year}
+              </span>
+            </div>
 
-    </main>
+            <!-- Center: Title -->
+            <h2 class="text-[14px] md:text-[16px] text-black/80 font-light uppercase tracking-wide text-center leading-tight my-auto px-2">
+              {p.lab.title}
+            </h2>
 
-    <!-- Bottom Left: CONTACT button -->
-    <div class="fixed bottom-4 left-4 z-20 nav-bar">
-      <a href="mailto:hello@renaise.com" class="nav-tab flashlight-tab px-5 py-2.5">
+            <!-- Bottom: Service tags -->
+            <div class="flex items-center justify-center gap-2 mt-auto flex-wrap">
+              {p.serviceSuite.map((service, idx) => (
+                <span class="flex items-center gap-2 text-[9px] uppercase tracking-widest text-black/40">
+                  {idx > 0 && <span class="w-1 h-1 rounded-full bg-black/40"></span>}
+                  {service}
+                </span>
+              ))}
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+
+    <!-- Bottom Left: CONTACT button - aligned under Projects dock -->
+    <div class="fixed bottom-4 left-4 z-30 nav-bar w-[116px]">
+      <a href="mailto:hello@renaise.com" class="nav-tab flashlight-tab w-full flex items-center justify-center py-2.5">
         <span class="tab-bg"></span>
         <span class="tab-glow"></span>
         <span class="tab-content">CONTACT</span>
       </a>
     </div>
 
-    <!-- Bottom Center: Navigation Bar with LAB | marquee | STAGE -->
-    <div class="bottom-cta-bar fixed bottom-4 left-1/2 z-20 flex items-center h-[43px] rounded-[12px] overflow-hidden" style="transform: translateX(-50%);">
-      <!-- LAB button (expands to show full text) -->
-      <a href="/lab" class="nav-tab flashlight-tab h-full px-5 flex items-center justify-center text-[12px] uppercase tracking-wider whitespace-nowrap">
-        <span class="tab-bg"></span>
-        <span class="tab-glow"></span>
-        <span class="tab-content">SEE PROCESS IN LAB</span>
-      </a>
-      <!-- Marquee center -->
-      <div class="marquee-pill h-full flex-1 flex items-center px-4 overflow-hidden min-w-[300px]">
-        <div class="marquee-container overflow-hidden flex-1 relative">
-          <span id="marquee-content" class="marquee-content text-[12px] uppercase tracking-wider text-white/50">
+    <!-- Bottom Center: CTA + Scrolling text pill (50% of mountain div width) -->
+    <div class="fixed bottom-4 left-1/2 z-20 w-[35%] max-w-[475px] -translate-x-1/2">
+      <div class="marquee-pill h-[40px] flex items-center rounded-full bg-white/[0.04] border border-white/[0.08] backdrop-blur-md overflow-hidden">
+        <!-- CTA Section (30%) - links to active project's lab -->
+        <a id="lab-cta" href="/lab" class="flex-shrink-0 h-full px-4 flex items-center justify-center bg-white/[0.03] hover:bg-white/[0.08] transition-colors border-r border-white/[0.08]">
+          <span class="text-[10px] uppercase tracking-wider text-white/70 whitespace-nowrap">See process in Lab</span>
+        </a>
+        <!-- Scrolling text (70%) -->
+        <div class="marquee-container overflow-hidden flex-1 relative px-4">
+          <span id="marquee-content" class="marquee-content text-[11px] uppercase tracking-wider text-white/50">
             <!-- Dynamic content set by JS based on active project -->
           </span>
         </div>
       </div>
-      <!-- STAGE button (active) -->
-      <a href="/stage" class="nav-tab flashlight-tab nav-tab-active h-full px-5 flex items-center justify-center text-[12px] uppercase tracking-wider">
-        <span class="tab-bg"></span>
-        <span class="tab-glow"></span>
-        <span class="tab-content">STAGE</span>
-      </a>
     </div>
 
-    <!-- Bottom Right: ABOUT button -->
-    <div class="fixed bottom-4 right-4 z-20 nav-bar">
-      <a href="#about" class="nav-tab flashlight-tab px-5 py-2.5">
+    <!-- Bottom Right: ABOUT button - aligned under Profiles dock -->
+    <div class="fixed bottom-4 right-4 z-20 nav-bar w-[116px]">
+      <a href="#about" class="nav-tab flashlight-tab w-full flex items-center justify-center py-2.5">
         <span class="tab-bg"></span>
         <span class="tab-glow"></span>
         <span class="tab-content">ABOUT</span>
@@ -172,23 +261,25 @@ const navItems = [
   .dot-grid {
     color: rgba(255, 255, 255, 0.45);
     opacity: 1;
+    transition: color 0.3s ease;
   }
 
-  /* Bio section typography - right aligned */
+  /* Bio section typography - centered */
   .bio-section {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
   }
 
   .bio-text {
     font-family: 'ABC Diatype Mono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
-    font-weight: 300;
-    font-size: 12px;
-    line-height: 1.4;
-    letter-spacing: 0.02em;
+    font-weight: 300; /* Light */
+    font-size: 13px;
+    line-height: 1.35;
+    letter-spacing: -0.26px;
     color: rgba(255, 255, 255, 0.6);
-    text-align: right;
+    text-align: center;
     text-transform: uppercase;
+    max-width: 680px;
   }
 
   .bio-text .italic {
@@ -227,6 +318,11 @@ const navItems = [
     opacity: 1;
   }
 
+
+  .hero-image {
+    opacity: 0.5;
+    filter: grayscale(30%);
+  }
 
   .glass-panel {
     background: rgba(255, 255, 255, 0.04);
@@ -316,16 +412,7 @@ const navItems = [
     background: transparent;
   }
 
-  /* ——— Bottom CTA Bar - Figma specs ——— */
-  .bottom-cta-bar {
-    background: 
-      linear-gradient(0deg, rgba(94, 94, 94, 0.18) 0%, rgba(94, 94, 94, 0.18) 100%),
-      linear-gradient(0deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.04) 100%);
-    -webkit-backdrop-filter: blur(20px);
-    backdrop-filter: blur(20px);
-  }
-
-  /* ——— Bottom Marquee ——— */
+  /* ——— Bottom Marquee Pill ——— */
   .marquee-container {
     mask-image: linear-gradient(to right, transparent, black 20px, black calc(100% - 20px), transparent);
     -webkit-mask-image: linear-gradient(to right, transparent, black 20px, black calc(100% - 20px), transparent);
@@ -346,29 +433,23 @@ const navItems = [
     }
   }
 
-  /* ——— Dock (Projects / Profiles) - macOS Dock Style ——— */
+  /* ——— Dock (Projects / Profiles) - Magnetic Carousel ——— */
   .dock-item {
-    transition: transform 0.2s cubic-bezier(0.25, 0.1, 0.25, 1), background-color 0.2s, box-shadow 0.2s, border-color 0.2s;
+    /* GSAP controls transform - only transition visual properties */
+    transition: background-color 0.2s, border-color 0.2s;
     transform-origin: center center;
     will-change: transform;
   }
 
-  /* Hover: smaller, sharper spotlight */
-  .dock-item:hover {
-    transform: scale(1.15);
+  /* Hover on non-active items */
+  .dock-item:not(.active):hover {
     z-index: 10;
-    background: rgba(255, 255, 255, 0.06);
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.15);
   }
 
   .dock-item:hover img {
     opacity: 1;
-  }
-
-  /* Neighbors - subtle scale */
-  .dock-item:hover + .dock-item,
-  .dock-item:has(+ .dock-item:hover) {
-    transform: scale(1.05);
-    z-index: 5;
   }
 
   /* Sharp spotlight gradient on hover */
@@ -385,48 +466,60 @@ const navItems = [
     opacity: 1;
   }
 
-  /* Active state: 2x scale with inner glow */
+  /* Active state: GSAP handles scale + position, CSS handles visuals */
   .dock-item.active {
-    transform: scale(2);
-    z-index: 20;
+    z-index: 20 !important;
     background: linear-gradient(
       180deg,
-      rgba(255, 255, 255, 0.15) 0%,
-      rgba(255, 255, 255, 0.08) 40%,
-      rgba(0, 0, 0, 0.2) 100%
+      rgba(255, 255, 255, 0.22) 0%,
+      rgba(255, 255, 255, 0.08) 30%,
+      rgba(15, 15, 15, 0.95) 100%
     ) !important;
-    border-color: rgba(255, 255, 255, 0.3);
-    box-shadow:
-      inset 0 1px 2px rgba(255, 255, 255, 0.4),
-      inset 0 -1px 2px rgba(0, 0, 0, 0.3),
-      inset 0 0 20px rgba(255, 255, 255, 0.1),
-      0 8px 32px rgba(0, 0, 0, 0.5),
-      0 0 40px rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.4) !important;
+  }
+
+  /* Magnetic glow ring - top highlight */
+  .dock-item.active::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 20px;
+    background: radial-gradient(
+      ellipse 80% 40% at 50% 0%,
+      rgba(255, 255, 255, 0.35) 0%,
+      transparent 70%
+    );
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  /* Outer magnetic field aura */
+  .dock-item.active::after {
+    content: '';
+    position: absolute;
+    inset: -20px;
+    border-radius: 32px;
+    background: radial-gradient(
+      circle at 50% 50%,
+      rgba(255, 255, 255, 0.12) 0%,
+      rgba(255, 255, 255, 0.04) 40%,
+      transparent 70%
+    );
+    pointer-events: none;
+    z-index: -2;
   }
 
   .dock-item.active:hover {
-    transform: scale(2.1);
+    border-color: rgba(255, 255, 255, 0.5) !important;
   }
 
-  .dock-item.active:hover .dock-item-gradient {
+  .dock-item.active .dock-item-gradient {
     opacity: 1;
   }
 
-  /* Smooth transition to active state */
-  .dock-item.dock-bounce {
-    animation: dock-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-  }
-
-  @keyframes dock-pop {
-    0% {
-      transform: scale(1);
-    }
-    50% {
-      transform: scale(2.2);
-    }
-    100% {
-      transform: scale(2);
-    }
+  /* Non-active items in carousel */
+  .dock-item:not(.active) {
+    z-index: 10;
   }
 
   /* Hide scrollbar on Projects sidebar (no visible bar) */
@@ -602,9 +695,29 @@ const navItems = [
       transform: translateY(0);
     }
   }
+
+  /* ——— Lab View Grid ——— */
+  .lab-view {
+    transition: opacity 0.3s ease;
+  }
+
+  .lab-view.hidden {
+    display: none;
+  }
+
+  .stage-view {
+    transition: opacity 0.3s ease;
+  }
+
+  .stage-view.hidden {
+    display: none;
+  }
+
 </style>
 
 <script>
+  import gsap from 'gsap';
+
   // Flashlight tabs effect
   const flashlightTabs = document.querySelectorAll('.flashlight-tab');
 
@@ -624,37 +737,205 @@ const navItems = [
     });
   });
 
-  // Auto-rotating project showcase
-  const projectButtons = document.querySelectorAll('[data-project]');
-  const previewIcon = document.getElementById('preview-icon');
-  const iconContainer = document.querySelector('.icon-container');
+  // ═══════════════════════════════════════════════════════════════════════════
+  // LAB / STAGE TOGGLE
+  // ═══════════════════════════════════════════════════════════════════════════
+  const labTab = document.getElementById('lab-tab');
+  const stageTab = document.getElementById('stage-tab');
+  const labView = document.getElementById('lab-view');
+  const stageView = document.getElementById('stage-view');
+  const pageContainer = document.getElementById('page-container');
+  const dotGridEl = document.querySelector('.dot-grid');
+  const watermarkDiv = document.querySelector('.watermark')?.parentElement;
+  const heroImageDiv = document.getElementById('hero-media')?.parentElement;
+  const gridFrameDiv = document.getElementById('grid-frame')?.parentElement;
+  const bioSection = document.querySelector('.bio-section');
+  const bottomCta = document.querySelector('.marquee-pill')?.parentElement;
+  const contactBtn = document.querySelector('[href="mailto:hello@renaise.com"]')?.parentElement;
+  const aboutBtn = document.querySelector('[href="#about"]')?.parentElement;
 
-  let currentProjectIndex = 0;
-  let rotationInterval = null;
-  let isPaused = false;
-  const rotationDuration = 4000; // 4 seconds per project
+  let isToggleAnimating = false;
 
-  // Convert NodeList to Array for easier manipulation
-  const projectsArray = Array.from(projectButtons);
+  function showLab() {
+    if (isToggleAnimating) return;
+    isToggleAnimating = true;
 
-  function showProject(index) {
-    // Reset all buttons - remove active and bounce classes
-    projectButtons.forEach(b => {
-      b.classList.remove('active');
-      b.classList.remove('dock-bounce');
+    labTab?.classList.add('nav-tab-active');
+    stageTab?.classList.remove('nav-tab-active');
+
+    // Show lab view immediately but transparent
+    labView?.classList.remove('hidden');
+    gsap.set(labView, { opacity: 0, y: 50 });
+
+    // Timeline for flowing animation
+    const tl = gsap.timeline({
+      onComplete: () => { isToggleAnimating = false; }
     });
 
-    // Get current project
-    const currentProject = projectsArray[index];
-    if (!currentProject) return;
 
-    const name = currentProject.getAttribute('data-name');
-    const description = currentProject.getAttribute('data-description');
-    const category = currentProject.getAttribute('data-category');
-    const year = currentProject.getAttribute('data-year');
-    const icon = currentProject.getAttribute('data-icon');
+    // Stage elements ease out (watermark stays visible)
+    tl.to([stageView, heroImageDiv, gridFrameDiv, bioSection, bottomCta, contactBtn, aboutBtn], {
+      opacity: 0,
+      y: -30,
+      duration: 0.4,
+      ease: 'power2.out',
+      stagger: 0.02,
+      onComplete: () => {
+        stageView?.classList.add('hidden');
+        if (heroImageDiv) (heroImageDiv as HTMLElement).style.display = 'none';
+        if (gridFrameDiv) (gridFrameDiv as HTMLElement).style.display = 'none';
+        if (bioSection) (bioSection as HTMLElement).style.display = 'none';
+        if (bottomCta) (bottomCta as HTMLElement).style.display = 'none';
+        if (contactBtn) (contactBtn as HTMLElement).style.display = 'none';
+        if (aboutBtn) (aboutBtn as HTMLElement).style.display = 'none';
+      }
+    }, 0);
 
-    // Update bottom marquee with project case study metadata
+    // Dot grid fades out
+    tl.to(dotGridEl, {
+      opacity: 0,
+      duration: 0.4,
+      ease: 'power2.out',
+    }, 0);
+
+    // Background transitions
+    tl.to(pageContainer, {
+      background: 'linear-gradient(180deg, #E3E3E3 0%, #9B9B9B 100%)',
+      duration: 0.6,
+      ease: 'power2.out',
+    }, 0.1);
+
+    // Lab view eases in
+    tl.to(labView, {
+      opacity: 1,
+      y: 0,
+      duration: 0.5,
+      ease: 'power2.out',
+    }, 0.3);
+  }
+
+  function showStage() {
+    if (isToggleAnimating) return;
+    isToggleAnimating = true;
+
+    labTab?.classList.remove('nav-tab-active');
+    stageTab?.classList.add('nav-tab-active');
+
+    // Show stage elements but transparent (watermark stays visible)
+    stageView?.classList.remove('hidden');
+    if (heroImageDiv) (heroImageDiv as HTMLElement).style.display = '';
+    if (gridFrameDiv) (gridFrameDiv as HTMLElement).style.display = '';
+    if (bioSection) (bioSection as HTMLElement).style.display = '';
+    if (bottomCta) (bottomCta as HTMLElement).style.display = '';
+    if (contactBtn) (contactBtn as HTMLElement).style.display = '';
+    if (aboutBtn) (aboutBtn as HTMLElement).style.display = '';
+    gsap.set([stageView, heroImageDiv, gridFrameDiv, bioSection, bottomCta, contactBtn, aboutBtn], { opacity: 0, y: 50 });
+
+    // Timeline for flowing animation
+    const tl = gsap.timeline({
+      onComplete: () => { isToggleAnimating = false; }
+    });
+
+    // Lab view eases out
+    tl.to(labView, {
+      opacity: 0,
+      y: -30,
+      duration: 0.4,
+      ease: 'power2.out',
+      onComplete: () => {
+        labView?.classList.add('hidden');
+      }
+    }, 0);
+
+    // Background transitions
+    tl.to(pageContainer, {
+      background: '#101010',
+      duration: 0.6,
+      ease: 'power2.out',
+    }, 0.1);
+
+    // Dot color transitions
+    tl.to(dotGridEl, {
+      color: 'rgba(255, 255, 255, 0.45)',
+      duration: 0.6,
+      ease: 'power2.out',
+    }, 0.1);
+
+    // Dot grid fades in
+    tl.to(dotGridEl, {
+      opacity: 1,
+      duration: 0.5,
+      ease: 'power2.out',
+    }, 0.2);
+
+    // Stage elements ease in (watermark stays visible)
+    tl.to([stageView, heroImageDiv, gridFrameDiv, bioSection, bottomCta, contactBtn, aboutBtn], {
+      opacity: 1,
+      y: 0,
+      duration: 0.5,
+      ease: 'power2.out',
+      stagger: 0.02,
+    }, 0.3);
+
+    stageTab?.classList.add('nav-tab-active');
+    labTab?.classList.remove('nav-tab-active');
+
+    // Show stage-specific elements
+    if (bottomCta) (bottomCta as HTMLElement).style.display = '';
+    if (contactBtn) (contactBtn as HTMLElement).style.display = '';
+    if (aboutBtn) (aboutBtn as HTMLElement).style.display = '';
+  }
+
+  labTab?.addEventListener('click', showLab);
+  stageTab?.addEventListener('click', showStage);
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // MAGNETIC CAROUSEL - The dock SPINS, active slot is fixed position
+  // Items physically move through positions with magnetic snap/release physics
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  const projectButtons = document.querySelectorAll('[data-project]');
+  const previewIcon = document.getElementById('preview-icon');
+  const projectPlatform = document.getElementById('project-platform');
+  const dockContainer = document.querySelector('.projects-dock-scroll');
+  const heroVideoEl = document.getElementById('hero-video') as HTMLVideoElement;
+  const heroImageEl = document.getElementById('hero-image') as HTMLImageElement;
+
+  // Get hero assets from window (passed from Astro)
+  const heroAssets = (window as any).heroAssets || {};
+
+  let currentOffset = 0; // Which item index is in the active slot
+  let rotationInterval: ReturnType<typeof setInterval> | null = null;
+  let isPaused = false;
+  let isAnimating = false;
+  const rotationDuration = 6000; // 6 seconds between spins
+
+  const projectsArray = Array.from(projectButtons) as HTMLElement[];
+  const itemCount = projectsArray.length;
+  const itemHeight = 68; // Height of each dock item
+  const itemGap = 12; // Gap between items
+  const itemSpacing = itemHeight + itemGap; // Total space per item
+
+  // The "active slot" is the 4th position (index 3) visually
+  const activeSlotIndex = 3;
+
+  // Magnetic easing curves
+  const magneticRelease = "power3.in"; // Resist then break free
+  const magneticSnapIn = "back.out(1.7)"; // Pulled in, overshoots, locks
+
+  function getItemInActiveSlot(): HTMLElement {
+    // The item currently in the active visual slot
+    const visualIndex = (currentOffset + activeSlotIndex) % itemCount;
+    return projectsArray[visualIndex];
+  }
+
+  function updateMarquee(project: Element) {
+    const id = project.getAttribute('data-project');
+    const name = project.getAttribute('data-name');
+    const description = project.getAttribute('data-description');
+    const category = project.getAttribute('data-category');
+    const year = project.getAttribute('data-year');
+
     const marqueeContent = document.getElementById('marquee-content');
     if (marqueeContent) {
       const marqueeText = description || `${name} — ${category} — ${year}`;
@@ -668,32 +949,160 @@ const navItems = [
       `;
     }
 
-    // Mark current project as active with bounce animation
-    currentProject.classList.add('active');
-    currentProject.classList.add('dock-bounce');
-
-    // Remove bounce class after animation completes
-    setTimeout(() => {
-      currentProject.classList.remove('dock-bounce');
-    }, 650);
-
-    // Update the platform icon with fade
-    if (previewIcon && icon) {
-      iconContainer?.classList.add('opacity-0');
-      setTimeout(() => {
-        previewIcon.src = icon;
-        iconContainer?.classList.remove('opacity-0');
-      }, 150);
+    // Update lab CTA link to point to this project
+    const labCta = document.getElementById('lab-cta');
+    if (labCta && id) {
+      labCta.setAttribute('href', `/lab/${id}`);
     }
+  }
+
+  function updatePlatformIcon(icon: string) {
+    if (!previewIcon || !icon) return;
+
+    gsap.to(projectPlatform, {
+      opacity: 0,
+      scale: 0.95,
+      duration: 0.15,
+      ease: "power2.in",
+      onComplete: () => {
+        previewIcon.src = icon;
+        gsap.to(projectPlatform, {
+          opacity: 1,
+          scale: 1,
+          duration: 0.3,
+          ease: magneticSnapIn
+        });
+      }
+    });
+  }
+
+  function updateHeroMedia(projectId: string) {
+    const asset = heroAssets[projectId];
+    if (!asset) return;
+
+    if (asset.type === 'video') {
+      // Show video, hide image
+      heroImageEl.classList.add('hidden');
+      heroVideoEl.classList.remove('hidden');
+      heroVideoEl.src = asset.url;
+      heroVideoEl.play();
+    } else {
+      // Show image, hide video
+      heroVideoEl.classList.add('hidden');
+      heroVideoEl.pause();
+      heroImageEl.classList.remove('hidden');
+      heroImageEl.src = asset.url;
+    }
+  }
+
+  function positionItems(animate = true) {
+    // First pass: determine states
+    const itemStates = projectsArray.map((item, index) => {
+      let visualPosition = index - currentOffset;
+      while (visualPosition < 0) visualPosition += itemCount;
+      while (visualPosition >= itemCount) visualPosition -= itemCount;
+
+      const yPos = visualPosition * itemSpacing;
+      const isActive = visualPosition === activeSlotIndex;
+      const wasActive = item.classList.contains('active');
+
+      return { item, yPos, isActive, wasActive };
+    });
+
+    const incomingActive = itemStates.find(s => !s.wasActive && s.isActive);
+
+    if (animate) {
+      // ═══ ALL ITEMS: Move Y position together with same easing ═══
+      itemStates.forEach(({ item, yPos }) => {
+        gsap.to(item, {
+          y: yPos,
+          duration: 0.45,
+          ease: "power2.inOut", // Smooth, synchronized movement
+        });
+      });
+
+      // ═══ SCALE: Magnetic physics applied separately ═══
+      itemStates.forEach(({ item, isActive, wasActive }) => {
+        if (wasActive && !isActive) {
+          // MAGNETIC RELEASE: resist then break free
+          item.classList.remove('active');
+          gsap.to(item, {
+            scale: 1,
+            duration: 0.5,
+            ease: magneticRelease,
+          });
+        } else if (!wasActive && isActive) {
+          // MAGNETIC SNAP-IN: pull in with overshoot
+          item.classList.add('active');
+          gsap.to(item, {
+            scale: 1.3,
+            duration: 0.5,
+            ease: magneticSnapIn,
+          });
+
+          // Glow pulse on lock
+          gsap.fromTo(item,
+            { boxShadow: "0 0 0px rgba(255,255,255,0)" },
+            {
+              boxShadow: "0 0 40px rgba(255,255,255,0.4)",
+              duration: 0.25,
+              ease: "power2.out",
+              yoyo: true,
+              repeat: 1,
+              delay: 0.2, // Pulse when it "locks" in
+            }
+          );
+        }
+      });
+
+      // Update content
+      if (incomingActive) {
+        const icon = incomingActive.item.getAttribute('data-icon') || '';
+        const projectId = incomingActive.item.getAttribute('data-project') || '';
+        updateMarquee(incomingActive.item);
+        updatePlatformIcon(icon);
+        updateHeroMedia(projectId);
+      }
+
+    } else {
+      // Immediate positioning
+      itemStates.forEach(({ item, yPos, isActive }) => {
+        gsap.set(item, { y: yPos, scale: isActive ? 1.3 : 1 });
+
+        if (isActive) {
+          item.classList.add('active');
+          const icon = item.getAttribute('data-icon') || '';
+          const projectId = item.getAttribute('data-project') || '';
+          updateMarquee(item);
+          if (previewIcon && icon) previewIcon.src = icon;
+          updateHeroMedia(projectId);
+        } else {
+          item.classList.remove('active');
+        }
+      });
+    }
+  }
+
+  function spinCarousel(direction: number = 1) {
+    if (isAnimating) return;
+    isAnimating = true;
+
+    // Advance the offset (negative = items move up, next item enters from bottom)
+    currentOffset = (currentOffset + direction + itemCount) % itemCount;
+
+    positionItems(true);
+
+    setTimeout(() => {
+      isAnimating = false;
+    }, 550);
   }
 
   function startRotation() {
     if (rotationInterval) clearInterval(rotationInterval);
-    
+
     rotationInterval = setInterval(() => {
-      if (!isPaused) {
-        currentProjectIndex = (currentProjectIndex + 1) % projectsArray.length;
-        showProject(currentProjectIndex);
+      if (!isPaused && !isAnimating) {
+        spinCarousel(1);
       }
     }, rotationDuration);
   }
@@ -706,21 +1115,8 @@ const navItems = [
     isPaused = false;
   }
 
-  // Manual project selection on hover/click
+  // Manual project selection - spin to that project
   projectButtons.forEach((button, index) => {
-    button.addEventListener('mouseenter', () => {
-      pauseRotation();
-      currentProjectIndex = index;
-      showProject(index);
-    });
-
-    button.addEventListener('mouseleave', () => {
-      // Resume rotation after a delay
-      setTimeout(() => {
-        resumeRotation();
-      }, 1000);
-    });
-
     button.addEventListener('click', () => {
       const href = button.getAttribute('data-href');
       if (href && href !== '#') {
@@ -729,21 +1125,67 @@ const navItems = [
     });
   });
 
-  // Pause rotation when hovering over icon container
-  iconContainer?.addEventListener('mouseenter', () => {
-    pauseRotation();
+  // Pause on dock hover
+  dockContainer?.addEventListener('mouseenter', pauseRotation);
+  dockContainer?.addEventListener('mouseleave', () => {
+    setTimeout(resumeRotation, 1000);
   });
 
-  iconContainer?.addEventListener('mouseleave', () => {
-    resumeRotation();
-  });
+  // Pause on platform hover
+  projectPlatform?.addEventListener('mouseenter', pauseRotation);
+  projectPlatform?.addEventListener('mouseleave', resumeRotation);
 
-  // Initialize: Show first project and start rotation
-  showProject(0);
+  // Initialize - position all items immediately, then start spinning
+  positionItems(false);
   startRotation();
 
-  // Clean up on page unload
+  // Cleanup
   window.addEventListener('beforeunload', () => {
     if (rotationInterval) clearInterval(rotationInterval);
   });
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // GRID-ALIGNED FRAME - Snaps to 32px dot grid
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  const gridFrame = document.getElementById('grid-frame');
+  const heroMediaContainer = document.getElementById('hero-media');
+  const snapGrid = 8; // 8px snap grid for precise centering
+  const dotGrid = 32; // Visual dots are 32px apart
+
+  function alignToGrid() {
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+
+    // Frame dimensions (multiples of 8)
+    const frameWidth = 896; // 112 * 8
+    const frameHeight = 544; // 68 * 8
+
+    // True center position for the frame's top-left corner
+    const idealLeft = (vw - frameWidth) / 2;
+    const idealTop = (vh - frameHeight) / 2;
+
+    // Snap to 8px grid for precise centering
+    const left = Math.round(idealLeft / snapGrid) * snapGrid;
+    const top = Math.round(idealTop / snapGrid) * snapGrid;
+
+    // Apply to frame
+    if (gridFrame) {
+      gridFrame.style.width = `${frameWidth}px`;
+      gridFrame.style.height = `${frameHeight}px`;
+      gridFrame.style.left = `${left}px`;
+      gridFrame.style.top = `${top}px`;
+    }
+
+    // Apply same position to hero media
+    if (heroMediaContainer) {
+      heroMediaContainer.style.width = `${frameWidth}px`;
+      heroMediaContainer.style.height = `${frameHeight}px`;
+      heroMediaContainer.style.left = `${left}px`;
+      heroMediaContainer.style.top = `${top}px`;
+    }
+  }
+
+  alignToGrid();
+  window.addEventListener('resize', alignToGrid);
 </script>
