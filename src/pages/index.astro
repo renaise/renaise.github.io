@@ -54,7 +54,7 @@ const navItems = [
 ---
 
 <Base title="RENAISE (A)">
-  <div id="page-container" class="relative min-h-screen bg-[#101010] overflow-hidden" style="transition: background 0.3s ease;">
+  <div id="page-container" class="relative min-h-screen bg-[#111111] overflow-hidden" style="transition: background 0.3s ease;">
 
     <!-- Dot grid background (32px visual grid) -->
     <div class="dot-grid fixed inset-0 z-0 pointer-events-none" aria-hidden="true">
@@ -776,7 +776,7 @@ const navItems = [
 
     // Show lab view immediately but transparent
     labView?.classList.remove('hidden');
-    gsap.set(labView, { opacity: 0, x: 50 });
+    gsap.set(labView, { opacity: 0, y: 50 });
 
     // Timeline for flowing animation
     const tl = gsap.timeline({
@@ -787,7 +787,7 @@ const navItems = [
     // Stage elements ease out (watermark stays visible)
     tl.to([stageView, heroImageDiv, gridFrameDiv, bioSection, bottomCta, contactBtn, aboutBtn], {
       opacity: 0,
-      x: -50,
+      y: -30,
       duration: 0.4,
       ease: 'power2.out',
       stagger: 0.02,
@@ -829,7 +829,7 @@ const navItems = [
     // Lab view eases in
     tl.to(labView, {
       opacity: 1,
-      x: 0,
+      y: 0,
       duration: 0.5,
       ease: 'power2.out',
     }, 0.3);
@@ -850,7 +850,7 @@ const navItems = [
     if (bottomCta) (bottomCta as HTMLElement).style.display = '';
     if (contactBtn) (contactBtn as HTMLElement).style.display = '';
     if (aboutBtn) (aboutBtn as HTMLElement).style.display = '';
-    gsap.set([stageView, heroImageDiv, gridFrameDiv, bioSection, bottomCta, contactBtn, aboutBtn], { opacity: 0, x: 50 });
+    gsap.set([stageView, heroImageDiv, gridFrameDiv, bioSection, bottomCta, contactBtn, aboutBtn], { opacity: 0, y: 50 });
 
     // Timeline for flowing animation
     const tl = gsap.timeline({
@@ -860,7 +860,7 @@ const navItems = [
     // Lab view eases out
     tl.to(labView, {
       opacity: 0,
-      x: -50,
+      y: -30,
       duration: 0.4,
       ease: 'power2.out',
       onComplete: () => {
@@ -870,7 +870,7 @@ const navItems = [
 
     // Background transitions
     tl.to(pageContainer, {
-      background: '#101010',
+      background: '#111111',
       duration: 0.6,
       ease: 'power2.out',
     }, 0.1);
@@ -902,7 +902,7 @@ const navItems = [
     // Stage elements ease in (watermark stays visible)
     tl.to([stageView, heroImageDiv, gridFrameDiv, bioSection, bottomCta, contactBtn, aboutBtn], {
       opacity: 1,
-      x: 0,
+      y: 0,
       duration: 0.5,
       ease: 'power2.out',
       stagger: 0.02,
