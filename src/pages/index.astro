@@ -5,7 +5,7 @@ import ProfilesSidebar from '../components/ProfilesSidebar.astro';
 import { projectsExpanded } from '../data/projects-expanded';
 
 // Only show these 6 projects
-const allowedProjects = ['soot', 'aputure', 'flora', 'osmosis', 'lighthouse', 'lantern'];
+const allowedProjects = ['soot', 'aputure', 'flora', 'osmosis', 'lighthouse', 'biota'];
 
 // Map expanded projects to sidebar format (filtered)
 const projects = projectsExpanded
@@ -56,10 +56,6 @@ const navItems = [
       </svg>
     </div>
 
-    <!-- Hero Background Image - mountain landscape (add /assets/hero-bg.jpg) -->
-    <div class="hero-bg fixed inset-0 z-[2] pointer-events-none flex items-center justify-center overflow-hidden">
-      <div class="hero-image w-[70%] max-w-[950px] aspect-[16/10] bg-cover bg-center rounded-sm" style="background-image: url('/assets/hero-bg.jpg');"></div>
-    </div>
 
     <!-- RENAISE Watermark - Figma: 1526px width, centered with -21px offset -->
     <div class="fixed bottom-0 left-1/2 z-[1] pointer-events-none select-none" style="transform: translateX(calc(-50% - 21px));">
@@ -70,8 +66,8 @@ const navItems = [
       />
     </div>
 
-    <!-- Top Left: LAB + STAGE buttons - Figma: 196×55, 2% white, 12px radius -->
-    <div class="fixed top-4 left-4 z-20 flex items-center justify-center gap-1 nav-bar w-[196px] h-[55px] rounded-[12px] bg-white/[0.02]">
+    <!-- Top Left: LAB + STAGE buttons -->
+    <div class="fixed top-4 left-4 z-20 flex items-center gap-1 nav-bar h-[43px] rounded-[10px] bg-white/[0.02]">
       <a href="/lab" class="nav-tab flashlight-tab px-5 py-2.5">
         <span class="tab-bg"></span>
         <span class="tab-glow"></span>
@@ -84,9 +80,14 @@ const navItems = [
       </a>
     </div>
 
-    <!-- Top Center: Bio text -->
-    <div class="bio-section fixed top-4 left-1/2 -translate-x-1/2 z-20">
+    <!-- Top Center-Right: Bio text -->
+    <div class="bio-section fixed top-4 right-[80px] z-20 max-w-[500px]">
       <p class="bio-text">RENAISE IS A VISUAL PRODUCER + PROTOTYPER WITH 8 YEARS OF EXPERIENCE DESIGNING IDENTITIES AND INTUITIVE PRODUCTS FOR BRANDS IN CONSUMER TECH AND MEDIA. STUDIO PARTNER AT <a href="https://studioartifice.com" target="_blank" rel="noopener noreferrer" class="artifice-link"><span class="italic">STUDIO ARTIFICE</span></a><br /><img src="/assets/artifice-a.png" alt="" class="artifice-mark" /> + CO-DIRECTOR AT <a href="https://artificenyc.com" target="_blank" rel="noopener noreferrer" class="artifice-link"><span class="italic">ARTIFICE NYC</span> <img src="/assets/artifice-mark.png" alt="" class="artifice-mark" /></a></p>
+    </div>
+
+    <!-- Top Right: 3D Sphere -->
+    <div class="fixed top-4 right-4 z-20 w-[50px] h-[50px]">
+      <img src="/assets/renaise_ellipse.png" alt="" class="w-full h-full object-contain opacity-60 hover:opacity-80 transition-opacity" />
     </div>
 
     <!-- Projects Sidebar - Left -->
@@ -96,11 +97,27 @@ const navItems = [
     <ProfilesSidebar profiles={profiles} />
 
     <!-- Center Content Area -->
-    <main class="relative z-10 min-h-screen flex flex-col items-center justify-center">
+    <main class="relative z-10 min-h-screen flex flex-col items-center justify-center px-[140px]">
 
-      <!-- Single Platform - Rotating Project Icon -->
-      <div id="project-platform" class="w-56 h-56 rounded-[32px] bg-black/80 border border-white/10 flex items-center justify-center shadow-2xl transition-all duration-500">
-        <img id="preview-icon" src="/assets/projects/biota.png" alt="" class="w-36 h-36 object-contain transition-all duration-300" />
+      <!-- Large Preview Frame with corner markers -->
+      <div id="project-platform" class="preview-frame-wrapper relative w-full max-w-[900px] aspect-[16/10]">
+        <!-- Corner dots -->
+        <div class="corner-dot corner-tl"></div>
+        <div class="corner-dot corner-tr"></div>
+        <div class="corner-dot corner-bl"></div>
+        <div class="corner-dot corner-br"></div>
+        <!-- Frame border lines -->
+        <div class="frame-line frame-top"></div>
+        <div class="frame-line frame-bottom"></div>
+        <div class="frame-line frame-left"></div>
+        <div class="frame-line frame-right"></div>
+
+        <!-- Content: Project Icon centered -->
+        <div class="w-full h-full flex items-center justify-center">
+          <div class="icon-container w-48 h-48 rounded-[32px] bg-black/90 border border-white/10 flex items-center justify-center transition-all duration-500">
+            <img id="preview-icon" src="/assets/projects/soot.png" alt="" class="w-32 h-32 object-contain transition-all duration-300" />
+          </div>
+        </div>
       </div>
 
     </main>
@@ -157,22 +174,21 @@ const navItems = [
     opacity: 1;
   }
 
-  /* Bio section typography - centered */
+  /* Bio section typography - right aligned */
   .bio-section {
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
   }
 
   .bio-text {
     font-family: 'ABC Diatype Mono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
-    font-weight: 300; /* Light */
-    font-size: 13px;
-    line-height: 1.35;
-    letter-spacing: -0.26px;
+    font-weight: 300;
+    font-size: 12px;
+    line-height: 1.4;
+    letter-spacing: 0.02em;
     color: rgba(255, 255, 255, 0.6);
-    text-align: center;
+    text-align: right;
     text-transform: uppercase;
-    max-width: 680px;
   }
 
   .bio-text .italic {
@@ -211,10 +227,6 @@ const navItems = [
     opacity: 1;
   }
 
-  .hero-image {
-    opacity: 0.5;
-    filter: grayscale(30%);
-  }
 
   .glass-panel {
     background: rgba(255, 255, 255, 0.04);
@@ -615,7 +627,7 @@ const navItems = [
   // Auto-rotating project showcase
   const projectButtons = document.querySelectorAll('[data-project]');
   const previewIcon = document.getElementById('preview-icon');
-  const projectPlatform = document.getElementById('project-platform');
+  const iconContainer = document.querySelector('.icon-container');
 
   let currentProjectIndex = 0;
   let rotationInterval = null;
@@ -667,10 +679,10 @@ const navItems = [
 
     // Update the platform icon with fade
     if (previewIcon && icon) {
-      projectPlatform?.classList.add('opacity-0');
+      iconContainer?.classList.add('opacity-0');
       setTimeout(() => {
         previewIcon.src = icon;
-        projectPlatform?.classList.remove('opacity-0');
+        iconContainer?.classList.remove('opacity-0');
       }, 150);
     }
   }
@@ -717,12 +729,12 @@ const navItems = [
     });
   });
 
-  // Pause rotation when hovering over platform
-  projectPlatform?.addEventListener('mouseenter', () => {
+  // Pause rotation when hovering over icon container
+  iconContainer?.addEventListener('mouseenter', () => {
     pauseRotation();
   });
 
-  projectPlatform?.addEventListener('mouseleave', () => {
+  iconContainer?.addEventListener('mouseleave', () => {
     resumeRotation();
   });
 
