@@ -106,7 +106,7 @@ export const projectsExpanded: ProjectExpanded[] = [
       category: 'Gen AI',
     },
     lab: {
-      title: 'THE TRUST PROBLEM IN GENERATIVE AI',
+      title: 'SEED EVERYTHING, COMMERCIAL TEMPLATES, SOCIAL NODE GRAPHING',
       subtitle: 'Designing for AI skepticism',
       context: 'Generative AI tools were exploding in capability but stalling in adoption among creative professionals. The gap wasn\'t awareness or access—it was trust. Creatives were experimenting but not committing. Tools felt like black boxes that might embarrass them.',
       challenge: 'Why do creative professionals distrust AI tools—and how do you design around that? The standard playbook (more features, better outputs) wasn\'t working. Something structural was broken.',
@@ -136,7 +136,7 @@ export const projectsExpanded: ProjectExpanded[] = [
       implications: 'As AI becomes more capable, the UX challenge shifts from "can it do this?" to "do I trust it enough to use it?" Designing for trust—not just usability—becomes the differentiator.',
       tags: ['AI/UX', 'Trust Design', 'Research', 'Creative Tools'],
     },
-    serviceSuite: ['Strategy', 'Identity', 'Design'],
+    serviceSuite: ['Design'],
     priority: 6,
   },
   {
@@ -204,7 +204,7 @@ export const projectsExpanded: ProjectExpanded[] = [
       category: 'eCommerce',
     },
     lab: {
-      title: 'COMPOSE, LOCALIZE, SCALE GLOBAL INDUSTRY LIGHTING',
+      title: 'GLOBAL SITE FOR INDUSTRIAL CINEMATIC LIGHTING',
       subtitle: 'Building a design system for global scale',
       context: 'Aputure operates across 12 markets with different languages, payment systems, regulations, and user expectations. The existing site was designed for the US market and "adapted" elsewhere—resulting in broken layouts, untranslated strings, and frustrated local teams.',
       challenge: 'How do you create a component library that works across regions, languages, and product lines without becoming either too rigid or too fragmented? The standard approach—design for primary market, localize later—was the source of the problem.',
@@ -449,7 +449,7 @@ export const projectsExpanded: ProjectExpanded[] = [
       category: 'RL Infrastructure',
     },
     lab: {
-      title: 'MAKING THE INVISIBLE LEGIBLE',
+      title: 'IMAGINING THE MEMORY LAYER THROUGH MIST',
       subtitle: 'Designing interfaces for machine learning',
       context: 'ML infrastructure is a black box. Models train over hours or days; engineers monitor dashboards full of metrics they half-understand; failures are discovered long after they\'ve compounded. The tools assume expertise that even experts don\'t consistently have.',
       challenge: 'How do you design for processes that humans can\'t see or fully understand? Traditional interface design makes the invisible visible. ML challenges that—some things can\'t be made visible without being misleading.',
@@ -479,7 +479,7 @@ export const projectsExpanded: ProjectExpanded[] = [
       implications: 'As systems become more complex (AI, infrastructure, biology), interface design needs to evolve from "show everything" to "show what\'s actionable." The next generation of tools will be designed for bounded understanding.',
       tags: ['ML/AI', 'Data Visualization', 'Complexity', 'Infrastructure'],
     },
-    serviceSuite: ['Strategy', 'Identity', 'Design'],
+    serviceSuite: ['Strategy', 'Brand', 'Design'],
     priority: 4,
   },
   {
