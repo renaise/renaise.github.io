@@ -910,7 +910,7 @@ const navItems = [
 
     // Show lab view immediately but transparent
     labView?.classList.remove('hidden');
-    gsap.set(labView, { opacity: 0, x: 50 });
+    gsap.set(labView, { opacity: 0, x: -50 });
 
     // Timeline for flowing animation
     const tl = gsap.timeline({
@@ -918,10 +918,10 @@ const navItems = [
     });
 
 
-    // Stage elements ease out (watermark stays visible)
+    // Stage elements ease out to the right (matches toggle direction)
     tl.to([stageView, heroImageDiv, gridFrameDiv, bioSection, bottomCta, contactBtn, aboutBtn], {
       opacity: 0,
-      x: -50,
+      x: 50,
       duration: 0.4,
       ease: 'power2.out',
       stagger: 0.02,
