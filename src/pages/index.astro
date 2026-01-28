@@ -248,11 +248,69 @@ const navItems = [
 
     <!-- Bottom Right: ABOUT button - aligned under Profiles dock -->
     <div class="fixed bottom-4 right-4 z-20 nav-bar w-[116px]">
-      <a href="#about" class="nav-tab flashlight-tab w-full flex items-center justify-center py-2.5">
+      <button id="about-trigger" class="nav-tab flashlight-tab w-full flex items-center justify-center py-2.5">
         <span class="tab-bg"></span>
         <span class="tab-glow"></span>
         <span class="tab-content">ABOUT</span>
-      </a>
+      </button>
+    </div>
+
+    <!-- About Modal -->
+    <div id="about-modal" class="fixed inset-0 z-50 hidden">
+      <!-- Backdrop -->
+      <div class="about-backdrop absolute inset-0 bg-[#111111]"></div>
+
+      <!-- Content -->
+      <div class="about-content relative z-10 flex flex-col items-center justify-center min-h-screen px-6 py-12">
+        <!-- Header -->
+        <div class="absolute top-6 left-0 right-0 text-center">
+          <span class="text-[13px] tracking-[0.05em] text-white/50 uppercase">About</span>
+        </div>
+
+        <!-- Video -->
+        <div class="about-video-container w-full max-w-[480px] aspect-[4/5] rounded-2xl overflow-hidden mb-8">
+          <video
+            class="w-full h-full object-cover"
+            autoplay
+            loop
+            muted
+            playsinline
+          >
+            <source src="/assets/about-video.mp4" type="video/mp4" />
+          </video>
+        </div>
+
+        <!-- Bio Info -->
+        <div class="text-center space-y-2">
+          <h2 class="text-[28px] font-light tracking-wide text-white uppercase">Renaise Kim</h2>
+          <p class="text-[13px] tracking-[0.08em] text-white/60 uppercase">Visual Producer + Prototyper</p>
+          <p class="text-[13px] tracking-[0.08em] text-white/40 uppercase">8 years experience. Based in NYC.</p>
+          <p class="text-[13px] tracking-[0.08em] text-white/40 uppercase">Studio Partner at <a href="https://studioartifice.com" target="_blank" rel="noopener" class="hover:text-white/70 transition-colors">Studio Artifice</a></p>
+        </div>
+
+        <!-- Profile Links -->
+        <div class="flex items-center gap-6 mt-8">
+          <a href="https://www.linkedin.com/in/renaise-kim-408641123/" target="_blank" rel="noopener" class="about-profile-link">
+            <img src="/assets/socials/linkedin.png" alt="LinkedIn" class="w-6 h-6 opacity-50 hover:opacity-100 transition-opacity" />
+          </a>
+          <a href="https://x.com/reallynaise" target="_blank" rel="noopener" class="about-profile-link">
+            <img src="/assets/socials/x.png" alt="X" class="w-6 h-6 opacity-50 hover:opacity-100 transition-opacity" />
+          </a>
+          <a href="https://www.cosmos.so/renaise" target="_blank" rel="noopener" class="about-profile-link">
+            <img src="/assets/socials/cosmos.png" alt="Cosmos" class="w-6 h-6 opacity-50 hover:opacity-100 transition-opacity" />
+          </a>
+          <a href="https://studioartifice.com" target="_blank" rel="noopener" class="about-profile-link">
+            <img src="/assets/socials/artifice.png" alt="Studio Artifice" class="w-6 h-6 opacity-50 hover:opacity-100 transition-opacity" />
+          </a>
+        </div>
+
+        <!-- Close Button -->
+        <button id="about-close" class="absolute bottom-6 left-1/2 -translate-x-1/2 nav-tab flashlight-tab px-8 py-2.5">
+          <span class="tab-bg"></span>
+          <span class="tab-glow"></span>
+          <span class="tab-content text-[13px] tracking-[0.05em] uppercase">Close</span>
+        </button>
+      </div>
     </div>
 
   </div>
@@ -723,6 +781,31 @@ const navItems = [
     display: none;
   }
 
+  /* ——— About Modal ——— */
+  #about-modal {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+
+  #about-modal.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  #about-modal.active .about-content {
+    transform: translateY(0);
+  }
+
+  .about-content {
+    transform: translateY(20px);
+    transition: transform 0.4s ease;
+  }
+
+  .about-video-container {
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  }
+
 </style>
 
 <script>
@@ -745,6 +828,57 @@ const navItems = [
     tab.addEventListener('mouseleave', () => {
       tab.style.setProperty('--glow-opacity', '0');
     });
+  });
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // ABOUT MODAL
+  // ═══════════════════════════════════════════════════════════════════════════
+  const aboutModal = document.getElementById('about-modal');
+  const aboutTrigger = document.getElementById('about-trigger');
+  const aboutClose = document.getElementById('about-close');
+  const aboutVideo = aboutModal?.querySelector('video');
+
+  function openAbout() {
+    if (!aboutModal) return;
+    aboutModal.classList.remove('hidden');
+    // Small delay for CSS transition
+    requestAnimationFrame(() => {
+      aboutModal.classList.add('active');
+    });
+    // Play video
+    aboutVideo?.play();
+    // Prevent body scroll
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeAbout() {
+    if (!aboutModal) return;
+    aboutModal.classList.remove('active');
+    // Wait for transition then hide
+    setTimeout(() => {
+      aboutModal.classList.add('hidden');
+    }, 400);
+    // Pause video
+    aboutVideo?.pause();
+    // Restore body scroll
+    document.body.style.overflow = '';
+  }
+
+  aboutTrigger?.addEventListener('click', openAbout);
+  aboutClose?.addEventListener('click', closeAbout);
+
+  // Close on backdrop click
+  aboutModal?.addEventListener('click', (e) => {
+    if (e.target === aboutModal || (e.target as Element)?.classList.contains('about-backdrop')) {
+      closeAbout();
+    }
+  });
+
+  // Close on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && aboutModal?.classList.contains('active')) {
+      closeAbout();
+    }
   });
 
   // ═══════════════════════════════════════════════════════════════════════════
