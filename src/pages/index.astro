@@ -1,0 +1,738 @@
+---
+import Base from '../layouts/Base.astro';
+import ProjectsSidebar from '../components/ProjectsSidebar.astro';
+import ProfilesSidebar from '../components/ProfilesSidebar.astro';
+import { projectsExpanded } from '../data/projects-expanded';
+
+// Only show these 6 projects
+const allowedProjects = ['soot', 'aputure', 'flora', 'osmosis', 'lighthouse', 'lantern'];
+
+// Map expanded projects to sidebar format (filtered)
+const projects = projectsExpanded
+  .filter(p => allowedProjects.includes(p.id))
+  .sort((a, b) => allowedProjects.indexOf(a.id) - allowedProjects.indexOf(b.id))
+  .map(p => ({
+  id: p.id,
+  name: p.name,
+  icon: p.icon,
+  href: p.stage.href,
+  description: p.stage.description,
+  tags: p.stage.tags,
+  serviceSuite: p.serviceSuite,
+  category: p.stage.category,
+  year: p.stage.year,
+  role: p.stage.role,
+  outcome: p.stage.outcome,
+  leadVertical: p.serviceSuite[0] || 'Design',
+  hasLabel: p.id === 'nove',
+}));
+
+// Social profiles - right sidebar (order matches screenshot)
+const profiles = [
+  { name: 'LinkedIn', icon: '/assets/socials/linkedin.png', href: 'https://www.linkedin.com/in/renaise-kim-408641123/' },
+  { name: 'Artifice', icon: '/assets/socials/artifice.png', href: 'https://studioartifice.com' },
+  { name: 'X', icon: '/assets/socials/x.png', href: 'https://x.com/reallynaise' },
+  { name: 'Cosmos', icon: '/assets/socials/cosmos.png', href: 'https://www.cosmos.so/renaise' },
+  { name: 'Toilet', icon: '/assets/socials/toilet.png', href: '#' },
+];
+
+// Top navigation items
+const navItems = [
+  { label: 'INDEX', href: '#', icon: true },
+  { label: 'RESEARCH', href: '#' },
+];
+---
+
+<Base title="Lab of Renaise">
+  <div class="relative min-h-screen bg-[#101010] overflow-hidden">
+
+    <!-- Dot grid background -->
+    <div class="dot-grid fixed inset-0 z-0 pointer-events-none" aria-hidden="true">
+      <svg width="100%" height="100%">
+        <pattern id="dots" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+          <circle cx="16" cy="16" r="1" fill="currentColor" />
+        </pattern>
+        <rect width="100%" height="100%" fill="url(#dots)" />
+      </svg>
+    </div>
+
+    <!-- Hero Background Image - mountain landscape (add /assets/hero-bg.jpg) -->
+    <div class="hero-bg fixed inset-0 z-[2] pointer-events-none flex items-center justify-center overflow-hidden">
+      <div class="hero-image w-[70%] max-w-[950px] aspect-[16/10] bg-cover bg-center rounded-sm" style="background-image: url('/assets/hero-bg.jpg');"></div>
+    </div>
+
+    <!-- RENAISE Watermark - Figma: 1526px width, centered with -21px offset -->
+    <div class="fixed bottom-0 left-1/2 z-[1] pointer-events-none select-none" style="transform: translateX(calc(-50% - 21px));">
+      <img
+        src="/assets/renaise-watermark.png"
+        alt=""
+        class="watermark w-[1526px] max-w-[95vw] h-auto"
+      />
+    </div>
+
+    <!-- Top Left: LAB + STAGE buttons - Figma: 196×55, 2% white, 12px radius -->
+    <div class="fixed top-4 left-4 z-20 flex items-center justify-center gap-1 nav-bar w-[196px] h-[55px] rounded-[12px] bg-white/[0.02]">
+      <a href="/lab" class="nav-tab flashlight-tab px-5 py-2.5">
+        <span class="tab-bg"></span>
+        <span class="tab-glow"></span>
+        <span class="tab-content">LAB</span>
+      </a>
+      <a href="/stage" class="nav-tab flashlight-tab nav-tab-active px-5 py-2.5">
+        <span class="tab-bg"></span>
+        <span class="tab-glow"></span>
+        <span class="tab-content">STAGE</span>
+      </a>
+    </div>
+
+    <!-- Top Center: Bio text -->
+    <div class="bio-section fixed top-4 left-1/2 -translate-x-1/2 z-20">
+      <p class="bio-text">RENAISE IS A VISUAL PRODUCER + PROTOTYPER WITH 8 YEARS OF EXPERIENCE DESIGNING IDENTITIES AND INTUITIVE PRODUCTS FOR BRANDS IN CONSUMER TECH AND MEDIA. STUDIO PARTNER AT <a href="https://studioartifice.com" target="_blank" rel="noopener noreferrer" class="artifice-link"><span class="italic">STUDIO ARTIFICE</span></a><br /><img src="/assets/artifice-a.png" alt="" class="artifice-mark" /> + CO-DIRECTOR AT <a href="https://artificenyc.com" target="_blank" rel="noopener noreferrer" class="artifice-link"><span class="italic">ARTIFICE NYC</span> <img src="/assets/artifice-mark.png" alt="" class="artifice-mark" /></a></p>
+    </div>
+
+    <!-- Projects Sidebar - Left -->
+    <ProjectsSidebar projects={projects} />
+
+    <!-- Profiles Sidebar - Right -->
+    <ProfilesSidebar profiles={profiles} />
+
+    <!-- Center Content Area -->
+    <main class="relative z-10 min-h-screen flex flex-col items-center justify-center">
+
+      <!-- Single Platform - Rotating Project Icon -->
+      <div id="project-platform" class="w-56 h-56 rounded-[32px] bg-black/80 border border-white/10 flex items-center justify-center shadow-2xl transition-all duration-500">
+        <img id="preview-icon" src="/assets/projects/biota.png" alt="" class="w-36 h-36 object-contain transition-all duration-300" />
+      </div>
+
+    </main>
+
+    <!-- Bottom Left: CONTACT button -->
+    <div class="fixed bottom-4 left-4 z-20 nav-bar">
+      <a href="mailto:hello@renaise.com" class="nav-tab flashlight-tab px-5 py-2.5">
+        <span class="tab-bg"></span>
+        <span class="tab-glow"></span>
+        <span class="tab-content">CONTACT</span>
+      </a>
+    </div>
+
+    <!-- Bottom Center: Navigation Bar with LAB | marquee | STAGE -->
+    <div class="bottom-cta-bar fixed bottom-4 left-1/2 z-20 flex items-center h-[43px] rounded-[12px] overflow-hidden" style="transform: translateX(-50%);">
+      <!-- LAB button (expands to show full text) -->
+      <a href="/lab" class="nav-tab flashlight-tab h-full px-5 flex items-center justify-center text-[12px] uppercase tracking-wider whitespace-nowrap">
+        <span class="tab-bg"></span>
+        <span class="tab-glow"></span>
+        <span class="tab-content">SEE PROCESS IN LAB</span>
+      </a>
+      <!-- Marquee center -->
+      <div class="marquee-pill h-full flex-1 flex items-center px-4 overflow-hidden min-w-[300px]">
+        <div class="marquee-container overflow-hidden flex-1 relative">
+          <span id="marquee-content" class="marquee-content text-[12px] uppercase tracking-wider text-white/50">
+            <!-- Dynamic content set by JS based on active project -->
+          </span>
+        </div>
+      </div>
+      <!-- STAGE button (active) -->
+      <a href="/stage" class="nav-tab flashlight-tab nav-tab-active h-full px-5 flex items-center justify-center text-[12px] uppercase tracking-wider">
+        <span class="tab-bg"></span>
+        <span class="tab-glow"></span>
+        <span class="tab-content">STAGE</span>
+      </a>
+    </div>
+
+    <!-- Bottom Right: ABOUT button -->
+    <div class="fixed bottom-4 right-4 z-20 nav-bar">
+      <a href="#about" class="nav-tab flashlight-tab px-5 py-2.5">
+        <span class="tab-bg"></span>
+        <span class="tab-glow"></span>
+        <span class="tab-content">ABOUT</span>
+      </a>
+    </div>
+
+  </div>
+</Base>
+
+<style>
+  /* ——— Layout & background ——— */
+  .dot-grid {
+    color: rgba(255, 255, 255, 0.45);
+    opacity: 1;
+  }
+
+  /* Bio section typography - centered */
+  .bio-section {
+    display: flex;
+    justify-content: center;
+  }
+
+  .bio-text {
+    font-family: 'ABC Diatype Mono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+    font-weight: 300; /* Light */
+    font-size: 13px;
+    line-height: 1.35;
+    letter-spacing: -0.26px;
+    color: rgba(255, 255, 255, 0.6);
+    text-align: center;
+    text-transform: uppercase;
+    max-width: 680px;
+  }
+
+  .bio-text .italic {
+    font-style: italic;
+  }
+
+  /* Artifice links in bio */
+  .artifice-link {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s ease, opacity 0.2s ease;
+    pointer-events: auto;
+  }
+
+  .artifice-link:hover {
+    color: rgba(255, 255, 255, 1);
+  }
+
+  .artifice-link:hover .artifice-mark {
+    opacity: 1;
+  }
+
+  /* Artifice NYC mark - matches text */
+  .artifice-mark {
+    display: inline-block;
+    height: 14px;
+    width: auto;
+    vertical-align: middle;
+    margin-left: 3px;
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+  }
+
+  .watermark {
+    /* Highly visible */
+    filter: brightness(0) invert(60%);
+    opacity: 0.7;
+  }
+
+  .hero-image {
+    opacity: 0.5;
+    filter: grayscale(30%);
+  }
+
+  .glass-panel {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 20px 40px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Figma sidebar specs: layered backgrounds with blend modes */
+  .profiles-sidebar {
+    background: 
+      linear-gradient(0deg, rgba(94, 94, 94, 0.06) 0%, rgba(94, 94, 94, 0.06) 100%),
+      linear-gradient(0deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.04) 100%);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+  }
+
+  .projects-sidebar {
+    background: 
+      linear-gradient(0deg, rgba(94, 94, 94, 0.06) 0%, rgba(94, 94, 94, 0.06) 100%),
+      linear-gradient(0deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.04) 100%);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+  }
+
+  /* ——— Nav ——— */
+  .nav-bar {
+    font-family: 'Helvetica Now Display', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 400;
+  }
+
+  /* ——— Button System ——— */
+  /* Default: dark fill, muted text */
+  .nav-tab {
+    position: relative;
+    min-width: 88px;
+    height: 43px;
+    font-size: 13px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.6);
+    border-radius: 10px;
+    overflow: hidden;
+    background: rgba(35, 35, 35, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    transition: all 0.25s ease;
+  }
+
+  /* Hover: subtle fill */
+  .nav-tab:hover {
+    color: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  /* Active State - prominent top glow gradient */
+  .nav-tab-active {
+    color: rgba(255, 255, 255, 1);
+    background: 
+      linear-gradient(180deg, 
+        rgba(255, 255, 255, 0.35) 0%, 
+        rgba(255, 255, 255, 0.15) 20%,
+        rgba(255, 255, 255, 0.05) 50%,
+        rgba(40, 40, 40, 0.4) 100%
+      );
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 
+      inset 0 1px 2px rgba(255, 255, 255, 0.3),
+      inset 0 -1px 1px rgba(0, 0, 0, 0.2),
+      0 0 20px rgba(255, 255, 255, 0.1),
+      0 4px 12px rgba(0, 0, 0, 0.3);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+  }
+
+  .nav-tab-active:hover {
+    background: 
+      linear-gradient(180deg, 
+        rgba(255, 255, 255, 0.4) 0%, 
+        rgba(255, 255, 255, 0.18) 20%,
+        rgba(255, 255, 255, 0.08) 50%,
+        rgba(50, 50, 50, 0.4) 100%
+      );
+  }
+
+  .nav-tab-active .tab-bg {
+    background: transparent;
+  }
+
+  /* ——— Bottom CTA Bar - Figma specs ——— */
+  .bottom-cta-bar {
+    background: 
+      linear-gradient(0deg, rgba(94, 94, 94, 0.18) 0%, rgba(94, 94, 94, 0.18) 100%),
+      linear-gradient(0deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.04) 100%);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+  }
+
+  /* ——— Bottom Marquee ——— */
+  .marquee-container {
+    mask-image: linear-gradient(to right, transparent, black 20px, black calc(100% - 20px), transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 20px, black calc(100% - 20px), transparent);
+  }
+
+  .marquee-content {
+    display: inline-flex;
+    white-space: nowrap;
+    animation: marquee-scroll 45s linear infinite;
+  }
+
+  @keyframes marquee-scroll {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  /* ——— Dock (Projects / Profiles) - macOS Dock Style ——— */
+  .dock-item {
+    transition: transform 0.2s cubic-bezier(0.25, 0.1, 0.25, 1), background-color 0.2s, box-shadow 0.2s, border-color 0.2s;
+    transform-origin: center center;
+    will-change: transform;
+  }
+
+  /* Hover: smaller, sharper spotlight */
+  .dock-item:hover {
+    transform: scale(1.15);
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .dock-item:hover img {
+    opacity: 1;
+  }
+
+  /* Neighbors - subtle scale */
+  .dock-item:hover + .dock-item,
+  .dock-item:has(+ .dock-item:hover) {
+    transform: scale(1.05);
+    z-index: 5;
+  }
+
+  /* Sharp spotlight gradient on hover */
+  .dock-item-gradient {
+    background: radial-gradient(
+      circle at 50% 30%,
+      rgba(255, 255, 255, 0.25) 0%,
+      rgba(255, 255, 255, 0.08) 30%,
+      transparent 60%
+    );
+  }
+
+  .dock-item.active .dock-item-gradient {
+    opacity: 1;
+  }
+
+  /* Active state: 2x scale with inner glow */
+  .dock-item.active {
+    transform: scale(2);
+    z-index: 20;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.15) 0%,
+      rgba(255, 255, 255, 0.08) 40%,
+      rgba(0, 0, 0, 0.2) 100%
+    ) !important;
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow:
+      inset 0 1px 2px rgba(255, 255, 255, 0.4),
+      inset 0 -1px 2px rgba(0, 0, 0, 0.3),
+      inset 0 0 20px rgba(255, 255, 255, 0.1),
+      0 8px 32px rgba(0, 0, 0, 0.5),
+      0 0 40px rgba(255, 255, 255, 0.08);
+  }
+
+  .dock-item.active:hover {
+    transform: scale(2.1);
+  }
+
+  .dock-item.active:hover .dock-item-gradient {
+    opacity: 1;
+  }
+
+  /* Smooth transition to active state */
+  .dock-item.dock-bounce {
+    animation: dock-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+
+  @keyframes dock-pop {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(2.2);
+    }
+    100% {
+      transform: scale(2);
+    }
+  }
+
+  /* Hide scrollbar on Projects sidebar (no visible bar) */
+  .projects-dock-scroll,
+  .profiles-dock-scroll {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .projects-dock-scroll::-webkit-scrollbar,
+  .profiles-dock-scroll::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+    background: transparent;
+  }
+
+  .hide-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* ——— Flashlight tabs (mouse-follow glow) ——— */
+  .flashlight-tab {
+    --mouse-x: 50%;
+    --mouse-y: 50%;
+    --glow-opacity: 0;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .tab-bg {
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: inherit;
+    z-index: 0;
+    transition: background 0.2s ease;
+  }
+
+  .flashlight-tab:hover .tab-bg {
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .tab-glow {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+      120px circle at var(--mouse-x) var(--mouse-y),
+      rgba(255, 255, 255, 0.15) 0%,
+      rgba(255, 255, 255, 0.05) 40%,
+      transparent 70%
+    );
+    opacity: var(--glow-opacity);
+    transition: opacity 0.3s ease;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .tab-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ——— Preview frame with corner markers aligned to 32px grid ——— */
+  .preview-frame-wrapper {
+    position: relative;
+  }
+
+  .preview-frame {
+    border-radius: 0;
+  }
+
+  /* Corner dots - larger than background dots to mark frame corners on grid */
+  .corner-dot {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    z-index: 20;
+  }
+
+  /* Position dots at exact corners */
+  .corner-tl { top: -2px; left: -2px; }
+  .corner-tr { top: -2px; right: -2px; }
+  .corner-bl { bottom: -2px; left: -2px; }
+  .corner-br { bottom: -2px; right: -2px; }
+
+  /* Frame border lines - subtle but visible */
+  .frame-line {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.15);
+    z-index: 15;
+  }
+
+  .frame-top {
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+  }
+
+  .frame-bottom {
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+  }
+
+  .frame-left {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 1px;
+  }
+
+  .frame-right {
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 1px;
+  }
+
+  /* ——— Vertical cards (Strategy / Identity / Design / Production) ——— */
+  .vertical-card {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+  }
+
+  .vertical-card:not(.hidden) {
+    animation: fadeInUp 0.4s ease forwards;
+  }
+
+  .vertical-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .vertical-card__label {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 0.5rem;
+  }
+
+  .vertical-card__desc {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.4);
+    margin: 0;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+<script>
+  // Flashlight tabs effect
+  const flashlightTabs = document.querySelectorAll('.flashlight-tab');
+
+  flashlightTabs.forEach(tab => {
+    tab.addEventListener('mousemove', (e) => {
+      const rect = tab.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      tab.style.setProperty('--mouse-x', `${x}px`);
+      tab.style.setProperty('--mouse-y', `${y}px`);
+      tab.style.setProperty('--glow-opacity', '1');
+    });
+
+    tab.addEventListener('mouseleave', () => {
+      tab.style.setProperty('--glow-opacity', '0');
+    });
+  });
+
+  // Auto-rotating project showcase
+  const projectButtons = document.querySelectorAll('[data-project]');
+  const previewIcon = document.getElementById('preview-icon');
+  const projectPlatform = document.getElementById('project-platform');
+
+  let currentProjectIndex = 0;
+  let rotationInterval = null;
+  let isPaused = false;
+  const rotationDuration = 4000; // 4 seconds per project
+
+  // Convert NodeList to Array for easier manipulation
+  const projectsArray = Array.from(projectButtons);
+
+  function showProject(index) {
+    // Reset all buttons - remove active and bounce classes
+    projectButtons.forEach(b => {
+      b.classList.remove('active');
+      b.classList.remove('dock-bounce');
+    });
+
+    // Get current project
+    const currentProject = projectsArray[index];
+    if (!currentProject) return;
+
+    const name = currentProject.getAttribute('data-name');
+    const description = currentProject.getAttribute('data-description');
+    const category = currentProject.getAttribute('data-category');
+    const year = currentProject.getAttribute('data-year');
+    const icon = currentProject.getAttribute('data-icon');
+
+    // Update bottom marquee with project case study metadata
+    const marqueeContent = document.getElementById('marquee-content');
+    if (marqueeContent) {
+      const marqueeText = description || `${name} — ${category} — ${year}`;
+      marqueeContent.innerHTML = `
+        <span>${marqueeText}</span>
+        <span class="mx-6">•</span>
+        <span>${marqueeText}</span>
+        <span class="mx-6">•</span>
+        <span>${marqueeText}</span>
+        <span class="mx-6">•</span>
+      `;
+    }
+
+    // Mark current project as active with bounce animation
+    currentProject.classList.add('active');
+    currentProject.classList.add('dock-bounce');
+
+    // Remove bounce class after animation completes
+    setTimeout(() => {
+      currentProject.classList.remove('dock-bounce');
+    }, 650);
+
+    // Update the platform icon with fade
+    if (previewIcon && icon) {
+      projectPlatform?.classList.add('opacity-0');
+      setTimeout(() => {
+        previewIcon.src = icon;
+        projectPlatform?.classList.remove('opacity-0');
+      }, 150);
+    }
+  }
+
+  function startRotation() {
+    if (rotationInterval) clearInterval(rotationInterval);
+    
+    rotationInterval = setInterval(() => {
+      if (!isPaused) {
+        currentProjectIndex = (currentProjectIndex + 1) % projectsArray.length;
+        showProject(currentProjectIndex);
+      }
+    }, rotationDuration);
+  }
+
+  function pauseRotation() {
+    isPaused = true;
+  }
+
+  function resumeRotation() {
+    isPaused = false;
+  }
+
+  // Manual project selection on hover/click
+  projectButtons.forEach((button, index) => {
+    button.addEventListener('mouseenter', () => {
+      pauseRotation();
+      currentProjectIndex = index;
+      showProject(index);
+    });
+
+    button.addEventListener('mouseleave', () => {
+      // Resume rotation after a delay
+      setTimeout(() => {
+        resumeRotation();
+      }, 1000);
+    });
+
+    button.addEventListener('click', () => {
+      const href = button.getAttribute('data-href');
+      if (href && href !== '#') {
+        window.open(href, '_blank');
+      }
+    });
+  });
+
+  // Pause rotation when hovering over platform
+  projectPlatform?.addEventListener('mouseenter', () => {
+    pauseRotation();
+  });
+
+  projectPlatform?.addEventListener('mouseleave', () => {
+    resumeRotation();
+  });
+
+  // Initialize: Show first project and start rotation
+  showProject(0);
+  startRotation();
+
+  // Clean up on page unload
+  window.addEventListener('beforeunload', () => {
+    if (rotationInterval) clearInterval(rotationInterval);
+  });
+</script>

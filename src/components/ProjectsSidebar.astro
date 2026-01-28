@@ -1,0 +1,59 @@
+---
+interface Project {
+  id: string;
+  name: string;
+  icon: string;
+  href: string;
+  description: string;
+  tags: string[];
+  serviceSuite?: string[];
+  category?: string;
+  year?: number;
+  role?: string;
+  outcome?: string;
+  leadVertical?: string;
+  priority?: number;
+  hasLabel?: boolean;
+}
+
+interface Props {
+  projects: Project[];
+}
+
+const { projects } = Astro.props;
+---
+
+<aside class="projects-sidebar fixed left-4 top-1/2 -translate-y-1/2 z-20 w-[116px] h-auto max-h-[calc(100vh-200px)] flex flex-col items-center py-6 px-4 rounded-[16px] overflow-hidden backdrop-blur-[20px] [-webkit-backdrop-filter:blur(20px)]">
+  <span class="text-[11px] uppercase tracking-widest text-white/50 font-normal mb-4">Projects</span>
+  <div class="projects-dock-scroll flex-1 flex flex-col items-center gap-3 overflow-y-auto">
+    {projects.map((project) => (
+      <button
+        data-project={project.id}
+        data-name={project.name}
+        data-icon={project.icon}
+        data-description={project.description}
+        data-tags={project.tags.join(',')}
+        data-service-suite={project.serviceSuite?.join(',') || ''}
+        data-category={project.category || ''}
+        data-year={project.year || ''}
+        data-role={project.role || ''}
+        data-outcome={project.outcome || ''}
+        data-lead-vertical={project.leadVertical || ''}
+        data-href={project.href}
+        class="dock-item relative w-[68px] h-[68px] flex items-center justify-center rounded-2xl border border-white/[0.08] bg-black/80 transition-all duration-200 origin-left group overflow-hidden"
+        title={project.name}
+      >
+        <span class="dock-item-gradient absolute inset-0 rounded-2xl pointer-events-none opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden="true"></span>
+        {project.hasLabel ? (
+          <span class="relative z-[1] text-white/80 text-sm font-medium">{project.name}</span>
+        ) : (
+          <img
+            src={project.icon}
+            alt={project.name}
+            class="relative z-[1] w-full h-full p-2 object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-200"
+          />
+        )}
+      </button>
+    ))}
+  </div>
+</aside>
