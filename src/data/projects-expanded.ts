@@ -332,7 +332,7 @@ export const projectsExpanded: ProjectExpanded[] = [
       implications: 'Any workflow that crosses disciplines has a translation problem. Solving it requires designing for shared understanding, not shared artifacts.',
       tags: ['DesignOps', 'Process', 'Dev Tools', 'Cross-functional'],
     },
-    serviceSuite: ['Strategy', 'Brand', 'Design', 'Production'],
+    serviceSuite: ['Strategy', 'Brand', 'Design'],
     priority: 1,
   },
   {
@@ -344,14 +344,14 @@ export const projectsExpanded: ProjectExpanded[] = [
       subtitle: 'Creation-first social platform',
       description: 'Mobile app for remixing and creating memes on a composable canvas.',
       href: 'https://apps.apple.com/us/app/rememe-a-picture-playground/id1585300273',
-      year: 2022,
+      year: 2025,
       role: 'Product Designer',
       outcome: '0 to 1,500 MAU, design system library',
       tags: ['Consumer', 'Social', 'Mobile'],
       category: 'Consumer',
     },
     lab: {
-      title: 'CREATION OVER CONSUMPTION',
+      title: 'REMIXING AND CREATING MEMES ON A COMPOSABLE CANVAS',
       subtitle: 'Designing a social network that starts with making',
       context: 'Every major social platform optimizes for consumption. The feed is the product; creation is a feature. But a generation of users was burning out on passive scrolling and craving something more active. The question was whether creation-first social could work.',
       challenge: 'What if a social platform measured success by what you create, not what you scroll? Creation is harder than consumption—how do you lower the barrier enough to be social-scale while keeping it meaningful?',
@@ -531,11 +531,60 @@ export const projectsExpanded: ProjectExpanded[] = [
     serviceSuite: ['Strategy', 'Design'],
     priority: 6,
   },
+  {
+    id: 'silica',
+    name: 'Silica',
+    icon: '/assets/projects/silica.svg',
+    stage: {
+      title: 'Silica',
+      subtitle: 'Browser-based app capture with LLMs',
+      description: 'Research prototype for capturing and understanding web applications through browser protocols.',
+      href: '#',
+      year: 2024,
+      role: 'Designer',
+      outcome: 'Research prototype, technical specification',
+      tags: ['AI', 'Dev Tools', 'Research'],
+      category: 'Dev Tools',
+    },
+    lab: {
+      title: 'CAPTURING APPS THROUGH BROWSER PROTOCOLS WITH LLMS',
+      subtitle: 'Reverse-engineering interfaces with AI',
+      context: 'Understanding how web applications work has traditionally required access to source code or extensive reverse engineering. Browser protocols expose rich interaction data that LLMs can interpret, potentially democratizing app understanding.',
+      challenge: 'How do you capture the semantic structure of an application from its runtime behavior? DOM snapshots miss intent; network logs miss context. The challenge is reconstructing understanding from fragments.',
+      hypothesis: 'Browser protocols contain enough signal for LLMs to reconstruct application logic. The missing piece isn\'t data—it\'s the right abstraction layer for AI to reason about interfaces.',
+      approach: [
+        'Mapped Chrome DevTools Protocol capabilities for capturing interaction patterns',
+        'Built capture pipelines for DOM mutations, network requests, and user events',
+        'Experimented with different prompt structures for LLM interpretation',
+        'Tested reconstruction accuracy across different application architectures',
+        'Identified failure modes and boundary conditions'
+      ],
+      keyDecisions: [
+        {
+          decision: 'Focused on interaction sequences over static snapshots',
+          rationale: 'Static DOM captures miss the dynamic nature of modern apps. Sequences reveal intent and state transitions.'
+        },
+        {
+          decision: 'Used hierarchical summarization for large captures',
+          rationale: 'Raw protocol data exceeds context windows. Layered summarization preserves detail where it matters.'
+        },
+        {
+          decision: 'Designed for human-in-the-loop verification',
+          rationale: 'LLM interpretations need validation. Built the system assuming expert review, not autonomous operation.'
+        }
+      ],
+      insight: 'Browser protocols are an underexplored interface for AI understanding. The gap isn\'t capability—it\'s tooling that bridges protocol-level data to semantic understanding.',
+      implications: 'As LLMs improve at code understanding, browser-based capture could enable new categories of tools: automated testing, accessibility audits, competitive analysis, and documentation generation.',
+      tags: ['AI', 'Browser', 'Dev Tools', 'Research'],
+    },
+    serviceSuite: ['Strategy', 'Design'],
+    priority: 8,
+  },
 ];
 
 // Helper to get STAGE projects only (shipped work)
 export const stageProjects = projectsExpanded.filter(p =>
-  !['nove', 'biota', 'mythra', 'osmosis', 'lantern'].includes(p.id)
+  !['nove', 'biota', 'mythra', 'osmosis', 'lantern', 'silica'].includes(p.id)
 );
 
 // Helper to get all LAB content (everything has a LAB entry)
@@ -543,5 +592,5 @@ export const labProjects = projectsExpanded;
 
 // LAB-only projects (research/concept work)
 export const labOnlyProjects = projectsExpanded.filter(p =>
-  ['nove', 'biota', 'mythra', 'osmosis', 'lantern'].includes(p.id)
+  ['nove', 'biota', 'mythra', 'osmosis', 'lantern', 'silica'].includes(p.id)
 );
