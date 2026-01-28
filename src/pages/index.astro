@@ -776,7 +776,7 @@ const navItems = [
 
     // Show lab view immediately but transparent
     labView?.classList.remove('hidden');
-    gsap.set(labView, { opacity: 0, y: 50 });
+    gsap.set(labView, { opacity: 0, x: 50 });
 
     // Timeline for flowing animation
     const tl = gsap.timeline({
@@ -787,7 +787,7 @@ const navItems = [
     // Stage elements ease out (watermark stays visible)
     tl.to([stageView, heroImageDiv, gridFrameDiv, bioSection, bottomCta, contactBtn, aboutBtn], {
       opacity: 0,
-      y: -30,
+      x: -50,
       duration: 0.4,
       ease: 'power2.out',
       stagger: 0.02,
@@ -829,7 +829,7 @@ const navItems = [
     // Lab view eases in
     tl.to(labView, {
       opacity: 1,
-      y: 0,
+      x: 0,
       duration: 0.5,
       ease: 'power2.out',
     }, 0.3);
@@ -850,7 +850,7 @@ const navItems = [
     if (bottomCta) (bottomCta as HTMLElement).style.display = '';
     if (contactBtn) (contactBtn as HTMLElement).style.display = '';
     if (aboutBtn) (aboutBtn as HTMLElement).style.display = '';
-    gsap.set([stageView, heroImageDiv, gridFrameDiv, bioSection, bottomCta, contactBtn, aboutBtn], { opacity: 0, y: 50 });
+    gsap.set([stageView, heroImageDiv, gridFrameDiv, bioSection, bottomCta, contactBtn, aboutBtn], { opacity: 0, x: 50 });
 
     // Timeline for flowing animation
     const tl = gsap.timeline({
@@ -860,7 +860,7 @@ const navItems = [
     // Lab view eases out
     tl.to(labView, {
       opacity: 0,
-      y: -30,
+      x: -50,
       duration: 0.4,
       ease: 'power2.out',
       onComplete: () => {
@@ -902,7 +902,7 @@ const navItems = [
     // Stage elements ease in (watermark stays visible)
     tl.to([stageView, heroImageDiv, gridFrameDiv, bioSection, bottomCta, contactBtn, aboutBtn], {
       opacity: 1,
-      y: 0,
+      x: 0,
       duration: 0.5,
       ease: 'power2.out',
       stagger: 0.02,
