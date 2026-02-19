@@ -71,8 +71,8 @@ const navItems = [
       <div id="hero-media" class="hero-media absolute overflow-hidden rounded-sm">
         <!-- Video element (hidden by default, shown for video assets) -->
         <video id="hero-video" class="absolute inset-0 w-full h-full object-cover hidden" autoplay muted loop playsinline></video>
-        <!-- Image element (shown for image assets) -->
-        <img id="hero-image" class="absolute inset-0 w-full h-full object-cover" src="https://renaise.codexfoundry.com/lighthouse_brand.png" alt="" />
+        <!-- Image element (default: Flora) -->
+        <img id="hero-image" class="absolute inset-0 w-full h-full object-cover" src="https://renaise.codexfoundry.com/flora_still.gif" alt="" />
       </div>
     </div>
 
@@ -113,11 +113,11 @@ const navItems = [
         <div class="absolute top-0 bottom-0 left-0 w-px bg-white/20"></div>
         <!-- Right line -->
         <div class="absolute top-0 bottom-0 right-0 w-px bg-white/20"></div>
-        <!-- Corner dots (larger, on grid intersections) -->
-        <div class="absolute -top-[3px] -left-[3px] w-[7px] h-[7px] rounded-full bg-white/50"></div>
-        <div class="absolute -top-[3px] -right-[3px] w-[7px] h-[7px] rounded-full bg-white/50"></div>
-        <div class="absolute -bottom-[3px] -left-[3px] w-[7px] h-[7px] rounded-full bg-white/50"></div>
-        <div class="absolute -bottom-[3px] -right-[3px] w-[7px] h-[7px] rounded-full bg-white/50"></div>
+        <!-- Corner dots (draggable resize handles) -->
+        <div data-resize="nw" class="resize-handle absolute -top-[5px] -left-[5px] w-[11px] h-[11px] rounded-full bg-white cursor-nw-resize pointer-events-auto"></div>
+        <div data-resize="ne" class="resize-handle absolute -top-[5px] -right-[5px] w-[11px] h-[11px] rounded-full bg-white cursor-ne-resize pointer-events-auto"></div>
+        <div data-resize="sw" class="resize-handle absolute -bottom-[5px] -left-[5px] w-[11px] h-[11px] rounded-full bg-white cursor-sw-resize pointer-events-auto"></div>
+        <div data-resize="se" class="resize-handle absolute -bottom-[5px] -right-[5px] w-[11px] h-[11px] rounded-full bg-white cursor-se-resize pointer-events-auto"></div>
       </div>
     </div>
 
@@ -170,14 +170,8 @@ const navItems = [
       <!-- Profiles Sidebar - Right -->
       <ProfilesSidebar profiles={profiles} />
 
-      <!-- Center Content Area - receives mouse events -->
-      <main id="center-stage" class="relative z-20 min-h-screen flex flex-col items-center justify-center">
-
-        <!-- Single Platform - Rotating Project Icon -->
-        <div id="project-platform" class="relative z-20 w-56 h-56 flex items-center justify-center transition-all duration-500">
-          <img id="preview-icon" src="/assets/projects/biota.png" alt="" class="w-36 h-36 object-contain transition-all duration-300 opacity-75" />
-        </div>
-
+      <!-- Center Content Area -->
+      <main id="center-stage" class="relative z-20 min-h-screen flex flex-col items-center justify-center pointer-events-none">
       </main>
     </div>
 
@@ -369,14 +363,14 @@ const navItems = [
 
   .bio-text {
     font-family: 'ABC Diatype Mono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 1.5;
-    letter-spacing: 0.02em;
-    color: rgba(255, 255, 255, 0.9);
+    font-weight: 300;
+    font-size: 13px;
+    line-height: 1.35;
+    letter-spacing: -0.26px;
+    color: rgba(255, 255, 255, 0.6);
     text-align: center;
     text-transform: uppercase;
-    max-width: 720px;
+    max-width: 680px;
   }
 
   .bio-text .italic {
@@ -1104,8 +1098,6 @@ const navItems = [
   // ═══════════════════════════════════════════════════════════════════════════
 
   const projectButtons = document.querySelectorAll('[data-project]');
-  const previewIcon = document.getElementById('preview-icon');
-  const projectPlatform = document.getElementById('project-platform');
   const dockContainer = document.querySelector('.projects-dock-scroll');
   const heroVideoEl = document.getElementById('hero-video') as HTMLVideoElement;
   const heroImageEl = document.getElementById('hero-image') as HTMLImageElement;
@@ -1163,26 +1155,6 @@ const navItems = [
     if (labCta && id) {
       labCta.setAttribute('href', `/lab/${id}`);
     }
-  }
-
-  function updatePlatformIcon(icon: string) {
-    if (!previewIcon || !icon) return;
-
-    gsap.to(projectPlatform, {
-      opacity: 0,
-      scale: 0.95,
-      duration: 0.15,
-      ease: "power2.in",
-      onComplete: () => {
-        previewIcon.src = icon;
-        gsap.to(projectPlatform, {
-          opacity: 1,
-          scale: 1,
-          duration: 0.3,
-          ease: magneticSnapIn
-        });
-      }
-    });
   }
 
   function updateHeroMedia(projectId: string) {
@@ -1266,10 +1238,8 @@ const navItems = [
 
       // Update content
       if (incomingActive) {
-        const icon = incomingActive.item.getAttribute('data-icon') || '';
         const projectId = incomingActive.item.getAttribute('data-project') || '';
         updateMarquee(incomingActive.item);
-        updatePlatformIcon(icon);
         updateHeroMedia(projectId);
       }
 
@@ -1280,10 +1250,8 @@ const navItems = [
 
         if (isActive) {
           item.classList.add('active');
-          const icon = item.getAttribute('data-icon') || '';
           const projectId = item.getAttribute('data-project') || '';
           updateMarquee(item);
-          if (previewIcon && icon) previewIcon.src = icon;
           updateHeroMedia(projectId);
         } else {
           item.classList.remove('active');
@@ -1324,13 +1292,33 @@ const navItems = [
     isPaused = false;
   }
 
-  // Manual project selection - spin to that project
+  // Manual project selection - click to select and show on platform
   projectButtons.forEach((button, index) => {
-    button.addEventListener('click', () => {
-      const href = button.getAttribute('data-href');
-      if (href && href !== '#') {
-        window.open(href, '_blank');
+    button.addEventListener('click', (e) => {
+      e.preventDefault();
+      pauseRotation();
+
+      // Calculate how many steps to spin to reach this item
+      const targetIndex = index;
+      const currentActiveIndex = (currentOffset + activeSlotIndex) % itemCount;
+      let stepsNeeded = targetIndex - currentActiveIndex;
+
+      // Normalize to shortest path
+      if (stepsNeeded > itemCount / 2) stepsNeeded -= itemCount;
+      if (stepsNeeded < -itemCount / 2) stepsNeeded += itemCount;
+
+      // Spin to the target
+      if (stepsNeeded !== 0) {
+        currentOffset = (currentOffset + stepsNeeded + itemCount) % itemCount;
+        positionItems(true);
       }
+
+      // Update hero immediately for clicked project
+      const projectId = button.getAttribute('data-project') || '';
+      updateHeroMedia(projectId);
+
+      // Resume rotation after 5 seconds
+      setTimeout(resumeRotation, 5000);
     });
   });
 
@@ -1339,10 +1327,6 @@ const navItems = [
   dockContainer?.addEventListener('mouseleave', () => {
     setTimeout(resumeRotation, 1000);
   });
-
-  // Pause on platform hover
-  projectPlatform?.addEventListener('mouseenter', pauseRotation);
-  projectPlatform?.addEventListener('mouseleave', resumeRotation);
 
   // Initialize - position all items immediately, then start spinning
   positionItems(false);

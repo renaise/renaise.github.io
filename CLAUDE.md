@@ -3,6 +3,23 @@
 ## Owner
 Renaise Kim — Visual producer + prototyper, 8 years experience. Based in NYC. Studio partner at Studio Artifice.
 
+## Working Style
+Goal: Implement without unnecessary clarifying questions.
+
+**Do:**
+- Explain why (reasoning behind decisions)
+- Flag essential vs. nice-to-have
+- Flag scope creep before it happens
+- Surface blockers proactively
+- Explain tradeoffs clearly
+- Push back when appropriate
+
+**Don't:**
+- Bloat or over-engineer
+- Assume maximal interpretation of requests
+
+**Output:** Lean, production-ready, documented.
+
 ## Immediate Goal
 Land the **A24 Labs designer role** (Scott Belsky). Secondary: Close Asimov managed service retainer.
 
