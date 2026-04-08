@@ -4,17 +4,15 @@ import ProjectsSidebar from '../components/ProjectsSidebar.astro';
 import ProfilesSidebar from '../components/ProfilesSidebar.astro';
 import { projectsExpanded, labProjects } from '../data/projects-expanded';
 
-// Carousel order: lighthouse → flora → soot → biota → aputure → osmosis
-const allowedProjects = ['lighthouse', 'flora', 'soot', 'biota', 'aputure', 'osmosis'];
+// Stage dock order — matches renaise.com showroom
+const allowedProjects = ['soot', 'aputure', 'flora', 'yap'];
 
 // Hero assets for each project (videos and images)
 const heroAssets: Record<string, { url: string; type: 'video' | 'image' }> = {
-  lighthouse: { url: 'https://renaise.codexfoundry.com/lighthouse_brand.png', type: 'image' },
-  flora: { url: 'https://renaise.codexfoundry.com/flora_still.gif', type: 'image' },
   soot: { url: 'https://renaise.codexfoundry.com/platform_soot.mp4', type: 'video' },
-  biota: { url: 'https://renaise.codexfoundry.com/biota_cover.mp4', type: 'video' },
   aputure: { url: 'https://renaise.codexfoundry.com/Aputure_Site.mp4', type: 'video' },
-  osmosis: { url: 'https://renaise.codexfoundry.com/OsmosisHeader_3.mp4', type: 'video' },
+  flora: { url: 'https://renaise.codexfoundry.com/flora_still.gif', type: 'image' },
+  yap: { url: '/assets/projects/p8.svg', type: 'image' },
 };
 
 // Map expanded projects to sidebar format (filtered)
@@ -34,7 +32,7 @@ const projects = projectsExpanded
   role: p.stage.role,
   outcome: p.stage.outcome,
   leadVertical: p.serviceSuite[0] || 'Design',
-  hasLabel: p.id === 'nove',
+  hasLabel: false,
 }));
 
 // Social profiles - right sidebar (order matches screenshot)
@@ -69,10 +67,9 @@ const navItems = [
     <!-- Hero Background - project asset (grid-aligned) -->
     <div class="hero-bg fixed inset-0 z-[2] pointer-events-none">
       <div id="hero-media" class="hero-media absolute overflow-hidden rounded-sm">
-        <!-- Video element (hidden by default, shown for video assets) -->
-        <video id="hero-video" class="absolute inset-0 w-full h-full object-cover hidden" autoplay muted loop playsinline></video>
-        <!-- Image element (default: Flora) -->
-        <img id="hero-image" class="absolute inset-0 w-full h-full object-cover" src="https://renaise.codexfoundry.com/flora_still.gif" alt="" />
+        <!-- Default: first showroom project (SOOT) — matches renaise.com order -->
+        <video id="hero-video" class="absolute inset-0 w-full h-full object-cover" autoplay muted loop playsinline src="https://renaise.codexfoundry.com/platform_soot.mp4"></video>
+        <img id="hero-image" class="absolute inset-0 w-full h-full object-cover hidden" src="" alt="" />
       </div>
     </div>
 
@@ -206,10 +203,15 @@ const navItems = [
                 </span>
               </div>
 
-              <!-- Center: Title -->
-              <h2 class="text-[24px] md:text-[28px] text-white/90 font-medium uppercase tracking-wide text-center leading-tight my-auto px-4">
-                {p.lab.title}
-              </h2>
+              <!-- Center: title + description (renaise.com showroom cards) -->
+              <div class="my-auto px-3 flex flex-col gap-2 text-center">
+                <h2 class="text-[18px] md:text-[22px] text-white/95 font-medium uppercase tracking-wide leading-tight">
+                  {p.stage.title}
+                </h2>
+                <p class="text-[11px] md:text-[12px] text-white/65 leading-snug line-clamp-5">
+                  {p.stage.description}
+                </p>
+              </div>
 
               <!-- Bottom: Service tags -->
               <div class="flex items-center justify-center gap-3 flex-wrap">
@@ -228,7 +230,7 @@ const navItems = [
 
     <!-- Bottom Left: CONTACT button - aligned under Projects dock -->
     <div class="fixed bottom-4 left-4 z-30 nav-bar w-[116px]">
-      <a href="mailto:hello@renaise.com" class="nav-tab flashlight-tab w-full flex items-center justify-center py-2.5">
+      <a href="mailto:krenaise@gmail.com" class="nav-tab flashlight-tab w-full flex items-center justify-center py-2.5">
         <span class="tab-bg"></span>
         <span class="tab-glow"></span>
         <span class="tab-content">CONTACT</span>
@@ -286,11 +288,14 @@ const navItems = [
         </div>
 
         <!-- Bio Info -->
-        <div class="text-center space-y-2">
+        <div class="text-center space-y-3 max-w-md mx-auto">
           <h2 class="text-[28px] font-light tracking-wide text-white uppercase">Renaise Kim</h2>
-          <p class="text-[13px] tracking-[0.08em] text-white/60 uppercase">Visual Producer + Prototyper</p>
-          <p class="text-[13px] tracking-[0.08em] text-white/40 uppercase">8 years experience. Based in NYC.</p>
-          <p class="text-[13px] tracking-[0.08em] text-white/40 uppercase">Studio Partner at <a href="https://studioartifice.com" target="_blank" rel="noopener" class="hover:text-white/70 transition-colors">Studio Artifice</a></p>
+          <p class="text-[13px] tracking-[0.06em] text-white/70 leading-relaxed">
+            Lived Experience Designer shaping brands, sites, and systems. Co-director at{' '}
+            <a href="https://artificenyc.com" target="_blank" rel="noopener" class="hover:text-white/90 transition-colors underline underline-offset-2">ARTIFICE</a>.
+            Portfolio upon request.
+          </p>
+          <p class="text-[12px] tracking-[0.08em] text-white/45 uppercase">Based in NYC · Visual Producer + Prototyper</p>
         </div>
 
         <!-- Profile Links -->
@@ -927,7 +932,7 @@ const navItems = [
   const gridFrameDiv = document.getElementById('grid-frame')?.parentElement;
   const bioSection = document.querySelector('.bio-section');
   const bottomCta = document.querySelector('.marquee-pill')?.parentElement;
-  const contactBtn = document.querySelector('[href="mailto:hello@renaise.com"]')?.parentElement;
+  const contactBtn = document.querySelector('[href="mailto:krenaise@gmail.com"]')?.parentElement;
   const aboutBtn = document.querySelector('[href="#about"]')?.parentElement;
   const ellipsisBtn = document.getElementById('ellipsis-menu');
 
@@ -1105,7 +1110,8 @@ const navItems = [
   // Get hero assets from window (passed from Astro)
   const heroAssets = (window as any).heroAssets || {};
 
-  let currentOffset = 0; // Which item index is in the active slot
+  // Align first list item (SOOT) with the active dock slot
+  let currentOffset = 1;
   let rotationInterval: ReturnType<typeof setInterval> | null = null;
   let isPaused = false;
   let isAnimating = false;
