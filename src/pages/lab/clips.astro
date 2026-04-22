@@ -1,0 +1,109 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base title="Clips — Marty Supreme / Everything">
+  <div class="min-h-screen bg-[#0a0a0a] flex flex-col items-center justify-center p-6">
+    <a href="/lab" class="absolute top-6 left-6 text-white/50 text-sm uppercase tracking-widest hover:text-white/80 transition-colors">
+      ← Lab
+    </a>
+
+    <!-- Toggle -->
+    <div class="flex gap-2 mb-8">
+      <button
+        id="marty-btn"
+        class="clip-toggle px-6 py-2 rounded-full text-sm uppercase tracking-widest transition-all"
+        data-clip="marty"
+      >
+        Marty Supreme
+      </button>
+      <button
+        id="everything-btn"
+        class="clip-toggle px-6 py-2 rounded-full text-sm uppercase tracking-widest transition-all"
+        data-clip="everything"
+      >
+        Everything
+      </button>
+    </div>
+
+    <!-- Video container -->
+    <div class="relative w-full max-w-4xl aspect-video bg-black rounded overflow-hidden">
+      <!-- Marty Supreme: deployed (YouTube embed) -->
+      <iframe
+        id="marty-video"
+        class="clip-video absolute inset-0 w-full h-full"
+        src="https://www.youtube.com/embed/s9gSuKaKcqM?autoplay=0&mute=1&loop=1&playlist=s9gSuKaKcqM"
+        title="Marty Supreme"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+      />
+      <!-- Everything: local 12s clip -->
+      <video
+        id="everything-video"
+        class="clip-video absolute inset-0 w-full h-full object-contain opacity-0 pointer-events-none"
+        src="/clips/everything-12s.mp4"
+        muted
+        loop
+        playsinline
+      />
+    </div>
+
+    <p class="mt-4 text-white/40 text-xs uppercase tracking-widest">Marty: deployed · Everything: 12s local</p>
+  </div>
+</Base>
+
+<script>
+  const martyBtn = document.getElementById('marty-btn');
+  const everythingBtn = document.getElementById('everything-btn');
+  const martyVideo = document.getElementById('marty-video') as HTMLIFrameElement;
+  const everythingVideo = document.getElementById('everything-video') as HTMLVideoElement;
+
+  function showMarty() {
+    martyVideo.classList.remove('opacity-0', 'pointer-events-none');
+    martyVideo.classList.add('opacity-100');
+    everythingVideo.classList.remove('opacity-100');
+    everythingVideo.classList.add('opacity-0', 'pointer-events-none');
+    everythingVideo.pause();
+    martyBtn?.classList.add('active');
+    everythingBtn?.classList.remove('active');
+  }
+
+  function showEverything() {
+    everythingVideo.classList.remove('opacity-0', 'pointer-events-none');
+    everythingVideo.classList.add('opacity-100');
+    martyVideo.classList.remove('opacity-100');
+    martyVideo.classList.add('opacity-0', 'pointer-events-none');
+    martyVideo.src = martyVideo.src.replace('autoplay=1', 'autoplay=0');
+    everythingVideo.play();
+    everythingBtn?.classList.add('active');
+    martyBtn?.classList.remove('active');
+  }
+
+  martyBtn?.addEventListener('click', showMarty);
+  everythingBtn?.addEventListener('click', showEverything);
+
+  showMarty();
+</script>
+
+<style>
+  .clip-toggle {
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .clip-toggle:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .clip-toggle.active {
+    background: white;
+    color: #0a0a0a;
+    border-color: white;
+  }
+
+  .clip-video {
+    transition: opacity 0.3s ease;
+  }
+</style>

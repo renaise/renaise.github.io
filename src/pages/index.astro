@@ -127,23 +127,32 @@ const navItems = [
       />
     </div>
 
-    <!-- Top Left: LAB + STAGE toggle - Figma: 196×55, 2% white, 12px radius -->
-    <div class="fixed top-4 left-4 z-20 flex items-center justify-center gap-1 nav-bar w-[196px] h-[55px] rounded-[12px] bg-white/[0.02]">
-      <button id="lab-tab" class="nav-tab flashlight-tab px-5 py-2.5" data-view="lab">
-        <span class="tab-bg"></span>
-        <span class="tab-glow"></span>
-        <span class="tab-content">LAB</span>
-      </button>
-      <button id="stage-tab" class="nav-tab flashlight-tab nav-tab-active px-5 py-2.5" data-view="stage">
-        <span class="tab-bg"></span>
-        <span class="tab-glow"></span>
-        <span class="tab-content">STAGE</span>
-      </button>
+    <!-- Top Left: LAB + STAGE toggle + Framer-parity “view all” → /showroom -->
+    <div class="fixed top-4 left-4 z-20 flex flex-col items-start gap-2">
+      <div class="flex items-center justify-center gap-1 nav-bar w-[196px] h-[55px] rounded-[12px] bg-white/[0.02]">
+        <button id="lab-tab" class="nav-tab flashlight-tab px-5 py-2.5" data-view="lab">
+          <span class="tab-bg"></span>
+          <span class="tab-glow"></span>
+          <span class="tab-content">LAB</span>
+        </button>
+        <button id="stage-tab" class="nav-tab flashlight-tab nav-tab-active px-5 py-2.5" data-view="stage">
+          <span class="tab-bg"></span>
+          <span class="tab-glow"></span>
+          <span class="tab-content">WORK</span>
+        </button>
+      </div>
+      <a
+        href="/showroom"
+        class="pl-1 text-[11px] uppercase tracking-[0.14em] text-white/40 transition-colors hover:text-white/75"
+        style="font-family: 'ABC Diatype Mono', 'SF Mono', Monaco, monospace;"
+      >
+        all work
+      </a>
     </div>
 
     <!-- Top Center: Bio text -->
     <div class="bio-section fixed top-4 left-1/2 -translate-x-1/2 z-20">
-      <p class="bio-text">RENAISE IS A VISUAL PRODUCER + PROTOTYPER WITH 8 YEARS OF EXPERIENCE DESIGNING IDENTITIES AND INTUITIVE PRODUCTS FOR BRANDS IN CONSUMER TECH AND MEDIA. STUDIO PARTNER AT <a href="https://studioartifice.com" target="_blank" rel="noopener noreferrer" class="artifice-link"><span class="italic">STUDIO ARTIFICE</span></a><br /><img src="/assets/artifice-a.png" alt="" class="artifice-mark" /> + CO-DIRECTOR AT <a href="https://artificenyc.com" target="_blank" rel="noopener noreferrer" class="artifice-link"><span class="italic">ARTIFICE NYC</span> <img src="/assets/artifice-mark.png" alt="" class="artifice-mark" /></a></p>
+      <p class="bio-text">RENAISE KIM DESIGNS BRAND SYSTEMS, PRODUCT INTERFACES, AND LAUNCH EXPERIENCES FOR AI, MEDIA, AND CONSUMER TECHNOLOGY. STUDIO PARTNER AT <a href="https://studioartifice.com" target="_blank" rel="noopener noreferrer" class="artifice-link"><span class="italic">STUDIO ARTIFICE</span></a><br /><img src="/assets/artifice-a.png" alt="" class="artifice-mark" /> + CO-DIRECTOR AT <a href="https://artificenyc.com" target="_blank" rel="noopener noreferrer" class="artifice-link"><span class="italic">ARTIFICE NYC</span> <img src="/assets/artifice-mark.png" alt="" class="artifice-mark" /></a></p>
     </div>
 
     <!-- Top Right: Ellipsis menu button -->
@@ -169,6 +178,20 @@ const navItems = [
 
       <!-- Center Content Area -->
       <main id="center-stage" class="relative z-20 min-h-screen flex flex-col items-center justify-center pointer-events-none">
+        <section class="stage-copy pointer-events-auto">
+          <p class="stage-kicker">Visual Producer + Prototyper</p>
+          <h1>Brand and product systems for companies building new cultural interfaces.</h1>
+          <p class="stage-deck">Selected work across AI tools, cinematic technology, creative platforms, and launch-ready web systems.</p>
+        </section>
+
+        <section id="project-caption" class="project-caption pointer-events-auto">
+          <div>
+            <p id="caption-meta" class="caption-meta">SHOWROOM / 2025</p>
+            <h2 id="caption-title">Soot</h2>
+            <p id="caption-body">Designing the ecosystem for self-organizing digital assets.</p>
+          </div>
+          <a id="caption-link" href="/lab/soot">View process</a>
+        </section>
       </main>
     </div>
 
@@ -291,11 +314,25 @@ const navItems = [
         <div class="text-center space-y-3 max-w-md mx-auto">
           <h2 class="text-[28px] font-light tracking-wide text-white uppercase">Renaise Kim</h2>
           <p class="text-[13px] tracking-[0.06em] text-white/70 leading-relaxed">
-            Lived Experience Designer shaping brands, sites, and systems. Co-director at{' '}
+            Visual producer and prototyper shaping brand systems, sites, and interfaces for AI, media, and consumer technology. Co-director at{' '}
             <a href="https://artificenyc.com" target="_blank" rel="noopener" class="hover:text-white/90 transition-colors underline underline-offset-2">ARTIFICE</a>.
             Portfolio upon request.
           </p>
-          <p class="text-[12px] tracking-[0.08em] text-white/45 uppercase">Based in NYC · Visual Producer + Prototyper</p>
+          <p class="text-[12px] tracking-[0.08em] text-white/45 uppercase">Based in NYC · Strategy · Identity · Product · Web</p>
+          <p class="pt-2 flex flex-wrap gap-x-5 gap-y-2">
+            <a
+              href="/work"
+              class="text-[12px] tracking-[0.06em] text-white/50 underline decoration-white/20 underline-offset-2 hover:text-white/85"
+            >
+              Work history &amp; reel
+            </a>
+            <a
+              href="/info"
+              class="text-[12px] tracking-[0.06em] text-white/50 underline decoration-white/20 underline-offset-2 hover:text-white/85"
+            >
+              Info
+            </a>
+          </p>
         </div>
 
         <!-- Profile Links -->
@@ -380,6 +417,94 @@ const navItems = [
 
   .bio-text .italic {
     font-style: italic;
+  }
+
+  .stage-copy {
+    position: fixed;
+    left: clamp(220px, 18vw, 280px);
+    top: clamp(112px, 17vh, 168px);
+    z-index: 24;
+    width: min(420px, calc(100vw - 520px));
+    color: white;
+  }
+
+  .stage-kicker,
+  .caption-meta {
+    font-family: 'ABC Diatype Mono', 'SF Mono', Monaco, monospace;
+    font-size: 10px;
+    line-height: 1.2;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.46);
+  }
+
+  .stage-copy h1 {
+    margin-top: 0.85rem;
+    max-width: 400px;
+    font-size: clamp(24px, 3.2vw, 44px);
+    line-height: 0.96;
+    letter-spacing: 0;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.96);
+  }
+
+  .stage-deck {
+    margin-top: 1rem;
+    max-width: 360px;
+    font-size: 14px;
+    line-height: 1.45;
+    color: rgba(255, 255, 255, 0.58);
+  }
+
+  .project-caption {
+    position: fixed;
+    left: 50%;
+    bottom: 76px;
+    z-index: 24;
+    width: min(560px, calc(100vw - 420px));
+    transform: translateX(-50%);
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 18px 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    background: rgba(13, 13, 13, 0.68);
+    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(18px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.28);
+  }
+
+  .project-caption h2 {
+    margin-top: 0.45rem;
+    font-size: 21px;
+    line-height: 1;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.94);
+  }
+
+  .project-caption p:not(.caption-meta) {
+    margin-top: 0.55rem;
+    max-width: 360px;
+    font-size: 12px;
+    line-height: 1.35;
+    color: rgba(255, 255, 255, 0.58);
+  }
+
+  .project-caption a {
+    flex: 0 0 auto;
+    font-family: 'ABC Diatype Mono', 'SF Mono', Monaco, monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.68);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .project-caption a:hover {
+    color: rgba(255, 255, 255, 0.96);
   }
 
   /* Artifice links in bio */
@@ -842,6 +967,23 @@ const navItems = [
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
   }
 
+  @media (max-width: 980px) {
+    .stage-copy {
+      left: 24px;
+      right: 24px;
+      top: 96px;
+      width: auto;
+    }
+
+    .project-caption {
+      left: 24px;
+      right: 24px;
+      bottom: 72px;
+      width: auto;
+      transform: none;
+    }
+  }
+
 </style>
 
 <script>
@@ -1142,6 +1284,8 @@ const navItems = [
     const description = project.getAttribute('data-description');
     const category = project.getAttribute('data-category');
     const year = project.getAttribute('data-year');
+    const role = project.getAttribute('data-role');
+    const outcome = project.getAttribute('data-outcome');
 
     const marqueeContent = document.getElementById('marquee-content');
     if (marqueeContent) {
@@ -1160,6 +1304,27 @@ const navItems = [
     const labCta = document.getElementById('lab-cta');
     if (labCta && id) {
       labCta.setAttribute('href', `/lab/${id}`);
+    }
+
+    const captionMeta = document.getElementById('caption-meta');
+    const captionTitle = document.getElementById('caption-title');
+    const captionBody = document.getElementById('caption-body');
+    const captionLink = document.getElementById('caption-link');
+
+    if (captionMeta) {
+      captionMeta.textContent = [category, year, role].filter(Boolean).join(' / ');
+    }
+
+    if (captionTitle && name) {
+      captionTitle.textContent = name;
+    }
+
+    if (captionBody) {
+      captionBody.textContent = outcome || description || '';
+    }
+
+    if (captionLink && id) {
+      captionLink.setAttribute('href', `/lab/${id}`);
     }
   }
 
@@ -1222,7 +1387,7 @@ const navItems = [
           // MAGNETIC SNAP-IN: pull in with overshoot
           item.classList.add('active');
           gsap.to(item, {
-            scale: 1.3,
+            scale: 1.07,
             duration: 0.5,
             ease: magneticSnapIn,
           });
@@ -1252,7 +1417,7 @@ const navItems = [
     } else {
       // Immediate positioning
       itemStates.forEach(({ item, yPos, isActive }) => {
-        gsap.set(item, { y: yPos, scale: isActive ? 1.3 : 1 });
+        gsap.set(item, { y: yPos, scale: isActive ? 1.07 : 1 });
 
         if (isActive) {
           item.classList.add('active');

@@ -1,0 +1,56 @@
+---
+import Base from '../layouts/Base.astro';
+
+const paragraphs = [
+  'Renaise Kim is a creative director and organizer based in New York. She holds a BFA in Art and Technology Studies from the School of the Art Institute of Chicago. Her work is focused on web-to-world prototyping, spanning exhibitions, public resources, and archival projects.',
+  'Renaise designs web interfaces and site-specific formats that bring new work into public view while it is still under development. Director of Artifice NYC, a 501(c)(3) organization, where she defined a dual-mode presentation format combining the Lab (WHITEBOX) and the Stage (BLACKBOX).',
+  'In April 2026 she curated nodes:ii at Onassis ONX, a three-day showcase of twenty artifacts by fourteen practitioners working across AI, bio-art, sound, and performance. Her practice applies science+fiction as a method for examining the socio-technical systems of the past, present, and future.',
+];
+---
+
+<Base title="Info — Renaise Kim">
+  <div class="relative min-h-screen bg-[#111111] text-white">
+    <div class="dot-grid fixed inset-0 z-0 pointer-events-none text-white/45" aria-hidden="true">
+      <svg width="100%" height="100%">
+        <pattern id="info-dots" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+          <circle cx="16" cy="16" r="1" fill="currentColor" />
+        </pattern>
+        <rect width="100%" height="100%" fill="url(#info-dots)" />
+      </svg>
+    </div>
+
+    <div class="relative z-10 mx-auto max-w-2xl px-6 py-10 md:py-16">
+      <header class="mb-12 md:mb-16">
+        <a
+          href="/"
+          class="inline-block font-mono text-[12px] uppercase tracking-[0.12em] text-white/45 transition-colors hover:text-white/80"
+        >
+          ← back
+        </a>
+        <h1
+          class="mt-10 font-[Helvetica_Now_Display,-apple-system,sans-serif] text-[clamp(1.25rem,3vw,1.75rem)] font-normal uppercase tracking-[0.06em] text-white/90"
+        >
+          Info
+        </h1>
+      </header>
+
+      <div class="space-y-6 text-[15px] leading-[1.65] text-white/75 md:text-[16px] md:leading-[1.7]">
+        {paragraphs.map((text) => (
+          <p>{text}</p>
+        ))}
+      </div>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .font-mono {
+    font-family:
+      'ABC Diatype Mono',
+      'SF Mono',
+      Monaco,
+      Inconsolata,
+      'Roboto Mono',
+      monospace;
+  }
+</style>
