@@ -40,6 +40,16 @@ export interface ProjectExpanded {
   priority: number;
 }
 
+/** Lab index + `/lab/*` order — matches renaise.com (showroom + archive). */
+export const RENAISE_COM_LAB_ORDER = [
+  'soot',
+  'aputure',
+  'flora',
+  'yap',
+  'mythra',
+  'rememe',
+] as const;
+
 export const projectsExpanded: ProjectExpanded[] = [
   {
     id: 'nove',
@@ -195,13 +205,14 @@ export const projectsExpanded: ProjectExpanded[] = [
     stage: {
       title: 'Aputure',
       subtitle: 'Global site for LED lighting and video',
-      description: 'E-commerce platform and composable design system for a leading LED lighting brand.',
+      description:
+        'Designed the entire composable library and wireframes for the global Aputure website — house for industrial lighting products.',
       href: 'https://aputure.com',
       year: 2025,
       role: 'Designer',
       outcome: 'Global site, composable library, wireframes',
-      tags: ['eCommerce', 'Global', 'Systems'],
-      category: 'eCommerce',
+      tags: ['web', 'Site'],
+      category: 'SHOWROOM',
     },
     lab: {
       title: 'GLOBAL SITE FOR INDUSTRIAL CINEMATIC LIGHTING',
@@ -234,23 +245,24 @@ export const projectsExpanded: ProjectExpanded[] = [
       implications: 'Any company scaling internationally should invert their design process: most constrained market first, headquarters last. The result is a system that works everywhere, not just where it was designed.',
       tags: ['Design Systems', 'Localization', 'eCommerce', 'Global Scale'],
     },
-    serviceSuite: ['Strategy', 'Brand', 'Design', 'Production'],
+    serviceSuite: ['web', 'Site'],
     priority: 2,
   },
   {
     id: 'flora',
-    name: 'Flora AI',
+    name: 'Hieronymous',
     icon: '/assets/projects/flora.png',
     stage: {
-      title: 'Flora AI',
+      title: 'Hieronymous',
       subtitle: 'The creative\'s intelligent canvas',
-      description: 'Founding designer for a generative node-based editor for new media creatives.',
+      description:
+        'Built a new generative node-based editor for new media creatives, offering community-led models, media generation, and curation.',
       href: 'https://www.florafauna.ai',
       year: 2024,
       role: 'Founding Designer',
       outcome: '0-to-1 product, pre-seed to initial round',
-      tags: ['AI', 'Product', '0-to-1'],
-      category: 'Gen AI',
+      tags: ['web', 'Product'],
+      category: 'SHOWROOM',
     },
     lab: {
       title: 'THE DESIGN ECOSYSTEM OF FLORA + FAUNA: HIERONYMUS',
@@ -283,7 +295,7 @@ export const projectsExpanded: ProjectExpanded[] = [
       implications: 'Most founding teams over-invest in building and under-invest in learning. The competitive advantage in zero-to-one is speed of insight, not speed of execution.',
       tags: ['0-to-1', 'Founding', 'Product Strategy', 'Rapid Prototyping'],
     },
-    serviceSuite: ['Strategy', 'Brand', 'Design'],
+    serviceSuite: ['web', 'Product'],
     priority: 3,
   },
   {
@@ -293,13 +305,14 @@ export const projectsExpanded: ProjectExpanded[] = [
     stage: {
       title: 'SOOT',
       subtitle: 'The design ecosystem of Liquid Metal',
-      description: 'Design system and product for a developer tool enabling add, search, map, customize, share workflows.',
+      description:
+        'Designing the SOOT ecosystem; a self-organizing digital asset management tool and metadata search index.',
       href: 'https://www.soot.com',
       year: 2025,
       role: 'Lead Product Designer',
       outcome: '50% reduction in design-to-engineering review cycles',
-      tags: ['Product', 'Systems', 'Dev Tools'],
-      category: 'Dev Tools',
+      tags: ['web', 'product'],
+      category: 'SHOWROOM',
     },
     lab: {
       title: 'SEE EVERYTHING, METADATA, LIQUID METAL',
@@ -332,23 +345,75 @@ export const projectsExpanded: ProjectExpanded[] = [
       implications: 'Any workflow that crosses disciplines has a translation problem. Solving it requires designing for shared understanding, not shared artifacts.',
       tags: ['DesignOps', 'Process', 'Dev Tools', 'Cross-functional'],
     },
-    serviceSuite: ['Strategy', 'Brand', 'Design'],
+    serviceSuite: ['web', 'product'],
     priority: 1,
   },
   {
+    id: 'yap',
+    name: 'YAP inc.',
+    icon: '/assets/projects/p8.svg',
+    stage: {
+      title: 'YAP inc.',
+      subtitle: 'IRL/URL collective',
+      description:
+        'A collective of yappers building the future of IRL/URL experiences. Pushing boundaries in web+, design, and technology.',
+      href: 'https://www.yap.team/',
+      year: 2025,
+      role: 'Designer',
+      outcome: 'Brand and web+ experiments',
+      tags: ['web+', 'BRAND'],
+      category: 'SHOWROOM',
+    },
+    lab: {
+      title: 'YAPPERS BUILDING IRL/URL EXPERIENCES',
+      subtitle: 'web+, design, and technology',
+      context:
+        'YAP is a collective operating at the edge of in-person and online culture—where a brand cannot be only a site or only an event.',
+      challenge: 'How do you make a collective legible without collapsing it into a single static identity?',
+      hypothesis: 'Shared stance and repeated experiments read louder than a traditional brand system.',
+      approach: [
+        'Define voice and boundaries for what counts as “YAP” work',
+        'Ship small public experiments across web+ surfaces',
+        'Document process so new collaborators can enter mid-stream',
+        'Pair IRL programming with URL-native artifacts',
+        'Tighten narrative as patterns emerge from the work'
+      ],
+      keyDecisions: [
+        {
+          decision: 'Prioritize visible output over brand guidelines',
+          rationale: 'The proof of the collective is work in the world, not a locked PDF.'
+        },
+        {
+          decision: 'Treat web+ as a material, not a buzzword',
+          rationale: 'Naming the medium honestly sets expectations for what gets shipped.'
+        },
+        {
+          decision: 'Keep membership and roles lightweight',
+          rationale: 'Collectives die from over-structure; clarity came from shared taste and pace.'
+        }
+      ],
+      insight: 'IRL/URL is a design problem: coherence has to hold across venues, feeds, and tools.',
+      implications: 'Brand for collectives is closer to editorial direction than corporate identity.',
+      tags: ['Collective', 'Brand', 'web+'],
+    },
+    serviceSuite: ['web+', 'BRAND'],
+    priority: 4,
+  },
+  {
     id: 'rememe',
-    name: 'REMEME',
+    name: 'rememe',
     icon: '/assets/projects/rememe.png',
     stage: {
-      title: 'REMEME',
+      title: 'rememe',
       subtitle: 'Creation-first social platform',
-      description: 'Mobile app for remixing and creating memes on a composable canvas.',
+      description:
+        'Formerly Collage (2022), documented a year in the making of all the meme app eras; Collage, Groups, Friends, Freeform Profiles.',
       href: 'https://apps.apple.com/us/app/rememe-a-picture-playground/id1585300273',
-      year: 2025,
+      year: 2023,
       role: 'Product Designer',
       outcome: '0 to 1,500 MAU, design system library',
-      tags: ['Consumer', 'Social', 'Mobile'],
-      category: 'Consumer',
+      tags: ['Mobile', 'Product'],
+      category: 'archive',
     },
     lab: {
       title: 'REMIXING AND CREATING MEMES ON A COMPOSABLE CANVAS',
@@ -381,23 +446,24 @@ export const projectsExpanded: ProjectExpanded[] = [
       implications: 'The next generation of social products will differentiate on creation, not consumption. The feed is commoditized. The canvas is the new frontier.',
       tags: ['Consumer', 'Creator Tools', 'Social', 'Behavioral Design'],
     },
-    serviceSuite: ['Strategy', 'Identity', 'Design'],
+    serviceSuite: ['Mobile', 'Product'],
     priority: 9,
   },
   {
     id: 'mythra',
-    name: 'Mythra',
+    name: 'THESIS',
     icon: '/assets/projects/mythra.png',
     stage: {
-      title: 'Mythra',
-      subtitle: 'AI protocol concept',
-      description: 'Concept exploration for reimagining how we interface with the world through AI-assisted apps.',
+      title: 'THESIS',
+      subtitle: 'AI + Internet Protocol',
+      description:
+        'Reimagining an AI protocol to facilitate how we interface with the world through apps (assisted tools) over text-based models.',
       href: 'https://mythra.vercel.app',
       year: 2023,
       role: 'Designer',
       outcome: 'Concept prototype',
-      tags: ['AI', 'Concept'],
-      category: 'Concept',
+      tags: ['THESIS', 'AI + Internet Protocol'],
+      category: 'archive',
     },
     lab: {
       title: 'WHAT COMES AFTER CHAT',
@@ -430,7 +496,7 @@ export const projectsExpanded: ProjectExpanded[] = [
       implications: 'Whoever figures out post-chat AI interfaces will define the next decade of computing. It\'s the equivalent of inventing the GUI or the smartphone. The opportunity is massive and mostly unexplored.',
       tags: ['Speculative Design', 'AI Interface', 'Concept', 'Future'],
     },
-    serviceSuite: ['Strategy', 'Design'],
+    serviceSuite: ['THESIS', 'AI + Internet Protocol'],
     priority: 7,
   },
   {
@@ -587,8 +653,12 @@ export const stageProjects = projectsExpanded.filter(p =>
   !['nove', 'biota', 'mythra', 'osmosis', 'lantern', 'silica'].includes(p.id)
 );
 
-// Helper to get all LAB content (everything has a LAB entry)
-export const labProjects = projectsExpanded;
+// Lab index (`/`, `/lab`) — same order and copy source as renaise.com
+export const labProjects = RENAISE_COM_LAB_ORDER.map((id) => {
+  const p = projectsExpanded.find((x) => x.id === id);
+  if (!p) throw new Error(`Missing lab project: ${id}`);
+  return p;
+});
 
 // LAB-only projects (research/concept work)
 export const labOnlyProjects = projectsExpanded.filter(p =>

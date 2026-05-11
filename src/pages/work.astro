@@ -1,0 +1,169 @@
+---
+import Base from '../layouts/Base.astro';
+
+const timeline = [
+  {
+    range: '07/2025 ● NOW',
+    title: 'PARTNER',
+    org: 'STUDIO ARTIFICE',
+    body:
+      'Design director of Studio Artifice: leads the brand house; brand identity, design applications (product design) and visual strategy for high growth consumer tech, media and culture. Key holder for aesthetic quality control.',
+  },
+  {
+    range: '08/2024 ● 06/2025',
+    title: 'lead product designer',
+    org: 'soot',
+    body:
+      'Primary Figma keyholder for the design library Liquid Metal and interaction guidelines. Leading top-funnel acquisition strategy informed by design and PRDs. Documenting post production cycle insights.',
+  },
+  {
+    range: '03/2023 ● 08/2024',
+    title: 'freelance',
+    org: 'renaise.com',
+    body:
+      'Designed the initial end to end experience, design system, distribution blueprint, and pitch deck for Flora AI, while raising at a pre-seed stage. Other clients include Aputure, Lighthouse, Hemingway AI, Localist, Warden, and Lantern DB.',
+  },
+  {
+    range: '03/2022 ● 03/2023',
+    title: 'PRODUCT DESIGNER',
+    org: 'rememe / collage',
+    body:
+      'Delivered a design system library (less lead time on dev cycles) high growth traction (0 to N MAU) on a creation-focused social app, Rememe (former Collage). Growth hacked on Twitter and raised a cult following.',
+  },
+];
+---
+
+<Base title="Work — Renaise">
+  <div class="relative min-h-screen bg-[#111111] text-white">
+    <div class="dot-grid fixed inset-0 z-0 pointer-events-none text-white/45" aria-hidden="true">
+      <svg width="100%" height="100%">
+        <pattern id="work-dots" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+          <circle cx="16" cy="16" r="1" fill="currentColor" />
+        </pattern>
+        <rect width="100%" height="100%" fill="url(#work-dots)" />
+      </svg>
+    </div>
+
+    <div class="relative z-10 mx-auto max-w-2xl px-6 py-10 md:py-16">
+      <header class="mb-12">
+        <a
+          href="/"
+          class="inline-block font-mono text-[12px] uppercase tracking-[0.12em] text-white/45 transition-colors hover:text-white/80"
+        >
+          ← back
+        </a>
+      </header>
+
+      <section class="mb-16 space-y-4">
+        <p class="font-mono text-[11px] uppercase tracking-[0.14em] text-white/45">about</p>
+        <p class="text-[15px] leading-relaxed text-white/75">
+          Currently based in NYC.
+        </p>
+        <p class="text-[15px] leading-relaxed text-white/75">
+          Lived Experience Designer shaping brands, sites, and systems. Co-director at{' '}
+          <a
+            href="https://artificenyc.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-white/90 underline decoration-white/25 underline-offset-2 hover:decoration-white/50"
+            >ARTIFICE</a
+          >.
+        </p>
+        <p class="text-[14px] text-white/50">Portfolio upon request.</p>
+      </section>
+
+      <section class="mb-6">
+        <p class="font-mono text-[11px] uppercase tracking-[0.14em] text-white/45">TOOLKIT</p>
+      </section>
+      <section class="mb-6">
+        <p class="font-mono text-[11px] uppercase tracking-[0.14em] text-white/45">SHIPPED</p>
+      </section>
+
+      <section class="mb-16">
+        <p class="font-mono text-[11px] uppercase tracking-[0.14em] text-white/45">Background</p>
+        <p class="mono-caps mt-4 text-[13px] leading-[1.45] tracking-[-0.02em] text-white/60">
+          RENAISE IS A VISUAL PRODUCER + PROTOTYPER WITH 8 YEARS OF EXPERIENCE DESIGNING IDENTITIES AND
+          INTUITIVE PRODUCTS FOR BRANDS IN CONSUMER TECH AND MEDIA. STUDIO PARTNER AT STUDIO ARTIFICE +
+          CO-DIRECTOR AT ARTIFICE NYC
+        </p>
+      </section>
+
+      <section class="mb-16">
+        <h2 class="font-mono text-[11px] uppercase tracking-[0.14em] text-white/45">WORK HISTORY</h2>
+        <p class="mt-6 text-[14px] leading-relaxed text-white/55">
+          For full resume or any inquiries, please{' '}
+          <a
+            href="mailto:krenaise@gmail.com"
+            class="text-white/85 underline decoration-white/25 underline-offset-2 hover:text-white"
+            >reach out</a
+          >
+          to Renaise. Otherwise, here is her{' '}
+          <a
+            href="https://www.linkedin.com/in/renaise-kim-408641123/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-white/85 underline decoration-white/25 underline-offset-2 hover:text-white"
+            >LinkedIn</a
+          >.
+        </p>
+
+        <ul class="mt-12 space-y-12">
+          {timeline.map((t) => (
+            <li class="border-t border-white/10 pt-8 first:border-t-0 first:pt-0">
+              <p class="font-mono text-[12px] tabular-nums text-white/40">{t.range}</p>
+              <p class="mt-3 font-mono text-[13px] uppercase tracking-[0.08em] text-white/70">
+                {t.title}
+              </p>
+              <p class="mt-1 text-[15px] font-medium uppercase tracking-wide text-white/90">{t.org}</p>
+              <p class="mt-4 text-[14px] leading-relaxed text-white/55">{t.body}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section class="border-t border-white/15 pt-12">
+        <h2 class="font-mono text-[11px] uppercase tracking-[0.14em] text-white/45">
+          SCREENSHOT_REEL_2024
+        </h2>
+        <p class="mt-3 text-[14px] text-white/50">
+          12 Months of work in 24 frames. in 8 seconds
+        </p>
+        <div class="mt-8 overflow-hidden rounded-lg border border-white/10 bg-black/40">
+          <video
+            class="w-full"
+            autoplay
+            muted
+            loop
+            playsinline
+            controls
+            src="/clips/everything-12s.mp4"
+          />
+        </div>
+      </section>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .font-mono {
+    font-family:
+      'ABC Diatype Mono',
+      'SF Mono',
+      Monaco,
+      Inconsolata,
+      'Roboto Mono',
+      monospace;
+  }
+
+  .mono-caps {
+    font-family:
+      'ABC Diatype Mono',
+      'SF Mono',
+      Monaco,
+      Inconsolata,
+      'Roboto Mono',
+      monospace;
+    font-weight: 300;
+    text-transform: uppercase;
+  }
+</style>

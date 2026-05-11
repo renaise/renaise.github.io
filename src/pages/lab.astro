@@ -23,7 +23,7 @@ import { labProjects } from '../data/projects-expanded';
       </a>
       <nav class="flex items-center gap-2">
         <a href="/lab" class="nav-pill nav-pill-active">Lab</a>
-        <a href="mailto:hello@renaise.com" class="nav-pill">Contact</a>
+        <a href="mailto:krenaise@gmail.com" class="nav-pill">Contact</a>
       </nav>
     </header>
 
@@ -45,10 +45,14 @@ import { labProjects } from '../data/projects-expanded';
               </span>
             </div>
 
-            <!-- Center: Title -->
-            <h2 class="text-[24px] md:text-[28px] text-white/90 font-medium uppercase tracking-wide text-center leading-tight my-auto px-4">
-              {p.lab.title}
-            </h2>
+            <div class="my-auto px-3 flex flex-col gap-2 text-center">
+              <h2 class="text-[18px] md:text-[22px] text-white/95 font-medium uppercase tracking-wide leading-tight">
+                {p.stage.title}
+              </h2>
+              <p class="text-[11px] md:text-[12px] text-white/65 leading-snug line-clamp-5">
+                {p.stage.description}
+              </p>
+            </div>
 
             <!-- Bottom: Service tags -->
             <div class="flex items-center justify-center gap-3 flex-wrap">

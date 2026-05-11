@@ -1,0 +1,102 @@
+---
+import Base from '../layouts/Base.astro';
+import { SHOWROOM_FRAMER_CARDS } from '../data/showroom-framer';
+
+function cardHref(c: (typeof SHOWROOM_FRAMER_CARDS)[number]): string | undefined {
+  if (c.labId) return `/lab/${c.labId}`;
+  if (c.externalHref) return c.externalHref;
+  return undefined;
+}
+---
+
+<Base title="Showroom of Renaise">
+  <div class="relative min-h-screen bg-[#111111] text-white">
+    <div class="dot-grid fixed inset-0 z-0 pointer-events-none text-white/45" aria-hidden="true">
+      <svg width="100%" height="100%">
+        <pattern id="showroom-dots" x="0" y="0" width="32" height="32" patternUnits="userSpaceOnUse">
+          <circle cx="16" cy="16" r="1" fill="currentColor" />
+        </pattern>
+        <rect width="100%" height="100%" fill="url(#showroom-dots)" />
+      </svg>
+    </div>
+
+    <div class="relative z-10 mx-auto max-w-4xl px-6 py-10 md:py-16">
+      <header class="mb-14 md:mb-20">
+        <a
+          href="/"
+          class="inline-block font-mono text-[12px] uppercase tracking-[0.12em] text-white/45 transition-colors hover:text-white/80"
+        >
+          ← back
+        </a>
+        <h1
+          class="mt-10 font-[Helvetica_Now_Display,-apple-system,sans-serif] text-[clamp(1.75rem,4vw,2.5rem)] font-normal uppercase tracking-[0.02em] text-white/95"
+        >
+          SHOWROOM OF RENAISE®
+        </h1>
+      </header>
+
+      <ul class="flex flex-col gap-0 border-t border-white/15">
+        {SHOWROOM_FRAMER_CARDS.map((c) => {
+          const href = cardHref(c);
+          const isExternal = href?.startsWith('http') ?? false;
+          const linkClass =
+            'group block py-8 md:py-10 transition-colors cursor-pointer hover:bg-white/[0.03]';
+          const staticClass =
+            'group block py-8 md:py-10 transition-colors cursor-default opacity-95';
+
+          const body = (
+            <>
+              <h2 class="font-[Helvetica_Now_Display,-apple-system,sans-serif] text-[clamp(1rem,2.2vw,1.25rem)] font-medium normal-case leading-snug tracking-tight text-white/90 group-hover:text-white md:max-w-[90%]">
+                {c.headline}
+              </h2>
+              <p class="mt-4 font-mono text-[11px] uppercase tracking-[0.14em] text-white/50">
+                {c.tags}
+              </p>
+              <p class="mt-2 font-mono text-[12px] tabular-nums text-white/40">{c.year}</p>
+              {!href && (
+                <p class="mt-3 max-w-md text-[12px] leading-relaxed text-white/35">
+                  Case study available on request —{' '}
+                  <a
+                    href="mailto:krenaise@gmail.com"
+                    class="text-white/55 underline decoration-white/20 underline-offset-2 hover:text-white/90"
+                  >
+                    krenaise@gmail.com
+                  </a>
+                </p>
+              )}
+            </>
+          );
+
+          return (
+            <li class="border-b border-white/15">
+              {href && isExternal && (
+                <a
+                  class={linkClass}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {body}
+                </a>
+              )}
+              {href && !isExternal && <a class={linkClass} href={href}>{body}</a>}
+              {!href && <div class={staticClass}>{body}</div>}
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .font-mono {
+    font-family:
+      'ABC Diatype Mono',
+      'SF Mono',
+      Monaco,
+      Inconsolata,
+      'Roboto Mono',
+      monospace;
+  }
+</style>

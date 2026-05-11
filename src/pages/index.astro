@@ -4,17 +4,15 @@ import ProjectsSidebar from '../components/ProjectsSidebar.astro';
 import ProfilesSidebar from '../components/ProfilesSidebar.astro';
 import { projectsExpanded, labProjects } from '../data/projects-expanded';
 
-// Carousel order: lighthouse → flora → soot → biota → aputure → osmosis
-const allowedProjects = ['lighthouse', 'flora', 'soot', 'biota', 'aputure', 'osmosis'];
+// Stage dock order — matches renaise.com showroom
+const allowedProjects = ['soot', 'aputure', 'flora', 'yap'];
 
 // Hero assets for each project (videos and images)
 const heroAssets: Record<string, { url: string; type: 'video' | 'image' }> = {
-  lighthouse: { url: 'https://renaise.codexfoundry.com/lighthouse_brand.png', type: 'image' },
-  flora: { url: 'https://renaise.codexfoundry.com/flora_still.gif', type: 'image' },
   soot: { url: 'https://renaise.codexfoundry.com/platform_soot.mp4', type: 'video' },
-  biota: { url: 'https://renaise.codexfoundry.com/biota_cover.mp4', type: 'video' },
   aputure: { url: 'https://renaise.codexfoundry.com/Aputure_Site.mp4', type: 'video' },
-  osmosis: { url: 'https://renaise.codexfoundry.com/OsmosisHeader_3.mp4', type: 'video' },
+  flora: { url: 'https://renaise.codexfoundry.com/flora_still.gif', type: 'image' },
+  yap: { url: '/assets/projects/p8.svg', type: 'image' },
 };
 
 // Map expanded projects to sidebar format (filtered)
@@ -34,7 +32,7 @@ const projects = projectsExpanded
   role: p.stage.role,
   outcome: p.stage.outcome,
   leadVertical: p.serviceSuite[0] || 'Design',
-  hasLabel: p.id === 'nove',
+  hasLabel: false,
 }));
 
 // Social profiles - right sidebar (order matches screenshot)
@@ -69,10 +67,9 @@ const navItems = [
     <!-- Hero Background - project asset (grid-aligned) -->
     <div class="hero-bg fixed inset-0 z-[2] pointer-events-none">
       <div id="hero-media" class="hero-media absolute overflow-hidden rounded-sm">
-        <!-- Video element (hidden by default, shown for video assets) -->
-        <video id="hero-video" class="absolute inset-0 w-full h-full object-cover hidden" autoplay muted loop playsinline></video>
-        <!-- Image element (default: Flora) -->
-        <img id="hero-image" class="absolute inset-0 w-full h-full object-cover" src="https://renaise.codexfoundry.com/flora_still.gif" alt="" />
+        <!-- Default: first showroom project (SOOT) — matches renaise.com order -->
+        <video id="hero-video" class="absolute inset-0 w-full h-full object-cover" autoplay muted loop playsinline src="https://renaise.codexfoundry.com/platform_soot.mp4"></video>
+        <img id="hero-image" class="absolute inset-0 w-full h-full object-cover hidden" src="" alt="" />
       </div>
     </div>
 
@@ -130,23 +127,32 @@ const navItems = [
       />
     </div>
 
-    <!-- Top Left: LAB + STAGE toggle - Figma: 196×55, 2% white, 12px radius -->
-    <div class="fixed top-4 left-4 z-20 flex items-center justify-center gap-1 nav-bar w-[196px] h-[55px] rounded-[12px] bg-white/[0.02]">
-      <button id="lab-tab" class="nav-tab flashlight-tab px-5 py-2.5" data-view="lab">
-        <span class="tab-bg"></span>
-        <span class="tab-glow"></span>
-        <span class="tab-content">LAB</span>
-      </button>
-      <button id="stage-tab" class="nav-tab flashlight-tab nav-tab-active px-5 py-2.5" data-view="stage">
-        <span class="tab-bg"></span>
-        <span class="tab-glow"></span>
-        <span class="tab-content">STAGE</span>
-      </button>
+    <!-- Top Left: LAB + STAGE toggle + Framer-parity “view all” → /showroom -->
+    <div class="fixed top-4 left-4 z-20 flex flex-col items-start gap-2">
+      <div class="flex items-center justify-center gap-1 nav-bar w-[196px] h-[55px] rounded-[12px] bg-white/[0.02]">
+        <button id="lab-tab" class="nav-tab flashlight-tab px-5 py-2.5" data-view="lab">
+          <span class="tab-bg"></span>
+          <span class="tab-glow"></span>
+          <span class="tab-content">LAB</span>
+        </button>
+        <button id="stage-tab" class="nav-tab flashlight-tab nav-tab-active px-5 py-2.5" data-view="stage">
+          <span class="tab-bg"></span>
+          <span class="tab-glow"></span>
+          <span class="tab-content">WORK</span>
+        </button>
+      </div>
+      <a
+        href="/showroom"
+        class="pl-1 text-[11px] uppercase tracking-[0.14em] text-white/40 transition-colors hover:text-white/75"
+        style="font-family: 'ABC Diatype Mono', 'SF Mono', Monaco, monospace;"
+      >
+        all work
+      </a>
     </div>
 
     <!-- Top Center: Bio text -->
     <div class="bio-section fixed top-4 left-1/2 -translate-x-1/2 z-20">
-      <p class="bio-text">RENAISE IS A VISUAL PRODUCER + PROTOTYPER WITH 8 YEARS OF EXPERIENCE DESIGNING IDENTITIES AND INTUITIVE PRODUCTS FOR BRANDS IN CONSUMER TECH AND MEDIA. STUDIO PARTNER AT <a href="https://studioartifice.com" target="_blank" rel="noopener noreferrer" class="artifice-link"><span class="italic">STUDIO ARTIFICE</span></a><br /><img src="/assets/artifice-a.png" alt="" class="artifice-mark" /> + CO-DIRECTOR AT <a href="https://artificenyc.com" target="_blank" rel="noopener noreferrer" class="artifice-link"><span class="italic">ARTIFICE NYC</span> <img src="/assets/artifice-mark.png" alt="" class="artifice-mark" /></a></p>
+      <p class="bio-text">RENAISE KIM DESIGNS BRAND SYSTEMS, PRODUCT INTERFACES, AND LAUNCH EXPERIENCES FOR AI, MEDIA, AND CONSUMER TECHNOLOGY. STUDIO PARTNER AT <a href="https://studioartifice.com" target="_blank" rel="noopener noreferrer" class="artifice-link"><span class="italic">STUDIO ARTIFICE</span></a><br /><img src="/assets/artifice-a.png" alt="" class="artifice-mark" /> + CO-DIRECTOR AT <a href="https://artificenyc.com" target="_blank" rel="noopener noreferrer" class="artifice-link"><span class="italic">ARTIFICE NYC</span> <img src="/assets/artifice-mark.png" alt="" class="artifice-mark" /></a></p>
     </div>
 
     <!-- Top Right: Ellipsis menu button -->
@@ -172,6 +178,20 @@ const navItems = [
 
       <!-- Center Content Area -->
       <main id="center-stage" class="relative z-20 min-h-screen flex flex-col items-center justify-center pointer-events-none">
+        <section class="stage-copy pointer-events-auto">
+          <p class="stage-kicker">Visual Producer + Prototyper</p>
+          <h1>Brand and product systems for companies building new cultural interfaces.</h1>
+          <p class="stage-deck">Selected work across AI tools, cinematic technology, creative platforms, and launch-ready web systems.</p>
+        </section>
+
+        <section id="project-caption" class="project-caption pointer-events-auto">
+          <div>
+            <p id="caption-meta" class="caption-meta">SHOWROOM / 2025</p>
+            <h2 id="caption-title">Soot</h2>
+            <p id="caption-body">Designing the ecosystem for self-organizing digital assets.</p>
+          </div>
+          <a id="caption-link" href="/lab/soot">View process</a>
+        </section>
       </main>
     </div>
 
@@ -206,10 +226,15 @@ const navItems = [
                 </span>
               </div>
 
-              <!-- Center: Title -->
-              <h2 class="text-[24px] md:text-[28px] text-white/90 font-medium uppercase tracking-wide text-center leading-tight my-auto px-4">
-                {p.lab.title}
-              </h2>
+              <!-- Center: title + description (renaise.com showroom cards) -->
+              <div class="my-auto px-3 flex flex-col gap-2 text-center">
+                <h2 class="text-[18px] md:text-[22px] text-white/95 font-medium uppercase tracking-wide leading-tight">
+                  {p.stage.title}
+                </h2>
+                <p class="text-[11px] md:text-[12px] text-white/65 leading-snug line-clamp-5">
+                  {p.stage.description}
+                </p>
+              </div>
 
               <!-- Bottom: Service tags -->
               <div class="flex items-center justify-center gap-3 flex-wrap">
@@ -228,7 +253,7 @@ const navItems = [
 
     <!-- Bottom Left: CONTACT button - aligned under Projects dock -->
     <div class="fixed bottom-4 left-4 z-30 nav-bar w-[116px]">
-      <a href="mailto:hello@renaise.com" class="nav-tab flashlight-tab w-full flex items-center justify-center py-2.5">
+      <a href="mailto:krenaise@gmail.com" class="nav-tab flashlight-tab w-full flex items-center justify-center py-2.5">
         <span class="tab-bg"></span>
         <span class="tab-glow"></span>
         <span class="tab-content">CONTACT</span>
@@ -286,11 +311,39 @@ const navItems = [
         </div>
 
         <!-- Bio Info -->
-        <div class="text-center space-y-2">
+        <div class="text-center space-y-3 max-w-md mx-auto">
           <h2 class="text-[28px] font-light tracking-wide text-white uppercase">Renaise Kim</h2>
-          <p class="text-[13px] tracking-[0.08em] text-white/60 uppercase">Visual Producer + Prototyper</p>
-          <p class="text-[13px] tracking-[0.08em] text-white/40 uppercase">8 years experience. Based in NYC.</p>
-          <p class="text-[13px] tracking-[0.08em] text-white/40 uppercase">Studio Partner at <a href="https://studioartifice.com" target="_blank" rel="noopener" class="hover:text-white/70 transition-colors">Studio Artifice</a></p>
+          <p class="text-[13px] tracking-[0.06em] text-white/70 leading-relaxed">
+            Visual producer and prototyper shaping brand systems, sites, and interfaces for AI, media, and consumer technology. Co-director at{' '}
+            <a href="https://artificenyc.com" target="_blank" rel="noopener" class="hover:text-white/90 transition-colors underline underline-offset-2">ARTIFICE</a>.
+            Portfolio upon request.
+          </p>
+          <p class="text-[12px] tracking-[0.08em] text-white/45 uppercase">Based in NYC · Strategy · Identity · Product · Web</p>
+          <p class="pt-2 flex flex-wrap gap-x-5 gap-y-2">
+            <a
+              href="/work"
+              class="text-[12px] tracking-[0.06em] text-white/50 underline decoration-white/20 underline-offset-2 hover:text-white/85"
+            >
+              Work history &amp; reel
+            </a>
+            <a
+              href="/info"
+              class="text-[12px] tracking-[0.06em] text-white/50 underline decoration-white/20 underline-offset-2 hover:text-white/85"
+            >
+              Info
+            </a>
+          </p>
+        </div>
+
+        <!-- Client Marquee -->
+        <div class="about-client-marquee-wrap w-full max-w-[980px] mt-10 mb-8">
+          <p class="about-client-eyebrow">studio clients</p>
+          <div class="about-client-marquee" aria-label="Selected Studio Artifice clients">
+            <div class="about-client-track">
+              <img src="/assets/client-marquee.png" alt="Google, Osmosis, Lantern, Biota, Flora, Google Labs, Lighthouse, Concierge, and silica client logos." class="about-client-strip" />
+              <img src="/assets/client-marquee.png" alt="" aria-hidden="true" class="about-client-strip" />
+            </div>
+          </div>
         </div>
 
         <!-- Profile Links -->
@@ -375,6 +428,94 @@ const navItems = [
 
   .bio-text .italic {
     font-style: italic;
+  }
+
+  .stage-copy {
+    position: fixed;
+    left: clamp(220px, 18vw, 280px);
+    top: clamp(112px, 17vh, 168px);
+    z-index: 24;
+    width: min(420px, calc(100vw - 520px));
+    color: white;
+  }
+
+  .stage-kicker,
+  .caption-meta {
+    font-family: 'ABC Diatype Mono', 'SF Mono', Monaco, monospace;
+    font-size: 10px;
+    line-height: 1.2;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.46);
+  }
+
+  .stage-copy h1 {
+    margin-top: 0.85rem;
+    max-width: 400px;
+    font-size: clamp(24px, 3.2vw, 44px);
+    line-height: 0.96;
+    letter-spacing: 0;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.96);
+  }
+
+  .stage-deck {
+    margin-top: 1rem;
+    max-width: 360px;
+    font-size: 14px;
+    line-height: 1.45;
+    color: rgba(255, 255, 255, 0.58);
+  }
+
+  .project-caption {
+    position: fixed;
+    left: 50%;
+    bottom: 76px;
+    z-index: 24;
+    width: min(560px, calc(100vw - 420px));
+    transform: translateX(-50%);
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 18px 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    background: rgba(13, 13, 13, 0.68);
+    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(18px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.28);
+  }
+
+  .project-caption h2 {
+    margin-top: 0.45rem;
+    font-size: 21px;
+    line-height: 1;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.94);
+  }
+
+  .project-caption p:not(.caption-meta) {
+    margin-top: 0.55rem;
+    max-width: 360px;
+    font-size: 12px;
+    line-height: 1.35;
+    color: rgba(255, 255, 255, 0.58);
+  }
+
+  .project-caption a {
+    flex: 0 0 auto;
+    font-family: 'ABC Diatype Mono', 'SF Mono', Monaco, monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.68);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .project-caption a:hover {
+    color: rgba(255, 255, 255, 0.96);
   }
 
   /* Artifice links in bio */
@@ -837,6 +978,100 @@ const navItems = [
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
   }
 
+  .about-client-marquee-wrap {
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+    padding-top: 16px;
+  }
+
+  .about-client-eyebrow {
+    font-family: 'ABC Diatype Mono', 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.52);
+    margin-bottom: 10px;
+  }
+
+  .about-client-marquee {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    background:
+      radial-gradient(120% 80% at 50% 0%, rgba(255, 255, 255, 0.08) 0%, rgba(7, 7, 7, 0) 45%),
+      linear-gradient(180deg, rgba(18, 18, 18, 0.96) 0%, rgba(7, 7, 7, 0.98) 100%);
+  }
+
+  .about-client-marquee::before,
+  .about-client-marquee::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: clamp(22px, 5vw, 70px);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .about-client-marquee::before {
+    left: 0;
+    background: linear-gradient(90deg, rgba(8, 8, 8, 1) 0%, rgba(8, 8, 8, 0) 100%);
+  }
+
+  .about-client-marquee::after {
+    right: 0;
+    background: linear-gradient(270deg, rgba(8, 8, 8, 1) 0%, rgba(8, 8, 8, 0) 100%);
+  }
+
+  .about-client-track {
+    display: flex;
+    width: max-content;
+    animation: about-client-scroll 30s linear infinite;
+    will-change: transform;
+  }
+
+  .about-client-strip {
+    display: block;
+    height: clamp(26px, 2.4vw, 38px);
+    width: auto;
+    margin: clamp(14px, 2vw, 18px) clamp(28px, 3.2vw, 42px);
+    opacity: 0.82;
+    filter: grayscale(1) brightness(1.08) contrast(0.92);
+    flex-shrink: 0;
+  }
+
+  @keyframes about-client-scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .about-client-track {
+      animation: none;
+    }
+  }
+
+  @media (max-width: 980px) {
+    .stage-copy {
+      left: 24px;
+      right: 24px;
+      top: 96px;
+      width: auto;
+    }
+
+    .project-caption {
+      left: 24px;
+      right: 24px;
+      bottom: 72px;
+      width: auto;
+      transform: none;
+    }
+  }
+
 </style>
 
 <script>
@@ -927,7 +1162,7 @@ const navItems = [
   const gridFrameDiv = document.getElementById('grid-frame')?.parentElement;
   const bioSection = document.querySelector('.bio-section');
   const bottomCta = document.querySelector('.marquee-pill')?.parentElement;
-  const contactBtn = document.querySelector('[href="mailto:hello@renaise.com"]')?.parentElement;
+  const contactBtn = document.querySelector('[href="mailto:krenaise@gmail.com"]')?.parentElement;
   const aboutBtn = document.querySelector('[href="#about"]')?.parentElement;
   const ellipsisBtn = document.getElementById('ellipsis-menu');
 
@@ -1105,7 +1340,8 @@ const navItems = [
   // Get hero assets from window (passed from Astro)
   const heroAssets = (window as any).heroAssets || {};
 
-  let currentOffset = 0; // Which item index is in the active slot
+  // Align first list item (SOOT) with the active dock slot
+  let currentOffset = 1;
   let rotationInterval: ReturnType<typeof setInterval> | null = null;
   let isPaused = false;
   let isAnimating = false;
@@ -1136,6 +1372,8 @@ const navItems = [
     const description = project.getAttribute('data-description');
     const category = project.getAttribute('data-category');
     const year = project.getAttribute('data-year');
+    const role = project.getAttribute('data-role');
+    const outcome = project.getAttribute('data-outcome');
 
     const marqueeContent = document.getElementById('marquee-content');
     if (marqueeContent) {
@@ -1154,6 +1392,27 @@ const navItems = [
     const labCta = document.getElementById('lab-cta');
     if (labCta && id) {
       labCta.setAttribute('href', `/lab/${id}`);
+    }
+
+    const captionMeta = document.getElementById('caption-meta');
+    const captionTitle = document.getElementById('caption-title');
+    const captionBody = document.getElementById('caption-body');
+    const captionLink = document.getElementById('caption-link');
+
+    if (captionMeta) {
+      captionMeta.textContent = [category, year, role].filter(Boolean).join(' / ');
+    }
+
+    if (captionTitle && name) {
+      captionTitle.textContent = name;
+    }
+
+    if (captionBody) {
+      captionBody.textContent = outcome || description || '';
+    }
+
+    if (captionLink && id) {
+      captionLink.setAttribute('href', `/lab/${id}`);
     }
   }
 
@@ -1216,7 +1475,7 @@ const navItems = [
           // MAGNETIC SNAP-IN: pull in with overshoot
           item.classList.add('active');
           gsap.to(item, {
-            scale: 1.3,
+            scale: 1.07,
             duration: 0.5,
             ease: magneticSnapIn,
           });
@@ -1246,7 +1505,7 @@ const navItems = [
     } else {
       // Immediate positioning
       itemStates.forEach(({ item, yPos, isActive }) => {
-        gsap.set(item, { y: yPos, scale: isActive ? 1.3 : 1 });
+        gsap.set(item, { y: yPos, scale: isActive ? 1.07 : 1 });
 
         if (isActive) {
           item.classList.add('active');
