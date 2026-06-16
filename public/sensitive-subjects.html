@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sensitive Subjects — Renaise Kim</title>
+<style>
+  @font-face{font-family:'HND';src:url('/fonts/helvetica-now-light.woff2') format('woff2'),url('/fonts/Helvetica-Now-Display.ttf') format('truetype');font-weight:300 700;font-display:swap}
+  @font-face{font-family:'Mono';src:url('/ABCFavoritMono-Light-Trial.otf') format('opentype');font-weight:300;font-display:swap}
+
+  :root{
+    --bg:#0c0c0d; --ink:#f1f1ef; --soft:#c4c4c6; --mute:#7a7a7e;
+    --line:rgba(255,255,255,.14); --accent:#3b4cff;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  body{background:var(--bg);color:var(--ink);font-family:'HND',-apple-system,'Helvetica Neue',Arial,sans-serif;line-height:1.5}
+  .mono{font-family:'Mono','SF Mono',Menlo,monospace}
+  a{color:inherit}
+
+  .wrap{max-width:1080px;margin:0 auto;padding:0 clamp(20px,5vw,40px)}
+
+  /* Top bar */
+  .topbar{display:flex;justify-content:space-between;align-items:center;
+    padding:24px 0;border-bottom:1px solid var(--line)}
+  .topbar a,.topbar span{font-family:'Mono',monospace;font-size:10.5px;
+    letter-spacing:.16em;text-transform:uppercase;color:var(--mute);text-decoration:none}
+  .topbar a:hover{color:var(--ink)}
+
+  /* Hero */
+  .hero{padding:clamp(48px,9vh,108px) 0 clamp(36px,6vh,64px)}
+  .meta{display:flex;gap:clamp(28px,5vw,72px);flex-wrap:wrap;margin-bottom:clamp(36px,6vh,60px)}
+  .meta .col .k{font-family:'Mono',monospace;font-size:10px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--mute);margin-bottom:9px}
+  .meta .col .v{font-size:13.5px;color:var(--soft);line-height:1.7}
+  .meta .col .v span{display:block}
+
+  h1{font-size:clamp(30px,5vw,62px);font-weight:500;letter-spacing:-.025em;
+    line-height:1.02;max-width:18ch}
+  .tagline{margin-top:18px;font-size:clamp(15px,1.5vw,19px);color:var(--soft);
+    letter-spacing:-.01em;max-width:46ch;line-height:1.4}
+
+  /* Media placeholder */
+  .media{aspect-ratio:16/9;border:1px solid var(--line);border-radius:2px;
+    display:flex;align-items:center;justify-content:center;margin:8px 0 clamp(48px,8vh,88px);
+    background:radial-gradient(120% 120% at 50% 0%,rgba(59,76,255,.08),transparent 60%)}
+  .media span{font-family:'Mono',monospace;font-size:10px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--mute)}
+
+  /* Body */
+  .body{max-width:60ch;margin:0 auto;padding-bottom:clamp(48px,8vh,96px)}
+  .body p{font-size:clamp(16px,1.5vw,19px);line-height:1.62;color:var(--soft);
+    letter-spacing:-.011em;margin-bottom:1.5em}
+  .body p.lead{color:var(--ink)}
+  .body p.close{color:var(--ink);font-size:clamp(18px,1.7vw,22px);line-height:1.4;
+    margin-top:.5em}
+  .body em{font-style:italic;color:var(--ink)}
+
+  /* Credits */
+  .credits{border-top:1px solid var(--line);padding:clamp(32px,5vh,52px) 0;
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:24px}
+  .credits .col .k{font-family:'Mono',monospace;font-size:10px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--mute);margin-bottom:9px}
+  .credits .col .v{font-size:13.5px;color:var(--soft);line-height:1.7}
+
+  /* Footer nav */
+  .pager{display:flex;justify-content:space-between;border-top:1px solid var(--line);
+    padding:24px 0 72px}
+  .pager a{font-family:'Mono',monospace;font-size:10.5px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--mute);text-decoration:none}
+  .pager a:hover{color:var(--ink)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <a href="/work-grid.html">← Selected Work</a>
+    <span>Index 01 / 09</span>
+  </div>
+
+  <section class="hero">
+    <div class="meta">
+      <div class="col"><div class="k">Client</div><div class="v">Self-initiated</div></div>
+      <div class="col"><div class="k">Year</div><div class="v">2025</div></div>
+      <div class="col"><div class="k">Role</div><div class="v"><span>Creative Direction</span><span>Identity</span><span>Narrative</span><span>Web</span></div></div>
+    </div>
+
+    <h1>Sensitive Subjects, picturing the things that don't exist yet.</h1>
+    <p class="tagline">A studio for photoreal product imagery, built on an AI-accelerated pipeline.</p>
+  </section>
+
+  <div class="media"><span>Selected frames</span></div>
+
+  <article class="body">
+    <p class="lead">Most product imagery is a compromise. A render farm, six weeks, a dozen rounds of notes — and a result that still reads as a render. For the companies moving fastest on hardware and AI, the picture is the bottleneck: it arrives after the moment it was made for.</p>
+
+    <p>Sensitive Subjects starts somewhere else. Photoreal images of products and technology — including the chip, the rig, the concept that has no physical form yet — made on an AI-accelerated pipeline that turns weeks into days. Speed was never the point on its own. The point is that a picture should already believe in the thing it shows.</p>
+
+    <p>Each frame lands on-brand and ready to run: a campaign key visual, a social cut, a slide in the all-hands deck. A finished image, not a raw render someone still has to dress. And it travels — a paid placement, a pitch, a broader brand refresh — sized and formatted on the way out.</p>
+
+    <p>The identity carries all of this without standing still. Navigation works from radial dials rather than a menu bar; the layout reshapes as you move through it. A mutable web for a studio that takes a different shape with every client — assembled, each time, from the collaborators the work actually needs.</p>
+
+    <p class="close">Because the next thing is always easier to believe once someone can see it.</p>
+  </article>
+
+  <section class="credits">
+    <div class="col"><div class="k">Creative Direction</div><div class="v">Renaise Kim</div></div>
+    <div class="col"><div class="k">Web Design</div><div class="v">Chakib Mazouni</div></div>
+    <div class="col"><div class="k">Disciplines</div><div class="v">Strategy · Brand · Design</div></div>
+    <div class="col"><div class="k">Year</div><div class="v">2025</div></div>
+  </section>
+
+  <nav class="pager">
+    <a href="/work-grid.html">← Index</a>
+    <a href="/work-grid.html">Next: Lighthouse →</a>
+  </nav>
+
+</div>
+</body>
+</html>
