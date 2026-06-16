@@ -1,0 +1,627 @@
+---
+import Base from '../layouts/Base.astro';
+
+// Featured projects — the hero "Nav - Featured projects" strip.
+// Order + copy mirror the Figma "Component 3" meta row (PROJECT NN — title — year).
+const featured = [
+  { n: '01', thumb: 'liquid-metal', title: 'See Everything, Metadata, Liquid Metal', year: '2024–25' },
+  { n: '02', thumb: 'industrial-lighting', title: 'Global Site for Industrial Cinematic Lighting', year: '2025' },
+  { n: '03', thumb: 'hieronymus', title: 'Hieronymus: The Design Ecosystem of Flora + Fauna', year: '2024' },
+  { n: '04', thumb: 'memory-mist', title: 'Imagining the Memory Layer Through Mist', year: '2024' },
+  { n: '05', thumb: 'legal-systems', title: 'Clarify, Navigate, Guide in Legal Systems', year: '2024' },
+  { n: '06', thumb: 'seed-everything', title: 'Seed.Everything, Commercial Templates, Social Node Graphing', year: '2025' },
+  { n: '07', thumb: 'browser-protocols', title: 'Capturing Apps Through Browser Protocols with LLMs', year: '2024' },
+  { n: '08', thumb: 'composable-canvas', title: 'Remixing and Creating Memes on a Composable Canvas', year: '2023' },
+];
+
+const practices = [
+  { title: 'Strategy', sub: 'Narratives + Outcomes' },
+  { title: 'Identity', sub: 'Brand Foundations' },
+  { title: 'Design', sub: 'Applications' },
+  { title: 'Production', sub: 'Activations + Experiences' },
+];
+---
+
+<Base title="Studio Artifice — Strategic Visual Studio">
+  <main class="studio">
+    <!-- ——— HERO ——— -->
+    <section class="hero">
+      <div class="hero-bg" style="background-image:url('/assets/studio/hero-bg.jpg')"></div>
+      <div class="hero-scrim"></div>
+
+      <!-- Featured projects nav -->
+      <div class="hero-feature">
+        <div class="hero-thumbs" id="hero-thumbs">
+          {featured.map((f, i) => (
+            <button
+              class:list={["hero-thumb", { active: i === 0 }]}
+              data-index={i}
+              data-title={f.title}
+              data-num={f.n}
+              data-year={f.year}
+              aria-label={f.title}
+            >
+              <img src={`/assets/studio/thumb-${f.thumb}.jpg`} alt="" loading="lazy" />
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <!-- Meta row (Component 3) -->
+      <div class="hero-meta">
+        <div class="hero-meta-side">
+          <span id="meta-num">PROJECT 01</span>
+          <span class="dash"></span>
+        </div>
+        <div class="hero-meta-title" id="meta-title">See Everything, Metadata, Liquid Metal</div>
+        <div class="hero-meta-side end">
+          <span class="dash"></span>
+          <span id="meta-year">2024–25</span>
+        </div>
+      </div>
+
+      <!-- Closed nav pill -->
+      <nav class="hero-nav" aria-label="Primary">
+        <div class="hero-nav-top">
+          <a href="#about">About</a>
+          <a href="#capabilities">Projects</a>
+          <a href="#about" class="hero-nav-mark" aria-label="Studio Artifice">
+            <img src="/assets/studio/wordmark-studio-artifice.svg" alt="Studio Artifice" />
+          </a>
+          <a href="#capabilities">Programs</a>
+          <a href="#contact">Contact</a>
+        </div>
+        <div class="hero-nav-dots" aria-hidden="true"></div>
+        <div class="hero-nav-ticker" aria-hidden="true">
+          <div class="ticker-track">
+            {Array.from({ length: 8 }).map(() => (
+              <span>Strategic Visual Studio&nbsp;&nbsp;✳&nbsp;&nbsp;</span>
+            ))}
+          </div>
+        </div>
+      </nav>
+    </section>
+
+    <!-- ——— BODY (grey gradient) ——— -->
+    <div class="body">
+      <!-- ABOUT -->
+      <section class="section" id="about">
+        <div class="sec-head">
+          <span class="lbl">About</span>
+          <span class="rule"></span>
+          <span class="lbl muted">Practice</span>
+        </div>
+        <div class="about-row">
+          <div class="about-mark">
+            <img src="/assets/studio/wordmark-studio-artifice.svg" alt="Studio Artifice" />
+            <img class="about-mark-a" src="/assets/studio/mark-a-small.svg" alt="" />
+          </div>
+          <p class="about-copy">
+            is an interface strategy and experiential systems studio working from URL to IRL;
+            spanning websites to activations on capturing a company's growth ecosystem. Shaping
+            systems for AI, cultural institutions, and narrative-sensitive companies as a cultural artifact.
+          </p>
+        </div>
+      </section>
+
+      <!-- CAPABILITIES -->
+      <section class="section" id="capabilities">
+        <div class="sec-head">
+          <span class="lbl">Capabilities</span>
+          <span class="rule"></span>
+          <span class="lbl muted">04 Practices</span>
+        </div>
+        <div class="cards">
+          {practices.map((p) => (
+            <article class="card">
+              <h3>{p.title}</h3>
+              <p>{p.sub}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <!-- STUDIO -->
+      <section class="section" id="studio">
+        <div class="sec-head">
+          <span class="lbl">Studio</span>
+          <span class="rule"></span>
+          <span class="lbl">New York</span>
+        </div>
+        <div class="client-marquee" aria-label="Selected Studio Artifice clients">
+          <div class="client-track">
+            <img src="/assets/client-marquee.png" alt="Google, Osmosis, Lantern, Biota, Flora, Google Labs, Lighthouse, Concierge, and silica client logos." class="client-strip" />
+            <img src="/assets/client-marquee.png" alt="" aria-hidden="true" class="client-strip" />
+          </div>
+        </div>
+        <div class="studio-row">
+          <div class="studio-mark">
+            <img src="/assets/studio/mark-a-large.svg" alt="" />
+          </div>
+          <p class="studio-copy">
+            Studio Artifice is led by Renaise, a visual prototyper and producer with eight years of
+            experience designing identities and intuitive products for consumer tech and media brands.
+            She led product design at SOOT, was founding designer at FLORA through its pre-seed raise,
+            designed for Y Combinator and a16z, and leads design, marketing, and creative direction for
+            ARTIFICE, a cultural nonprofit dedicated to programs shaping creative science and new media fictions.
+          </p>
+        </div>
+      </section>
+
+      <!-- CONTACT -->
+      <section class="section" id="contact">
+        <div class="sec-head">
+          <span class="lbl">Send an Inquiry</span>
+          <span class="rule"></span>
+          <span class="lbl muted">New Work</span>
+        </div>
+        <a class="contact-email" href="mailto:studio@artificenyc.org">studio@artificenyc.org</a>
+      </section>
+    </div>
+  </main>
+</Base>
+
+<style>
+  /* Body font (Helvetica Now Display) is inherited from the global Base layout. */
+  .studio {
+    --linen: #fcfaf5;
+    background: #ededed;
+    color: #fff;
+  }
+
+  .lbl,
+  .hero-meta,
+  .hero-nav-top,
+  .card h3 {
+    font-family: 'ABC Diatype Mono', 'SF Mono', Monaco, monospace;
+  }
+
+  /* ——— HERO ——— */
+  .hero {
+    position: relative;
+    min-height: clamp(620px, 90vh, 1100px);
+    background: #000;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center 38%;
+    filter: brightness(0.62) contrast(1.05);
+  }
+
+  /* Top fade + heavy bottom fade-to-black + edge vignette (matches Figma gradients) */
+  .hero-scrim {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0) 0%,
+        rgba(0, 0, 0, 0) 35%,
+        rgba(0, 0, 0, 0.4) 60%,
+        rgba(0, 0, 0, 0.8) 80%,
+        rgba(0, 0, 0, 0.98) 95%,
+        #000 100%
+      ),
+      radial-gradient(120% 80% at 50% 42%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.6) 100%);
+  }
+
+  /* Featured projects strip */
+  .hero-feature {
+    position: absolute;
+    top: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 4;
+    width: min(1124px, calc(100vw - 48px));
+  }
+
+  .hero-thumbs {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+  }
+
+  /* Uniform footprint — the active state is expressed via transform/opacity only
+     so hovering never reflows the row (no layout thrash). */
+  .hero-thumb {
+    flex: 0 0 auto;
+    width: 118px;
+    aspect-ratio: 132 / 82.5;
+    padding: 0;
+    border: 0;
+    border-radius: 4px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0.32;
+    transform: scale(0.74);
+    cursor: pointer;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+
+  .hero-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .hero-thumb:hover {
+    opacity: 0.7;
+    transform: scale(0.8);
+  }
+
+  .hero-thumb.active {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* Meta row */
+  .hero-meta {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: clamp(300px, 42%, 460px);
+    z-index: 4;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    gap: 24px;
+    padding: 0 40px;
+    color: var(--linen);
+    font-size: 12.5px;
+    line-height: 18px;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  .hero-meta-side {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .hero-meta-side.end {
+    justify-content: flex-end;
+  }
+
+  .hero-meta-side .dash {
+    flex: 1 1 auto;
+    height: 1px;
+    border-bottom: 1px dashed rgba(252, 250, 245, 0.55);
+  }
+
+  .hero-meta-title {
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  #meta-num,
+  #meta-year {
+    white-space: nowrap;
+  }
+
+  /* Closed nav pill */
+  .hero-nav {
+    position: absolute;
+    bottom: clamp(40px, 9vh, 110px);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 6;
+    width: min(500px, calc(100vw - 40px));
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.6);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  }
+
+  .hero-nav-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 18px 10px;
+  }
+
+  .hero-nav-top a {
+    color: rgba(10, 10, 10, 0.92);
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .hero-nav-top a:hover {
+    color: #000;
+  }
+
+  .hero-nav-mark {
+    flex: 0 0 auto;
+  }
+
+  .hero-nav-mark img {
+    width: 108px;
+    height: auto;
+    display: block;
+    filter: brightness(0);
+  }
+
+  .hero-nav-dots {
+    height: 1px;
+    margin: 0 14px;
+    background-image: radial-gradient(rgba(10, 10, 10, 0.45) 0.5px, transparent 0.6px);
+    background-size: 4px 1px;
+    background-repeat: repeat-x;
+  }
+
+  .hero-nav-ticker {
+    overflow: hidden;
+    padding: 9px 0 11px;
+  }
+
+  .ticker-track {
+    display: inline-flex;
+    white-space: nowrap;
+    animation: ticker 28s linear infinite;
+    color: rgba(10, 10, 10, 0.55);
+    font-family: 'ABC Diatype Mono', 'SF Mono', Monaco, monospace;
+    font-size: 10px;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+  }
+
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ——— BODY ——— */
+  .body {
+    background: linear-gradient(
+      180deg,
+      #000 0%,
+      #8e8e8e 6%,
+      #a8a8a8 38%,
+      #d9d9d9 88%,
+      #ededed 100%
+    );
+    padding-bottom: 160px;
+  }
+
+  .section {
+    max-width: 1152px;
+    margin: 0 auto;
+    padding: 56px 32px;
+    scroll-margin-top: 24px;
+  }
+
+  #about { padding-top: 96px; }
+
+  /* Section header: label — dashed rule — label */
+  .sec-head {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr) max-content;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 24px;
+  }
+
+  .lbl {
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #fff;
+    white-space: nowrap;
+  }
+
+  .lbl.muted {
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .rule {
+    height: 1px;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.5);
+  }
+
+  /* ABOUT */
+  .about-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 48px;
+  }
+
+  .about-mark {
+    position: relative;
+    flex: 0 0 auto;
+    padding-top: 6px;
+  }
+
+  .about-mark img {
+    width: 202px;
+    height: auto;
+    display: block;
+  }
+
+  .about-mark-a {
+    position: absolute;
+    top: 0;
+    left: 208px;
+    width: 16.5px !important;
+  }
+
+  .about-copy {
+    flex: 0 1 716px;
+    font-size: 32px;
+    line-height: 30px;
+    letter-spacing: -0.16px;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  /* CAPABILITIES */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    padding-top: 20px;
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 310px;
+    padding: 32px 24px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+  }
+
+  .card h3 {
+    font-size: 18px;
+    line-height: 1;
+    letter-spacing: -0.18px;
+    text-transform: uppercase;
+    color: #fff;
+  }
+
+  .card p {
+    font-size: 9px;
+    line-height: 1;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  /* STUDIO */
+  .client-marquee {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+
+  .client-track {
+    display: flex;
+    width: max-content;
+    animation: client-scroll 32s linear infinite;
+  }
+
+  /* Source art is white logos on transparent; render as dark monochrome
+     marks so they read against the light grey STUDIO section (per Figma). */
+  .client-strip {
+    height: 46px;
+    width: auto;
+    display: block;
+    opacity: 0.75;
+    filter: brightness(0);
+  }
+
+  @keyframes client-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  .studio-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 48px;
+    margin-top: 40px;
+  }
+
+  .studio-mark {
+    flex: 0 0 auto;
+    width: 311px;
+  }
+
+  .studio-mark img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .studio-copy {
+    flex: 0 1 716px;
+    font-size: 16px;
+    line-height: 18px;
+    letter-spacing: -0.16px;
+    color: #fff;
+  }
+
+  /* CONTACT */
+  .contact-email {
+    display: inline-block;
+    margin-top: 16px;
+    font-size: clamp(32px, 6vw, 64px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: #fff;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .contact-email:hover {
+    opacity: 0.7;
+  }
+
+  /* ——— Responsive ——— */
+  @media (max-width: 860px) {
+    .about-row,
+    .studio-row {
+      flex-direction: column;
+      gap: 28px;
+    }
+    .about-copy { font-size: 24px; line-height: 1.05; }
+    .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .card { min-height: 220px; }
+    .hero-meta-title { display: none; }
+    .hero-meta { grid-template-columns: 1fr auto; }
+  }
+
+  @media (max-width: 520px) {
+    .cards { grid-template-columns: 1fr; }
+    .card { min-height: 160px; }
+    .hero-nav-top { gap: 6px; padding: 10px 12px 8px; }
+    .hero-nav-top a { font-size: 9px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ticker-track,
+    .client-track { animation: none; }
+  }
+</style>
+
+<script>
+  // Featured project hover/click → update meta row + active thumbnail
+  const thumbs = document.querySelectorAll<HTMLButtonElement>('.hero-thumb');
+  const metaNum = document.getElementById('meta-num');
+  const metaTitle = document.getElementById('meta-title');
+  const metaYear = document.getElementById('meta-year');
+
+  function setActive(btn: HTMLButtonElement) {
+    thumbs.forEach((t) => t.classList.remove('active'));
+    btn.classList.add('active');
+    if (metaNum) metaNum.textContent = `PROJECT ${btn.dataset.num}`;
+    if (metaTitle) metaTitle.textContent = btn.dataset.title ?? '';
+    if (metaYear) metaYear.textContent = btn.dataset.year ?? '';
+  }
+
+  thumbs.forEach((btn) => {
+    btn.addEventListener('mouseenter', () => setActive(btn));
+    btn.addEventListener('focus', () => setActive(btn));
+    btn.addEventListener('click', () => setActive(btn));
+  });
+</script>
