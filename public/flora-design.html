@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Flora AI — Product Design Notes</title>
+<link rel="stylesheet" href="/case.css" />
+<style>
+  .doc { max-width: 920px; margin: 0 auto; padding-bottom: clamp(64px, 10vh, 120px); }
+
+  /* Section header: number + title — dashed rule — meta */
+  .sec { padding: clamp(40px, 7vh, 88px) 0 0; }
+  .sec-head {
+    display: grid;
+    grid-template-columns: max-content minmax(24px, 1fr) max-content;
+    align-items: baseline;
+    gap: 18px;
+    padding-bottom: clamp(24px, 4vh, 40px);
+  }
+  .sec-head .t {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .sec-head h2 {
+    font-size: clamp(20px, 2.4vw, 30px);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .sec-head .num {
+    font-family: 'Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--mute);
+  }
+  .sec-head .annot {
+    font-family: 'Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .sec-head .rule { align-self: center; height: 1px; border-bottom: 1px dashed var(--line); }
+  .sec-head .when {
+    font-family: 'Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--mute);
+    white-space: nowrap;
+  }
+
+  /* Note groups */
+  .notes { display: grid; gap: clamp(22px, 3.4vh, 34px); }
+  .note { max-width: 70ch; }
+  .note .lead {
+    font-size: clamp(16px, 1.5vw, 19px);
+    line-height: 1.5;
+    letter-spacing: -0.011em;
+    color: var(--ink);
+  }
+  .note .lead.q { font-style: italic; }
+  .note ul { list-style: none; margin-top: 12px; display: grid; gap: 7px; }
+  .note li {
+    position: relative;
+    padding-left: 18px;
+    font-size: clamp(14px, 1.35vw, 16px);
+    line-height: 1.5;
+    color: var(--soft);
+    letter-spacing: -0.008em;
+  }
+  .note li::before {
+    content: '';
+    position: absolute;
+    left: 2px;
+    top: 0.62em;
+    width: 5px;
+    height: 1px;
+    background: var(--mute);
+  }
+  .note p.sub {
+    margin-top: 6px;
+    font-size: clamp(14px, 1.35vw, 16px);
+    line-height: 1.5;
+    color: var(--soft);
+  }
+
+  /* Framework callout */
+  .callout {
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: clamp(18px, 2.4vw, 26px);
+    background: radial-gradient(140% 120% at 0% 0%, rgba(59, 76, 255, 0.07), transparent 62%);
+  }
+  .callout .k {
+    font-family: 'Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--mute);
+    margin-bottom: 10px;
+  }
+  .callout p { font-size: clamp(16px, 1.6vw, 20px); line-height: 1.45; color: var(--ink); letter-spacing: -0.012em; }
+  .callout em { font-style: italic; }
+
+  /* Spectrum (custom <—> generative) */
+  .spectrum {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-family: 'Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-bottom: 12px;
+  }
+  .spectrum .bar { flex: 1; height: 1px; background: linear-gradient(90deg, var(--mute), var(--accent)); min-width: 40px; }
+
+  /* Spec chips */
+  .specs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .specs .chip {
+    font-family: 'Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--soft);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 6px 12px;
+  }
+  .specs .chip b { color: var(--ink); font-weight: 500; }
+
+  /* Positioning axes */
+  .axes { display: grid; gap: 14px; margin-bottom: clamp(28px, 4vh, 44px); max-width: 640px; }
+  .axis {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-family: 'Mono', monospace;
+    font-size: clamp(11px, 1.1vw, 13px);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  .axis .bar { flex: 1; min-width: 40px; height: 1px; background: linear-gradient(90deg, var(--mute), var(--accent), var(--mute)); }
+  .axis .end { white-space: nowrap; color: var(--soft); }
+
+  /* Aesthetic quadrants */
+  .matrix { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(24px, 4vw, 56px) clamp(28px, 5vw, 64px); }
+  .quad .k {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-family: 'Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-bottom: 12px;
+  }
+  .quad .k .tag { font-size: 10px; letter-spacing: 0.1em; color: var(--accent); }
+  .quad p { font-size: clamp(15px, 1.5vw, 18px); line-height: 1.5; color: var(--soft); letter-spacing: -0.01em; }
+  .quad p em { font-style: italic; color: var(--ink); }
+  @media (max-width: 600px) { .matrix { grid-template-columns: 1fr; } }
+
+  .doc-lead { max-width: 60ch; }
+  .doc-lead p { font-size: clamp(17px, 1.8vw, 21px); line-height: 1.45; color: var(--ink); letter-spacing: -0.014em; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar"><a href="/work-grid.html">← Selected Work</a><span>Flora AI · Design Notes</span></div>
+
+  <section class="hero">
+    <div class="meta">
+      <div class="col"><div class="k">Project</div><div class="v">Flora AI <em>/ Hieronymus</em></div></div>
+      <div class="col"><div class="k">Phase</div><div class="v">Jan – Mar 2024</div></div>
+      <div class="col"><div class="k">Discipline</div><div class="v"><span>Product</span><span>AI Tooling</span></div></div>
+    </div>
+    <h1>Flora AI — product design notes.</h1>
+    <p class="tagline">A working teardown of the node canvas: the design framework, the model strategy, and the orchestration layer that ties creative workflows together.</p>
+  </section>
+
+  <article class="doc">
+    <div class="doc-lead">
+      <p>Three questions ran through the build — how the tool should <em>feel</em>, what it should be <em>built on</em>, and how it should <em>compose</em>. The notes below organize the thinking into those three layers.</p>
+    </div>
+
+    <!-- 01 DESIGN -->
+    <section class="sec">
+      <div class="sec-head">
+        <div class="t"><span class="num">01</span><h2>Design</h2></div>
+        <span class="rule"></span>
+        <span class="when">Jan – Mar 2024</span>
+      </div>
+
+      <div class="notes">
+        <div class="callout">
+          <div class="k">Framework</div>
+          <p>“Flora AI” is a superpowered paintbrush and easel. <em>Flora</em> is the network of artists. <em>Neo-Renaissance</em> is the movement.</p>
+        </div>
+
+        <div class="note">
+          <p class="lead">LEGO-ifying pipelines and blocks.</p>
+        </div>
+
+        <div class="note">
+          <p class="lead">Slowness as an aesthetic principle.</p>
+          <ul>
+            <li>Tech that helps us get back to slowness, stillness, and contemplation.</li>
+            <li>Antithetical to the mandate of tech.</li>
+          </ul>
+        </div>
+
+        <div class="note">
+          <p class="lead">Each node will have a form of loading.</p>
+        </div>
+
+        <div class="note">
+          <div class="spectrum"><span>Custom control</span><span class="bar"></span><span>Generative</span></div>
+          <ul>
+            <li>Every TD node has noise — you can use that for generation.</li>
+            <li>Speak 2D into existence.</li>
+            <li>What can yield the best result for a designer?</li>
+          </ul>
+        </div>
+
+        <div class="note">
+          <p class="lead">Langchain — vector databases, RAG.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 CREATIVE DIRECTION -->
+    <section class="sec">
+      <div class="sec-head">
+        <div class="t"><span class="num">02</span><h2>Creative Direction</h2><span class="annot">Aesthetic vocabulary</span></div>
+        <span class="rule"></span>
+        <span class="when">Visual</span>
+      </div>
+
+      <div class="notes">
+        <div class="axes">
+          <div class="axis"><span class="end">New Media Techniques</span><span class="bar"></span><span class="end">Material Techniques</span></div>
+          <div class="axis"><span class="end">Black Box</span><span class="bar"></span><span class="end">White Box</span></div>
+        </div>
+
+        <div class="matrix">
+          <div class="quad">
+            <div class="k">Textures <span class="tag">“Generative”</span></div>
+            <p>Particle ephemera, schematics, diagrams (node systems), obscure glass, jacquard, <em>+ / −</em> digital symbols.</p>
+          </div>
+          <div class="quad">
+            <div class="k">Subjects <span class="tag">“Organic”</span></div>
+            <p>Flowers, botany, deep-sea fauna, people.</p>
+          </div>
+          <div class="quad">
+            <div class="k">Modalities</div>
+            <p>Avant-garde, lightweight (feather-like), fringe, surrealist, <em>Hieronymousesque</em>.</p>
+          </div>
+          <div class="quad">
+            <div class="k">Inspiration</div>
+            <p><em>Hieronymus Bosch, Nam June Paik, Iris Van Herpen, Gisela Colón</em>.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 MODELS -->
+    <section class="sec">
+      <div class="sec-head">
+        <div class="t"><span class="num">03</span><h2>Models</h2><span class="annot">Yes, this is a wrapper…</span></div>
+        <span class="rule"></span>
+        <span class="when">Strategy</span>
+      </div>
+
+      <div class="notes">
+        <div class="note">
+          <p class="lead">Foundation models — companies typically build these stronger. A wrapper around existing models.</p>
+        </div>
+
+        <div class="note">
+          <p class="lead q">Moat — unique data you can gather to fine-tune smaller models to make your business better?</p>
+        </div>
+
+        <div class="note">
+          <p class="lead">Relying too much on foundation models is dangerous.</p>
+          <ul>
+            <li>Building on top of other companies' APIs can be detrimental.</li>
+            <li>Discern what the trends are going to be — build your own moat.</li>
+          </ul>
+        </div>
+
+        <div class="note">
+          <p class="lead q">What is the AI model improvement journey?</p>
+        </div>
+
+        <div class="note">
+          <p class="sub">Technical surface area:</p>
+          <div class="specs">
+            <span class="chip"><b>FAL</b> abstraction · 7 parameters</span>
+            <span class="chip"><b>SDXL Turbo</b> · trained on 512×512</span>
+            <span class="chip"><b>Nodes</b> · Stable Diffusion</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 ORCHESTRATION LAYER -->
+    <section class="sec">
+      <div class="sec-head">
+        <div class="t"><span class="num">04</span><h2>Orchestration Layer</h2><span class="annot">Creative-friendly workflows</span></div>
+        <span class="rule"></span>
+        <span class="when">System</span>
+      </div>
+
+      <div class="notes">
+        <div class="note">
+          <p class="lead">Preview export node: running “npm” Flora on any <code>.proj</code> file.</p>
+        </div>
+
+        <div class="note">
+          <p class="lead">Computing as art and memory ecosystem.</p>
+        </div>
+
+        <div class="note">
+          <p class="lead">Modular networks — what is the most usable, extensible form of data?</p>
+          <ul>
+            <li>As approachable as JSON.</li>
+            <li>As usable as a spreadsheet.</li>
+            <li>As extensible as a relational database.</li>
+            <li>As distributable as RSS.</li>
+          </ul>
+        </div>
+
+        <div class="note">
+          <p class="lead">Embodied computing.</p>
+          <ul>
+            <li>Easy persistence / persistent collaborative software.</li>
+            <li>Emergent syntax — whole data, where the data is in the representation of it.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </article>
+
+  <section class="credits">
+    <div class="col"><div class="k">Project</div><div class="v">Flora AI</div></div>
+    <div class="col"><div class="k">Discipline</div><div class="v">Product · AI Tooling</div></div>
+    <div class="col"><div class="k">Phase</div><div class="v">Jan – Mar 2024</div></div>
+    <div class="col"><div class="k">Author</div><div class="v">Renaise Kim</div></div>
+  </section>
+
+  <nav class="pager"><a href="/flora.html">← Flora case study</a><a href="/work-grid.html">Index →</a></nav>
+</div>
+</body>
+</html>
