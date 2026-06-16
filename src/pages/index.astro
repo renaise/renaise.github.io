@@ -4,15 +4,27 @@ import ProjectsSidebar from '../components/ProjectsSidebar.astro';
 import ProfilesSidebar from '../components/ProfilesSidebar.astro';
 import { projectsExpanded, labProjects } from '../data/projects-expanded';
 
-// Stage dock order — matches renaise.com showroom
-const allowedProjects = ['soot', 'aputure', 'flora', 'yap'];
+// Stage dock order — full body of work (renaise.com showroom order first, then archive)
+const allowedProjects = [
+  'soot', 'aputure', 'flora', 'yap', 'mythra', 'rememe',
+  'nove', 'biota', 'lighthouse', 'osmosis', 'lantern', 'silica',
+];
 
-// Hero assets for each project (videos and images)
-const heroAssets: Record<string, { url: string; type: 'video' | 'image' }> = {
-  soot: { url: 'https://renaise.codexfoundry.com/platform_soot.mp4', type: 'video' },
-  aputure: { url: 'https://renaise.codexfoundry.com/Aputure_Site.mp4', type: 'video' },
-  flora: { url: 'https://renaise.codexfoundry.com/flora_still.gif', type: 'image' },
-  yap: { url: '/assets/projects/p8.svg', type: 'image' },
+// Hero assets for each project (videos and images).
+// fit: 'cover' for photographic/video, 'contain' for logo marks (centered on black).
+const heroAssets: Record<string, { url: string; type: 'video' | 'image'; fit: 'cover' | 'contain' }> = {
+  soot: { url: 'https://renaise.codexfoundry.com/platform_soot.mp4', type: 'video', fit: 'cover' },
+  aputure: { url: 'https://renaise.codexfoundry.com/Aputure_Site.mp4', type: 'video', fit: 'cover' },
+  flora: { url: 'https://renaise.codexfoundry.com/flora_still.gif', type: 'image', fit: 'cover' },
+  yap: { url: '/assets/projects/p8.svg', type: 'image', fit: 'contain' },
+  mythra: { url: '/assets/projects/mythra.png', type: 'image', fit: 'contain' },
+  rememe: { url: '/assets/projects/rememe.png', type: 'image', fit: 'contain' },
+  nove: { url: '/assets/projects/nove.png', type: 'image', fit: 'contain' },
+  biota: { url: '/assets/projects/biota.png', type: 'image', fit: 'contain' },
+  lighthouse: { url: '/assets/projects/lighthouse.png', type: 'image', fit: 'contain' },
+  osmosis: { url: '/assets/projects/osmosis.png', type: 'image', fit: 'contain' },
+  lantern: { url: '/assets/projects/lantern.png', type: 'image', fit: 'contain' },
+  silica: { url: '/assets/projects/silica.svg', type: 'image', fit: 'contain' },
 };
 
 // Map expanded projects to sidebar format (filtered)
@@ -52,7 +64,7 @@ const navItems = [
 ---
 
 <Base title="RENAISE (A)">
-  <div id="page-container" class="relative min-h-screen bg-[#111111] overflow-hidden" style="transition: background 0.3s ease;">
+  <div id="page-container" class="relative min-h-screen bg-[#070707] overflow-hidden" style="transition: background 0.3s ease;">
 
     <!-- Dot grid background (32px visual grid) -->
     <div class="dot-grid fixed inset-0 z-0 pointer-events-none" aria-hidden="true">
@@ -551,9 +563,35 @@ const navItems = [
   }
 
 
-  .hero-image {
-    opacity: 0.5;
-    filter: grayscale(30%);
+  /* ——— Cinematic hero media treatment (STAGE view) ——— */
+  /* Darken + slightly desaturate the source so bright assets read as
+     cinematic against pure black, matching the Figma framing. */
+  #hero-video,
+  #hero-image {
+    filter: brightness(0.6) contrast(1.06) grayscale(0.18);
+  }
+
+  /* Scrim: top fade-to-black + soft bottom + edge vignette.
+     Sits above the media (z-2) but below the white frame lines (z-15). */
+  .hero-media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background:
+      linear-gradient(
+        to bottom,
+        rgba(7, 7, 7, 0.92) 0%,
+        rgba(7, 7, 7, 0) 30%,
+        rgba(7, 7, 7, 0) 66%,
+        rgba(7, 7, 7, 0.55) 100%
+      ),
+      radial-gradient(
+        125% 95% at 50% 50%,
+        rgba(7, 7, 7, 0) 52%,
+        rgba(7, 7, 7, 0.62) 100%
+      );
   }
 
   .glass-panel {
@@ -1274,7 +1312,7 @@ const navItems = [
 
     // Background transitions
     tl.to(pageContainer, {
-      background: '#111111',
+      background: '#070707',
       duration: 0.6,
       ease: 'power2.out',
     }, 0.1);
@@ -1432,6 +1470,11 @@ const navItems = [
       heroVideoEl.pause();
       heroImageEl.classList.remove('hidden');
       heroImageEl.src = asset.url;
+      // Logo marks render contained + padded; photographic stays cover
+      const contain = asset.fit === 'contain';
+      heroImageEl.classList.toggle('object-contain', contain);
+      heroImageEl.classList.toggle('object-cover', !contain);
+      heroImageEl.style.padding = contain ? '9%' : '0';
     }
   }
 
@@ -1587,7 +1630,8 @@ const navItems = [
     setTimeout(resumeRotation, 1000);
   });
 
-  // Initialize - position all items immediately, then start spinning
+  // Initialize - land the active slot on the first project (Soot) for any roster size
+  currentOffset = ((-activeSlotIndex) % itemCount + itemCount) % itemCount;
   positionItems(false);
   startRotation();
 

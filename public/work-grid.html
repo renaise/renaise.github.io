@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Renaise Kim — New Cultural Interfaces</title>
+<style>
+  @font-face{font-family:'HND';src:url('/fonts/helvetica-now-light.woff2') format('woff2'),url('/fonts/Helvetica-Now-Display.ttf') format('truetype');font-weight:300 700;font-display:swap}
+  @font-face{font-family:'Mono';src:url('/ABCFavoritMono-Light-Trial.otf') format('opentype');font-weight:300;font-display:swap}
+
+  :root{
+    --bg:#0c0c0d; --ink:#ededed; --soft:#bdbdc0; --mute:#7a7a7e;
+    --line:rgba(255,255,255,.15); --accent:#3b4cff;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  body{background:var(--bg);color:var(--ink);font-family:'HND',-apple-system,'Helvetica Neue',Arial,sans-serif;line-height:1.5}
+  .mono{font-family:'Mono','SF Mono',Menlo,monospace}
+
+  .wrap{max-width:1440px;margin:0 auto;padding:0 clamp(18px,3.5vw,56px)}
+
+  /* Masthead */
+  header{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;
+    padding:clamp(36px,6vh,76px) 0 26px;flex-wrap:wrap}
+  .mh-kicker{font-family:'Mono',monospace;font-size:10.5px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--mute);margin-bottom:11px}
+  .mh-left h1{font-size:clamp(28px,3.4vw,48px);font-weight:500;letter-spacing:-.022em;line-height:.98}
+  .mh-left p{margin-top:12px;max-width:54ch;color:var(--mute);font-size:13px;letter-spacing:-.01em}
+  .mh-right{text-align:right}
+  .mh-right .k{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
+  .mh-right .k + .k{margin-top:6px}
+  .mh-right .accent{color:var(--accent)}
+
+  /* Grid */
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);
+    border-top:1px solid var(--line);border-left:1px solid var(--line);margin-bottom:72px}
+  .cell{position:relative;border-right:1px solid var(--line);border-bottom:1px solid var(--line);
+    padding:clamp(20px,1.6vw,28px);display:flex;flex-direction:column;min-height:400px;
+    text-decoration:none;color:inherit;transition:background .2s ease}
+  .cell:hover{background:rgba(255,255,255,.03)}
+  .cell:hover .deck{color:var(--ink)}
+  .cell:hover .go{opacity:1;transform:translateX(0)}
+
+  .cell-top{display:flex;justify-content:space-between;align-items:center}
+  .num{width:26px;height:26px;border:1px solid var(--line);border-radius:50%;
+    display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--soft)}
+  .tag{font-family:'Mono',monospace;font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:var(--mute)}
+  .tag .mode{color:var(--soft)}
+  .tag .mode.lab{color:var(--accent)}
+
+  h2{font-size:clamp(20px,1.55vw,25px);font-weight:500;letter-spacing:-.018em;
+    line-height:1.04;margin-top:16px;color:var(--ink)}
+  h2 em{font-style:normal;color:var(--mute)}
+  .deck{margin-top:9px;font-size:clamp(13px,1.05vw,15.5px);line-height:1.22;
+    font-weight:400;color:var(--soft);letter-spacing:-.008em;max-width:30ch;transition:color .2s ease}
+
+  .spec{margin-top:14px;display:flex;flex-direction:column;gap:5px}
+  .spec .row{display:flex;gap:14px;font-family:'Mono',monospace;font-size:10.5px;line-height:1.3}
+  .spec .k{color:var(--mute);text-transform:uppercase;letter-spacing:.13em;width:64px;flex-shrink:0}
+  .spec .v{color:var(--soft);letter-spacing:.01em}
+
+  .field{margin-top:16px}
+  .field .lbl{font-family:'Mono',monospace;font-size:9.5px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--mute);display:block;margin-bottom:6px}
+  .field p{font-size:13.5px;line-height:1.52;color:var(--soft);letter-spacing:-.004em}
+  .field.outcome{margin-top:14px}
+  .field.outcome .lbl{color:var(--accent)}
+  .field.outcome p{color:var(--ink)}
+  .field p code{font-family:'Mono',monospace;font-size:12px;color:var(--ink);
+    background:rgba(255,255,255,.06);padding:1px 5px;border-radius:3px}
+
+  .go{margin-top:16px;font-family:'Mono',monospace;font-size:10px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--accent);opacity:0;transform:translateX(-4px);
+    transition:opacity .2s ease,transform .2s ease}
+
+  footer{padding:0 0 64px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px}
+  footer .mono{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+
+  @media(max-width:1080px){.grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:680px){.grid{grid-template-columns:1fr}.cell{min-height:0}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="mh-left">
+      <div class="mh-kicker">Renaise Kim — Selected Work</div>
+      <h1>New Cultural Interfaces</h1>
+      <p>Brand and product work for AI, media, and consumer technology — most of it made for categories that had no conventions yet.</p>
+    </div>
+    <div class="mh-right">
+      <div class="k">2022 — 2025</div>
+      <div class="k">Nine Projects</div>
+      <div class="k accent">Index 01—09</div>
+    </div>
+  </header>
+
+  <main class="grid">
+
+    <!-- 01 -->
+    <a class="cell" href="/sensitive-subjects.html">
+      <div class="cell-top"><span class="num">01</span><span class="tag">Independent · <em class="mode">Stage</em></span></div>
+      <h2>Sensitive Subjects</h2>
+      <p class="deck">Photoreal product visuals, made in days</p>
+      <div class="spec">
+        <div class="row"><span class="k">Client</span><span class="v">Self-initiated · w/ Chakib Mazouni</span></div>
+        <div class="row"><span class="k">Medium</span><span class="v">Identity + Web</span></div>
+        <div class="row"><span class="k">Timeline</span><span class="v">2025</span></div>
+      </div>
+      <div class="field"><span class="lbl">Context</span><p>Sensitive Subjects makes photoreal images of products and technology — including the chip, the rig, the concept that doesn't physically exist yet — on an AI-accelerated pipeline that turns weeks of renders into days. Each one lands on-brand and ready to run: an ad, a pitch, a brand refresh.</p></div>
+      <div class="field outcome"><span class="lbl">Outcome</span><p>I directed the identity and built the site — navigation worked from radial dials rather than a menu bar, a layout that reshapes as you move through it. A mutable web for a studio that changes shape with every client.</p></div>
+      <span class="go">View case study →</span>
+    </a>
+
+    <!-- 02 -->
+    <a class="cell" href="/lighthouse.html">
+      <div class="cell-top"><span class="num">02</span><span class="tag">Studio Artifice · <em class="mode">Stage</em></span></div>
+      <h2>Lighthouse</h2>
+      <p class="deck">Recasting immigration as a beacon for talent</p>
+      <div class="spec">
+        <div class="row"><span class="k">Client</span><span class="v">Lighthouse</span></div>
+        <div class="row"><span class="k">Medium</span><span class="v">Identity</span></div>
+        <div class="row"><span class="k">Timeline</span><span class="v">2024</span></div>
+      </div>
+      <div class="field"><span class="lbl">Context</span><p>Most immigration products sell relief from paperwork. Lighthouse sells the opposite — immigration as how a company wins the people everyone else is chasing, American excellence offered as a reason to come build the future here.</p></div>
+      <div class="field outcome"><span class="lbl">Outcome</span><p>I took the identity up from its 1.0 — directed and designed it into something elevated and enterprise-grade, pitched to the HR leaders quietly staffing global teams.</p></div>
+      <span class="go">View case study →</span>
+    </a>
+
+    <!-- 03 -->
+    <a class="cell" href="/soot.html">
+      <div class="cell-top"><span class="num">03</span><span class="tag">Studio Artifice · <em class="mode">Stage</em></span></div>
+      <h2>SOOT</h2>
+      <p class="deck">See everything, search anything, sort itself</p>
+      <div class="spec">
+        <div class="row"><span class="k">Client</span><span class="v">SOOT · Studio Artifice</span></div>
+        <div class="row"><span class="k">Medium</span><span class="v">Web Product</span></div>
+        <div class="row"><span class="k">Timeline</span><span class="v">2025</span></div>
+      </div>
+      <div class="field"><span class="lbl">Context</span><p>Every hard drive is a graveyard of <code>final_v3_REALLY.png</code>. A tool where assets sort themselves had no precedent to borrow from — nobody had drawn the primitives yet.</p></div>
+      <div class="field outcome"><span class="lbl">Outcome</span><p>I drew them. Liquid Metal, a parts library loose enough to prototype any surface fast; the Z index, a way to stack interface in depth instead of pretending the screen is flat.</p></div>
+      <span class="go">View case study →</span>
+    </a>
+
+    <!-- 04 -->
+    <a class="cell" href="/aputure.html">
+      <div class="cell-top"><span class="num">04</span><span class="tag">Studio Artifice · <em class="mode">Stage</em></span></div>
+      <h2>Aputure</h2>
+      <p class="deck">A global home for industrial light</p>
+      <div class="spec">
+        <div class="row"><span class="k">Client</span><span class="v">Aputure</span></div>
+        <div class="row"><span class="k">Medium</span><span class="v">Web</span></div>
+        <div class="row"><span class="k">Timeline</span><span class="v">2024</span></div>
+      </div>
+      <div class="field"><span class="lbl">Context</span><p>Aputure sold into twelve markets off a site built for one. Local teams inherited broken layouts and English they couldn't read, and said so.</p></div>
+      <div class="field outcome"><span class="lbl">Outcome</span><p>I art-directed and designed the global site — one visual language that holds across a dozen markets, through translation, local payment, and regulatory fine print, without coming apart.</p></div>
+      <span class="go">View case study →</span>
+    </a>
+
+    <!-- 05 -->
+    <a class="cell" href="/flora.html">
+      <div class="cell-top"><span class="num">05</span><span class="tag">Independent · <em class="mode">Stage</em></span></div>
+      <h2>Flora <em>/ Hieronymus</em></h2>
+      <p class="deck">A node canvas for image-makers</p>
+      <div class="spec">
+        <div class="row"><span class="k">Client</span><span class="v">Flora</span></div>
+        <div class="row"><span class="k">Medium</span><span class="v">Web Product</span></div>
+        <div class="row"><span class="k">Timeline</span><span class="v">2024</span></div>
+      </div>
+      <div class="field"><span class="lbl">Context</span><p>A node-based creative tool with AI at the center, and no map — no competitor to copy, no convention to break. The team had to know what it was before it could say what it did.</p></div>
+      <div class="field outcome"><span class="lbl">Outcome</span><p>Zero to one. I shaped the editor around the people making images rather than the ones wiring graphs — community models, generation, and curation on a single canvas that never assumes you can code.</p></div>
+      <span class="go">View case study →</span>
+    </a>
+
+    <!-- 06 -->
+    <a class="cell" href="/liquid-metal.html">
+      <div class="cell-top"><span class="num">06</span><span class="tag">Studio Artifice · <em class="mode">Stage</em></span></div>
+      <h2>Liquid Metal <em>/ SOOT</em></h2>
+      <p class="deck">Recombine, don't redraw</p>
+      <div class="spec">
+        <div class="row"><span class="k">Client</span><span class="v">SOOT · Studio Artifice</span></div>
+        <div class="row"><span class="k">Medium</span><span class="v">Design Library</span></div>
+        <div class="row"><span class="k">Timeline</span><span class="v">2024</span></div>
+      </div>
+      <div class="field"><span class="lbl">Context</span><p>SOOT shipped new surfaces every week, and a pile of one-off screens means redrawing the same button forever.</p></div>
+      <div class="field outcome"><span class="lbl">Outcome</span><p>I made Liquid Metal — parts you recombine instead of redraw — and ran the brand operations that held it together as the product multiplied.</p></div>
+      <span class="go">View case study →</span>
+    </a>
+
+    <!-- 07 -->
+    <a class="cell" href="/osmosis.html">
+      <div class="cell-top"><span class="num">07</span><span class="tag">Studio Artifice · <em class="mode">Stage</em></span></div>
+      <h2>Osmosis AI</h2>
+      <p class="deck">Training small models to beat the giants</p>
+      <div class="spec">
+        <div class="row"><span class="k">Client</span><span class="v">Osmosis AI</span></div>
+        <div class="row"><span class="k">Medium</span><span class="v">Brand + Web</span></div>
+        <div class="row"><span class="k">Timeline</span><span class="v">2025</span></div>
+      </div>
+      <div class="field"><span class="lbl">Context</span><p>Osmosis runs on an unfashionable bet: a small model trained hard on one task beats a frontier model renting you general intelligence you'll never use, at a fraction of the cost.</p></div>
+      <div class="field outcome"><span class="lbl">Outcome</span><p>I built the brand and site to make post-training feel like a frontier rather than a config panel — a gradient sphere, Exposure set against Neue Haas Grotesk and PX Grotesk, an ink-wash mountain range under "Today Teaches Tomorrow." Cobalt-on-black reads closer to a film title than a dev tool. That's the point: the science is dry, the promise isn't.</p></div>
+      <span class="go">View case study →</span>
+    </a>
+
+    <!-- 08 -->
+    <a class="cell" href="/ai-www.html">
+      <div class="cell-top"><span class="num">08</span><span class="tag">Independent · <em class="mode lab">Lab</em></span></div>
+      <h2>ai://www.</h2>
+      <p class="deck">Teaching an LLM to reach the live web</p>
+      <div class="spec">
+        <div class="row"><span class="k">Client</span><span class="v">Self-initiated · w/ Shovon Hasan</span></div>
+        <div class="row"><span class="k">Medium</span><span class="v">Speculative Thesis</span></div>
+        <div class="row"><span class="k">Timeline</span><span class="v">2024</span></div>
+      </div>
+      <div class="field"><span class="lbl">Context</span><p>An LLM can describe how to book a flight but can't reach the booking page. The question was blunt — how does a language model touch a live website when no one has built it an app to do so?</p></div>
+      <div class="field outcome"><span class="lbl">Outcome</span><p>The model writes an HTTP request as plain text, the browser runs it, and the real site renders inside the chat window. Sites publish a <code>/mythra.txt</code> that tells the model what they can do — a robots.txt for actions instead of crawlers.</p></div>
+      <span class="go">View the thesis →</span>
+    </a>
+
+    <!-- 09 -->
+    <a class="cell" href="/rememe.html">
+      <div class="cell-top"><span class="num">09</span><span class="tag">Independent · <em class="mode">Stage</em></span></div>
+      <h2>Rememe <em>/ Collage</em></h2>
+      <p class="deck">Remixing memes on a composable canvas</p>
+      <div class="spec">
+        <div class="row"><span class="k">Client</span><span class="v">Collage</span></div>
+        <div class="row"><span class="k">Medium</span><span class="v">Mobile App (iOS)</span></div>
+        <div class="row"><span class="k">Timeline</span><span class="v">2022</span></div>
+      </div>
+      <div class="field"><span class="lbl">Context</span><p>Collage launched in April 2022 as "the meme app" — page admins, campus groups, deranged-meme tools, a leaderboard ranking the "top collagers." A feed built to win at memes.</p></div>
+      <div class="field outcome"><span class="lbl">Outcome</span><p>Rememe rebuilt it around a single verb: to <em>rememe</em> a post is to remake it. The feed shows who rememed yours and ranks by how often it's been remade; profiles open up freeform. The roasts and the leaderboard gave way to a lo-fi room where reach is counted in remixes, not likes.</p></div>
+      <span class="go">View case study →</span>
+    </a>
+
+  </main>
+
+  <footer>
+    <span class="mono">Renaise Kim — Selected Work</span>
+    <span class="mono">Strategy · Identity · Product · Web</span>
+    <span class="mono">krenaise@gmail.com</span>
+  </footer>
+
+</div>
+</body>
+</html>
