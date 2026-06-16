@@ -65,9 +65,7 @@ const practices = [
         <div class="hero-nav-top">
           <a href="#about">About</a>
           <a href="#capabilities">Projects</a>
-          <a href="#about" class="hero-nav-mark" aria-label="Studio Artifice">
-            <img src="/assets/studio/wordmark-studio-artifice.svg" alt="Studio Artifice" />
-          </a>
+          <a href="#about" class="hero-nav-mark">Renaise</a>
           <a href="#capabilities">Programs</a>
           <a href="#contact">Contact</a>
         </div>
@@ -96,11 +94,19 @@ const practices = [
             <img src="/assets/studio/wordmark-studio-artifice.svg" alt="Studio Artifice" />
             <img class="about-mark-a" src="/assets/studio/mark-a-small.svg" alt="" />
           </div>
-          <p class="about-copy">
-            is an interface strategy and experiential systems studio working from URL to IRL;
-            spanning websites to activations on capturing a company's growth ecosystem. Shaping
-            systems for AI, cultural institutions, and narrative-sensitive companies as a cultural artifact.
-          </p>
+          <div class="about-copy">
+            <p>
+              Renaise Kim is a NYC-based product designer, creative director, and cultural producer working
+              across product, brand, AI tooling, and experimental public programming. She leads Studio Artifice,
+              an interface strategy and experiential systems studio working from URL to IRL.
+            </p>
+            <p>
+              Executive Director of Artifice NYC, a 501(c)(3) nonprofit producing programs at the intersection
+              of art, technology, material science, and speculative culture. With 8 years of experience across
+              consumer tech and media, including SOOT, FLORA, and stealth ventures backed by YC and a16z, her
+              work focuses on making emerging technologies, communities, and cultural systems more legible through design.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -139,13 +145,11 @@ const practices = [
             <img src="/assets/studio/mark-a-large.svg" alt="" />
           </div>
           <p class="studio-copy">
-            Renaise Kim is a NYC-based product designer, creative director, and cultural producer working
-            across product, brand, AI tooling, and experimental public programming. She leads Studio Artifice,
-            an interface strategy and experiential systems studio working from URL to IRL. Executive Director
-            of Artifice NYC, a 501(c)(3) nonprofit producing programs at the intersection of art, technology,
-            material science, and speculative culture. With 8 years of experience across consumer tech and
-            media, including SOOT, FLORA, and stealth ventures backed by YC and a16z, her work focuses on
-            making emerging technologies, communities, and cultural systems more legible through design.
+            Studio Artifice is led by Renaise, a visual prototyper and producer with eight years of
+            experience designing identities and intuitive products for consumer tech and media brands.
+            She led product design at SOOT, was founding designer at FLORA through its pre-seed raise,
+            designed for Y Combinator and a16z, and leads design, marketing, and creative direction for
+            ARTIFICE, a cultural nonprofit dedicated to programs shaping creative science and new media fictions.
           </p>
         </div>
       </section>
@@ -346,13 +350,9 @@ const practices = [
 
   .hero-nav-mark {
     flex: 0 0 auto;
-  }
-
-  .hero-nav-mark img {
-    width: 108px;
-    height: auto;
-    display: block;
-    filter: brightness(0);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: #000 !important;
   }
 
   .hero-nav-dots {
@@ -465,6 +465,10 @@ const practices = [
     line-height: 30px;
     letter-spacing: -0.16px;
     color: rgba(255, 255, 255, 0.5);
+  }
+
+  .about-copy p + p {
+    margin-top: 24px;
   }
 
   /* CAPABILITIES */
